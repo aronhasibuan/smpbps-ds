@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->boolean('is_teamleader') -> default(false);
+            $table->enum('role',['ketuatim', 'anggotatim', 'kepalakantor'])->default('anggotatim');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

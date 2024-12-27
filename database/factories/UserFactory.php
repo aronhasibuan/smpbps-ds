@@ -31,18 +31,4 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
-
-    public function teamleader(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'is_teamleader' => true,
-        ]);
-    }
-
-    public function notteamleader(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'is_teamleader' => false,
-        ]);
-    }
 }

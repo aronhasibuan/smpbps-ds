@@ -16,10 +16,19 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
+            'name' => 'Elly Suharyadi, SST, M.Si',
+            'username' => 'ellysuharyadi',
+            'email' => 'EllySuharyadi@bps.go.id',
+            'role' => 'kepalakantor',
+            'password' => Hash::make('password'),
+            'remember_token' => Str::random(10)
+        ]);
+
+        User::create([
             'name' => 'Ridho Julandra, SST, M.Sc',
             'username' => 'julandra',
-            'email' => 'RidhoJulandra@gmail.com',
-            'is_teamleader' => 1,
+            'email' => 'RidhoJulandra@bps.go.id',
+            'role' => 'ketuatim',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
@@ -27,8 +36,8 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Hot Bonar, SST, M.Stat',
             'username' => 'bonarsitumorang',
-            'email' => 'HotBonar@gmail.com',
-            'is_teamleader' => 1,
+            'email' => 'HotBonar@bps.go.id',
+            'role' => 'ketuatim',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
@@ -36,8 +45,8 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Irwanto, S.Kom',
             'username' => 'irwanto2',
-            'email' => 'Irwanto@gmail.com',
-            'is_teamleader' => 1,
+            'email' => 'Irwanto@bps.go.id',
+            'role' => 'ketuatim',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
@@ -45,8 +54,8 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Irwanto Pardamean Hutagalung, A.Md',
             'username' => 'irwantopardamean',
-            'email' => 'IrwantoHutagalung@gmail.com',
-            'is_teamleader' => 0,
+            'email' => 'IrwantoHutagalung@bps.go.id',
+            'role' => 'anggotatim',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
@@ -54,8 +63,8 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Juhar Monang.S.Tambun, SST',
             'username' => 'juharmonang',
-            'email' => 'JuharMonang@gmail.com',
-            'is_teamleader' => 0,
+            'email' => 'JuharMonang@bps.go.id',
+            'role' => 'anggotatim',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
@@ -63,8 +72,8 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Novi Fahdilla, S.Tr.Stat.',
             'username' => 'novi.fahdilla',
-            'email' => 'Novifahdilla@gmail.com',
-            'is_teamleader' => 0,
+            'email' => 'Novifahdilla@bps.go.id',
+            'role' => 'anggotatim',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);

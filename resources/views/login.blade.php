@@ -15,6 +15,15 @@
                   <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                       Sign in to your account
                   </h1>
+                  @if ($errors->any())
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                      <ul>
+                        @foreach ($errors->all() as $item)
+                          <li>{{ $item }}</li>
+                        @endforeach
+                      </ul>
+                    </div>
+                  @endif
                   <form class="space-y-4 md:space-y-6" action="{{ route('login') }}" method="POST">
                     @csrf
                       <div>
