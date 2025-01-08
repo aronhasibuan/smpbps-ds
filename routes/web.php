@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\TaskController;
+use App\Models\Importance;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +41,8 @@ Route::middleware(['auth'])->group(function(){
     });
 
     Route::get('/monitoring', function () {
-        return view('monitoring', ['headercontent' => 'Monitoring Pekerjaan', 'anggotatim'=>User::where('role','anggotatim')->get()]);
-    })->middleware('is_ketuatim');
+        return view('monitoring', ['headercontent' => 'Monitoring Pekerjaan', 'anggotatim'=>User::where('role','anggotatim')->get(), 'levelkepentingan'=>Importance::all()]);
+    })->name('monitoring')->middleware('is_ketuatim');
+
+    Route::post('/monitoring', [TaskController::class, 'create']);
 });
