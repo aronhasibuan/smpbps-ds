@@ -55,5 +55,4 @@ class User extends Authenticatable
     public function menerimatugas(): HasMany{
         return $this->hasMany(Task::class, 'penerimatugas_id');
     }
-    
 }

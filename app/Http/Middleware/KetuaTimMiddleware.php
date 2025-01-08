@@ -7,18 +7,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserAccess
+class KetuaTimMiddleware
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->role == $role){
+        if(Auth::check() && (Auth::user()->role == 'ketuatim' || Auth::user()->role == 'kepalakantor')){
             return $next($request);
         }
-        return response()->json("Anda Tidak Memiliki Akses ke Halaman ini");
+        abort(403);
     }
 }

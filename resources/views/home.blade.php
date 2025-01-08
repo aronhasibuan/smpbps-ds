@@ -62,5 +62,4 @@
 
     {{ $tasks->links() }}
 
-  <a href="#" class="fixed bottom-4 right-4 flex items-center justify-center w-12 h-12 bg-blue-500 text-white text-4xl font-bold rounded-full shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"> + </a>
 </x-layout> 

@@ -39,7 +39,6 @@ Route::middleware(['auth'])->group(function(){
     });
 
     Route::get('/monitoring', function () {
-        return view('monitoring', ['headercontent' => 'Monitoring Pekerjaan', 'pegawai1' => 'Aron Hasibuan']);
-    });
-
+        return view('monitoring', ['headercontent' => 'Monitoring Pekerjaan', 'anggotatim'=>User::where('role','anggotatim')->get()]);
+    })->middleware('is_ketuatim');
 });
