@@ -14,7 +14,8 @@
               @endif
 
               @if (Auth::check() && Auth::user()->role == 'ketuatim')
-                <x-nav-link href="/monitoring" :active="request()->is('monitoring')">Monitoring</x-nav-link>  
+                <x-nav-link href="/monitoring" :active="request()->is('monitoring')">Daftar Tugas</x-nav-link>
+                <x-nav-link href="#">Penilaian Pegawai</x-nav-link>  
               @endif
 
             </div>

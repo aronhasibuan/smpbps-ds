@@ -11,7 +11,7 @@ class Task extends Model{
 
     use HasFactory;
     
-    protected $fillable = ['namakegiatan','slug','deskripsi','volume','satuan','tenggat','pemberitugas','penerimatugas','progress','importancelevel','attachment','status'];
+    protected $fillable = ['namakegiatan','slug','deskripsi','volume','satuan','tenggat','pemberitugas_id','penerimatugas_id','progress','importancelevel','attachment','status'];
 
     protected $with = ['pemberitugas','penerimatugas','importance'];
 
@@ -31,5 +31,5 @@ class Task extends Model{
         if($filters['search'] ?? false){
             $query -> where('namakegiatan', 'like', '%'.request('search').'%');
         }
-    }
+    } 
 }

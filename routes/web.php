@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\LogoutController;
-use App\Http\Controllers\TaskController;
-use App\Models\Importance;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Importance;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -21,7 +22,13 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/logout', LogoutController::class)->name('logout');
 
     Route::get('/home', function () {
-        return view('home', ['headercontent' => 'Dashboard', 'tasks' => Task::filter(request(['search']))->paginate(5)->withQueryString()]);
+        $user = Auth::user();
+        $tasks = Task::where('penerimatugas_id', $user->id)
+            ->filter(request(['search']))
+            ->paginate(5)
+            ->withQueryString();
+
+        return view('home', ['headercontent' => 'Dashboard', 'tasks' => $tasks]);
     });
 
     Route::get('/home/{task:slug}', function(Task $task){
@@ -41,7 +48,17 @@ Route::middleware(['auth'])->group(function(){
     });
 
     Route::get('/monitoring', function () {
-        return view('monitoring', ['headercontent' => 'Monitoring Pekerjaan', 'anggotatim'=>User::where('role','anggotatim')->get(), 'levelkepentingan'=>Importance::all()]);
+        $user = Auth::user();
+        $HPTs = Task::where('pemberitugas_id', $user->id)->where('importance_id', 1)->get();
+        $MPTs = Task::where('pemberitugas_id', $user->id)->where('importance_id', 2)->get();
+        $LPTs = Task::where('pemberitugas_id', $user->id)->where('importance_id', 3)->get();
+        return view('monitoring', [ 'headercontent' => 'Monitoring Pekerjaan', 
+                                    'anggotatim'=>User::where('role','anggotatim')->get(), 
+                                    'levelkepentingan'=>Importance::all(),
+                                    'HPTs' => $HPTs,
+                                    'MPTs' => $MPTs,
+                                    'LPTs' => $LPTs,
+                                ]);
     })->name('monitoring')->middleware('is_ketuatim');
 
     Route::post('/monitoring', [TaskController::class, 'create']);

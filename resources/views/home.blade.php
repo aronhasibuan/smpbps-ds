@@ -52,7 +52,7 @@
           </article>
         @empty
         <div>
-          <p class="font-semibold text-xl my-4">Task not found!</p>
+          <p class="font-semibold text-xl my-4">Tugas Tidak Ditemukan!</p>
           <a href="/home" class="block text-blue-600 hover:underline">&laquo; Back to all Task</a>
         </div>
         @endforelse

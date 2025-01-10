@@ -1,5 +1,106 @@
 <x-layout>
-    <x-slot:headercontent>{{ $headercontent }}</x-slot:headercontent>
+    <x-slot:headercontent>Selamat datang di {{ $headercontent }}, {{ auth()->user()->name }}</x-slot:headercontent>
+
+    <section>
+        {{-- High Priority Task --}}
+        <div class="mb-10">
+            <h3 class="bg-red-500 text-white font-medium p-1 w-fit rounded-md mb-1">Tingkat Prioritas Tinggi</h3>
+            <table class="w-full text-left">
+                <thead>
+                    <tr>
+                        <th class="p-2">Nama Kegiatan</th>
+                        <th>Satuan</th>
+                        <th>Volume</th>
+                        <th>Tenggat</th>
+                        <th>Penerima Tugas</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody class="">
+                    @forelse ($HPTs as $hpt)
+                        <tr class="bg-white border-b">
+                            <td class="p-2">{{ $hpt->namakegiatan }}</td>
+                            <td>{{ $hpt->satuan }}</td>
+                            <td>{{ $hpt->volume }}</td>
+                            <td>{{ $hpt->tenggat }}</td>
+                            <td>{{ $hpt->penerimatugas->name }}</td>
+                            <td>{{ $hpt->status }}</td>
+                        </tr>
+                        @empty
+                        <tr class="bg-white">
+                            <td class="p-2" colspan="6">Tidak ada tugas</td>
+                        </tr>                        
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        {{-- Medium Priority Task --}}
+        <div class="mb-10">
+            <h3 class="bg-yellow-500 text-white font-medium p-1 w-fit rounded-md mb-1">Tingkat Prioritas Sedang</h3>
+            <table class="w-full text-left">
+                <thead>
+                    <tr>
+                        <th class="p-2">Nama Kegiatan</th>
+                        <th>Satuan</th>
+                        <th>Volume</th>
+                        <th>Tenggat</th>
+                        <th>Penerima Tugas</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody class="">
+                    @forelse ($MPTs as $mpt)
+                        <tr class="bg-white border-b">
+                            <td class="p-2">{{ $mpt->namakegiatan }}</td>
+                            <td>{{ $mpt->satuan }}</td>
+                            <td>{{ $mpt->volume }}</td>
+                            <td>{{ $mpt->tenggat }}</td>
+                            <td>{{ $mpt->penerimatugas->name }}</td>
+                            <td>{{ $mpt->status }}</td>
+                        </tr>
+                        @empty
+                        <tr class="bg-white">
+                            <td class="p-2" colspan="6">Tidak ada tugas</td>
+                        </tr>                        
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        {{-- Low Priority Task --}}
+        <div class="mb-10">
+            <h3 class="bg-green-500 text-white font-medium p-1 w-fit rounded-md mb-1">Tingkat Prioritas Rendah</h3>
+            <table class="w-full text-left">
+                <thead>
+                    <tr>
+                        <th class="p-2">Nama Kegiatan</th>
+                        <th>Satuan</th>
+                        <th>Volume</th>
+                        <th>Tenggat</th>
+                        <th>Penerima Tugas</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody class="">
+                    @forelse ($LPTs as $lpt)
+                        <tr class="bg-white border-b">
+                            <td class="p-2">{{ $lpt->namakegiatan }}</td>
+                            <td>{{ $lpt->satuan }}</td>
+                            <td>{{ $lpt->volume }}</td>
+                            <td>{{ $lpt->tenggat }}</td>
+                            <td>{{ $lpt->penerimatugas->name }}</td>
+                            <td>{{ $lpt->status }}</td>
+                        </tr>
+                        @empty
+                        <tr class="bg-white">
+                            <td class="p-2" colspan="6">Tidak ada tugas</td>
+                        </tr>                        
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
 
     <!-- Modal toggle -->
     <div class="flex justify-center fixed bottom-4 right-4">
@@ -54,7 +155,6 @@
                             <p class="  text-xs text-gray-400">Contoh: 30/04/2025</p>
                             <input type="date" name="tenggat" id="tenggat" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
                         </div>
-                        <input type="hidden" name="pemberitugas_id" value="{{ Auth::user()->id }}">
                         <div class="mb-4">
                             <label for="penerimatugas_id" class="block text-sm font-medium text-gray-900 dark:text-white">Penerima Tugas</label>
                             <select id="penerimatugas_id" name="penerimatugas_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
