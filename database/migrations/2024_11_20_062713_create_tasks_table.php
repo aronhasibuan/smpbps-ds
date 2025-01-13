@@ -29,7 +29,7 @@ return new class extends Migration
             );
             $table->string('progress')->default(0);
             $table->string('attachment')->nullable();
-            $table->string('status')->default('Sedang Berjalan');
+            $table->string('status')->default('aktif');
             $table->timestamps();
         });
     }

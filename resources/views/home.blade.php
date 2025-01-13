@@ -30,10 +30,10 @@
         @forelse ($tasks as $task)
           <article class="p-6 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
               <div class="flex justify-between items-center mb-5 text-gray-500">
-                  {{-- <span class="bg-{{ $task->importance->color }}-500 text-white text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
-                      {{ $task->importance->name }}
-                  </span> --}}
-                  <span class="text-sm text-black font-bold">{{ $task->tenggat }}</span>
+                  <span class="bg-{{ $task->kemajuan['color'] }}-500 text-white text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
+                      {{ $task->kemajuan['status'] }}
+                  </span>
+                  <span class="text-sm text-black font-bold">Tenggat: {{ $task->formatted_tenggat }} ( {{ $task->waktu_tersisa }} tersisa )</span>
               </div>
               <a href="/home/{{ $task->slug }}"><h2 class="hover:underline mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $task->namakegiatan }}</h2></a>
               <p class="mb-5 font-light text-gray-500 dark:text-gray-400">{{ Str::limit($task->deskripsi,140) }}</p>

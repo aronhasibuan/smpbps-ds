@@ -29,9 +29,9 @@
               <header class="mb-4 lg:mb-6 not-format">
                 <a href="/home" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Back to Home</a>
                 <div class="flex justify-between items-center mb-5 text-gray-500 mt-2">
-                  {{-- <span class="bg-{{ $task->importance->color }}-500 text-white text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
-                      Tingkat Prioritas: {{ $task->importance->name }}
-                  </span> --}}
+                  <span class="bg-{{ $task->kemajuan['color'] }}-500 text-white text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
+                      Tingkat Kemajuan: {{ $task->kemajuan['status'] }}
+                  </span>
                 </div>
                   <address class="flex items-center my-6 not-italic justify-between">
                       <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
@@ -41,7 +41,7 @@
                               <p class="text-base text-gray-500 dark:text-gray-400">{{ $task->created_at->format('F d') }}</p>
                           </div>
                       </div>
-                      <p class="text-base font-bold text-black">Tenggat {{ $task->tenggat }}</p>
+                      <p class="text-base font-bold text-black">Tenggat: {{ $task->formatted_tenggat }} ( {{ $task->waktu_tersisa }} tersisa )</p>
                   </address>
                   <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">{{ $task->namakegiatan }}</h1>
               </header>

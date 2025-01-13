@@ -18,7 +18,6 @@ class TaskController extends Controller
                 'satuan' => 'required|string|max:255',
                 'tenggat' => 'required|date',
                 'penerimatugas_id' => 'required',
-                'importance_id' => 'required|exists:importances,id',
                 'attachment' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120',
             ]);
 
@@ -34,7 +33,6 @@ class TaskController extends Controller
                 'tenggat' => $validatedData['tenggat'],
                 'pemberitugas_id' => Auth::id(),
                 'penerimatugas_id' => $validatedData['penerimatugas_id'],
-                'importance_id' => $validatedData['importance_id'],
                 'attachment' => $request->hasFile('attachment') ? $request->file('attachment')->store('attachments', 'public') : null,
             ]);
 

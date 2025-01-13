@@ -49,14 +49,8 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('/monitoring', function () {
         $user = Auth::user();
-        $HPTs = Task::where('pemberitugas_id', $user->id)->where('importance_id', 1)->get();
-        $MPTs = Task::where('pemberitugas_id', $user->id)->where('importance_id', 2)->get();
-        $LPTs = Task::where('pemberitugas_id', $user->id)->where('importance_id', 3)->get();
         return view('monitoring', [ 'headercontent' => 'Monitoring Pekerjaan', 
                                     'anggotatim'=>User::where('role','anggotatim')->get(), 
-                                    'HPTs' => $HPTs,
-                                    'MPTs' => $MPTs,
-                                    'LPTs' => $LPTs,
                                 ]);
     })->name('monitoring')->middleware('is_ketuatim');
 

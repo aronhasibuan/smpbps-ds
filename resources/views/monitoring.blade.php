@@ -4,7 +4,7 @@
     <section>
         {{-- High Priority Task --}}
         <div class="mb-10">
-            <h3 class="bg-red-500 text-white font-medium p-1 w-fit rounded-md mb-1">Tingkat Prioritas Tinggi</h3>
+            <h3 class="bg-red-500 text-white font-medium p-1 w-fit rounded-md mb-1">Progress Sangat Cepat</h3>
             <table class="w-full text-left">
                 <thead>
                     <tr>
@@ -17,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody class="">
-                    @forelse ($HPTs as $hpt)
+                    {{-- @forelse ($HPTs as $hpt)
                         <tr class="bg-white border-b">
                             <td class="p-2">{{ $hpt->namakegiatan }}</td>
                             <td>{{ $hpt->satuan }}</td>
@@ -27,17 +27,17 @@
                             <td>{{ $hpt->status }}</td>
                         </tr>
                         @empty
+                        @endforelse --}}
                         <tr class="bg-white">
                             <td class="p-2" colspan="6">Tidak ada tugas</td>
                         </tr>                        
-                    @endforelse
                 </tbody>
             </table>
         </div>
 
         {{-- Medium Priority Task --}}
         <div class="mb-10">
-            <h3 class="bg-yellow-500 text-white font-medium p-1 w-fit rounded-md mb-1">Tingkat Prioritas Sedang</h3>
+            <h3 class="bg-yellow-500 text-white font-medium p-1 w-fit rounded-md mb-1">Progress Tepat Waktu</h3>
             <table class="w-full text-left">
                 <thead>
                     <tr>
@@ -50,7 +50,7 @@
                     </tr>
                 </thead>
                 <tbody class="">
-                    @forelse ($MPTs as $mpt)
+                    {{-- @forelse ($MPTs as $mpt)
                         <tr class="bg-white border-b">
                             <td class="p-2">{{ $mpt->namakegiatan }}</td>
                             <td>{{ $mpt->satuan }}</td>
@@ -60,17 +60,17 @@
                             <td>{{ $mpt->status }}</td>
                         </tr>
                         @empty
+                        @endforelse --}}
                         <tr class="bg-white">
                             <td class="p-2" colspan="6">Tidak ada tugas</td>
                         </tr>                        
-                    @endforelse
                 </tbody>
             </table>
         </div>
 
         {{-- Low Priority Task --}}
         <div class="mb-10">
-            <h3 class="bg-green-500 text-white font-medium p-1 w-fit rounded-md mb-1">Tingkat Prioritas Rendah</h3>
+            <h3 class="bg-green-500 text-white font-medium p-1 w-fit rounded-md mb-1">Progress Terlambat</h3>
             <table class="w-full text-left">
                 <thead>
                     <tr>
@@ -83,7 +83,7 @@
                     </tr>
                 </thead>
                 <tbody class="">
-                    @forelse ($LPTs as $lpt)
+                    {{-- @forelse ($LPTs as $lpt)
                         <tr class="bg-white border-b">
                             <td class="p-2">{{ $lpt->namakegiatan }}</td>
                             <td>{{ $lpt->satuan }}</td>
@@ -93,10 +93,10 @@
                             <td>{{ $lpt->status }}</td>
                         </tr>
                         @empty
+                        @endforelse --}}
                         <tr class="bg-white">
                             <td class="p-2" colspan="6">Tidak ada tugas</td>
                         </tr>                        
-                    @endforelse
                 </tbody>
             </table>
         </div>
