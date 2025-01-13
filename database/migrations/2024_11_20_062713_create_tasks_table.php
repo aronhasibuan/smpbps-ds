@@ -28,10 +28,6 @@ return new class extends Migration
                 indexName: 'tasks_penerimatugas_id'
             );
             $table->string('progress')->default(0);
-            $table->foreignId('importance_id')->constrained(
-                table: 'importances',
-                indexName: 'tasks_importance_id'
-            );
             $table->string('attachment')->nullable();
             $table->string('status')->default('Sedang Berjalan');
             $table->timestamps();

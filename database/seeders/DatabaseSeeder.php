@@ -22,10 +22,9 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $this->call([UserSeeder::class, ImportanceSeeder::class]);
+        $this->call([UserSeeder::class]);
         Task::factory(50)->recycle([
             User::all(),
-            Importance::all()
         ])->create();
         
     }

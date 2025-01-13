@@ -54,7 +54,6 @@ Route::middleware(['auth'])->group(function(){
         $LPTs = Task::where('pemberitugas_id', $user->id)->where('importance_id', 3)->get();
         return view('monitoring', [ 'headercontent' => 'Monitoring Pekerjaan', 
                                     'anggotatim'=>User::where('role','anggotatim')->get(), 
-                                    'levelkepentingan'=>Importance::all(),
                                     'HPTs' => $HPTs,
                                     'MPTs' => $MPTs,
                                     'LPTs' => $LPTs,

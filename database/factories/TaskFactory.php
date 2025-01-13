@@ -30,7 +30,6 @@ class TaskFactory extends Factory
             'tenggat' => fake()->date(),
             'pemberitugas_id' => User::factory()->teamleader(),
             'penerimatugas_id' => User::factory()->notteamleader(),
-            'importance_id' => Importance::factory(), 
         ];
     }
 }
