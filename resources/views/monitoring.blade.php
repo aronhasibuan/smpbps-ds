@@ -2,104 +2,42 @@
     <x-slot:headercontent>Selamat datang di {{ $headercontent }}, {{ auth()->user()->name }}</x-slot:headercontent>
 
     <section>
-        {{-- High Priority Task --}}
-        <div class="mb-10">
-            <h3 class="bg-red-500 text-white font-medium p-1 w-fit rounded-md mb-1">Progress Sangat Cepat</h3>
-            <table class="w-full text-left">
-                <thead>
-                    <tr>
-                        <th class="p-2">Nama Kegiatan</th>
-                        <th>Satuan</th>
-                        <th>Volume</th>
-                        <th>Tenggat</th>
-                        <th>Penerima Tugas</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody class="">
-                    {{-- @forelse ($HPTs as $hpt)
-                        <tr class="bg-white border-b">
-                            <td class="p-2">{{ $hpt->namakegiatan }}</td>
-                            <td>{{ $hpt->satuan }}</td>
-                            <td>{{ $hpt->volume }}</td>
-                            <td>{{ $hpt->tenggat }}</td>
-                            <td>{{ $hpt->penerimatugas->name }}</td>
-                            <td>{{ $hpt->status }}</td>
-                        </tr>
-                        @empty
-                        @endforelse --}}
-                        <tr class="bg-white">
-                            <td class="p-2" colspan="6">Tidak ada tugas</td>
-                        </tr>                        
-                </tbody>
-            </table>
-        </div>
 
-        {{-- Medium Priority Task --}}
-        <div class="mb-10">
-            <h3 class="bg-yellow-500 text-white font-medium p-1 w-fit rounded-md mb-1">Progress Tepat Waktu</h3>
-            <table class="w-full text-left">
-                <thead>
-                    <tr>
-                        <th class="p-2">Nama Kegiatan</th>
-                        <th>Satuan</th>
-                        <th>Volume</th>
-                        <th>Tenggat</th>
-                        <th>Penerima Tugas</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody class="">
-                    {{-- @forelse ($MPTs as $mpt)
-                        <tr class="bg-white border-b">
-                            <td class="p-2">{{ $mpt->namakegiatan }}</td>
-                            <td>{{ $mpt->satuan }}</td>
-                            <td>{{ $mpt->volume }}</td>
-                            <td>{{ $mpt->tenggat }}</td>
-                            <td>{{ $mpt->penerimatugas->name }}</td>
-                            <td>{{ $mpt->status }}</td>
+        {{-- Tabel Tasks --}}
+        @foreach ($groupedtasks as $status=>$tasks)
+            <div class="mb-10">
+                <h3 class="bg-{{ $tasks->first()->kemajuan['color'] }}-500 text-white font-medium p-1 w-fit rounded-md mb-1">Progress {{ $status }}</h3>
+                <table class="w-full text-left">
+                    <thead>
+                        <tr>
+                            <th class="p-2">Nama Kegiatan</th>
+                            <th>Satuan</th>
+                            <th>Volume</th>
+                            <th>Tenggat</th>
+                            <th>Penerima Tugas</th>
+                            <th>Status</th>
                         </tr>
-                        @empty
-                        @endforelse --}}
-                        <tr class="bg-white">
-                            <td class="p-2" colspan="6">Tidak ada tugas</td>
-                        </tr>                        
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody class="">
+                        @forelse ( $tasks as $task)    
+                            <tr class="bg-white border-b">
+                                <td class="p-2">{{ $task->namakegiatan }}</td>
+                                <td>{{ $task->satuan }}</td>
+                                <td>{{ $task->volume }}</td>
+                                <td>{{ $task->tenggat }}</td>
+                                <td>{{ $task->penerimatugas->name }}</td>
+                                <td>{{ $task->status }}</td>
+                            </tr>
+                            @empty
+                            <tr class="bg-white">
+                                <td class="p-2" colspan="6">Tidak ada tugas</td>
+                            </tr>                        
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        @endforeach
 
-        {{-- Low Priority Task --}}
-        <div class="mb-10">
-            <h3 class="bg-green-500 text-white font-medium p-1 w-fit rounded-md mb-1">Progress Terlambat</h3>
-            <table class="w-full text-left">
-                <thead>
-                    <tr>
-                        <th class="p-2">Nama Kegiatan</th>
-                        <th>Satuan</th>
-                        <th>Volume</th>
-                        <th>Tenggat</th>
-                        <th>Penerima Tugas</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody class="">
-                    {{-- @forelse ($LPTs as $lpt)
-                        <tr class="bg-white border-b">
-                            <td class="p-2">{{ $lpt->namakegiatan }}</td>
-                            <td>{{ $lpt->satuan }}</td>
-                            <td>{{ $lpt->volume }}</td>
-                            <td>{{ $lpt->tenggat }}</td>
-                            <td>{{ $lpt->penerimatugas->name }}</td>
-                            <td>{{ $lpt->status }}</td>
-                        </tr>
-                        @empty
-                        @endforelse --}}
-                        <tr class="bg-white">
-                            <td class="p-2" colspan="6">Tidak ada tugas</td>
-                        </tr>                        
-                </tbody>
-            </table>
-        </div>
     </section>
 
     <!-- Modal toggle -->
@@ -185,6 +123,8 @@
         document.addEventListener("DOMContentLoaded", function(event) {
             document.getElementById('defaultModalButton').click();
         });
+
+        console.log(@json(Session::get('message')));
     </script>
-    
+
 </x-layout>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -75,4 +76,13 @@ class Task extends Model{
             ];;
         }
     }
+
+    public static function groupedByKemajuan(){
+        $user = Auth::user();
+        $tasks = Task::where('pemberitugas_id', $user->id)->get();
+        return $tasks->groupBy(function ($task) {
+            return $task->kemajuan['status'];
+        });
+    }
+    
 }

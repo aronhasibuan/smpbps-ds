@@ -48,9 +48,10 @@ Route::middleware(['auth'])->group(function(){
     });
 
     Route::get('/monitoring', function () {
-        $user = Auth::user();
+        $groupedTasks = Task::groupedByKemajuan();
         return view('monitoring', [ 'headercontent' => 'Monitoring Pekerjaan', 
                                     'anggotatim'=>User::where('role','anggotatim')->get(), 
+                                    'groupedtasks' => $groupedTasks,
                                 ]);
     })->name('monitoring')->middleware('is_ketuatim');
 
