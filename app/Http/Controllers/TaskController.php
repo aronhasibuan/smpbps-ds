@@ -40,10 +40,10 @@ class TaskController extends Controller
                 'penerimatugas_id' => $validatedData['penerimatugas_id'],
                 'attachment' => $request->hasFile('attachment') ? $request->file('attachment')->store('attachments', 'public') : null,
             ]);
-
-            return redirect()->route('monitoring')->with('message', 'Tugas berhasil disimpan!');
-    } catch (\Exception $e) {
-        return redirect()->route('monitoring')->with('message', 'Terjadi kesalahan saat menyimpan tugas: ' . $e->getMessage());
+            session()->flash('success', 'Data Berhasil Ditambahkan.');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Gagal Menambahkan Data');
         }
+        return redirect()->back();
     }
 }

@@ -56,4 +56,8 @@ Route::middleware(['auth'])->group(function(){
     })->name('monitoring')->middleware('is_ketuatim');
 
     Route::post('/monitoring', [TaskController::class, 'create']);
+
+    Route::get('/monitoring/{task:slug}', function(Task $task){
+        return view('task', ['headercontent' => 'Detail Tugas', 'task' => $task]);
+    });
 });

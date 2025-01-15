@@ -4,39 +4,42 @@
     <section>
 
         {{-- Tabel Tasks --}}
-        @foreach ($groupedtasks as $status=>$tasks)
+        @foreach ($groupedtasks as $status => $tasks)
             <div class="mb-10">
                 <h3 class="bg-{{ $tasks->first()->kemajuan['color'] }}-500 text-white font-medium p-1 w-fit rounded-md mb-1">Progress {{ $status }}</h3>
-                <table class="w-full text-left">
+                <table class="w-full text-left border-collapse">
                     <thead>
                         <tr>
-                            <th class="p-2">Nama Kegiatan</th>
-                            <th>Satuan</th>
-                            <th>Volume</th>
-                            <th>Tenggat</th>
-                            <th>Penerima Tugas</th>
-                            <th>Status</th>
+                            <th class="p-2 w-1/3">Nama Kegiatan</th>
+                            <th class="w-1/6">Volume/Satuan</th>
+                            <th class="w-1/6">Tenggat</th>
+                            <th class="w-1/3">Penerima Tugas</th>
+                            <th class="w-1/12">Detail</th>
                         </tr>
                     </thead>
-                    <tbody class="">
-                        @forelse ( $tasks as $task)    
+                    <tbody>
+                        @forelse ($tasks as $task)    
                             <tr class="bg-white border-b">
                                 <td class="p-2">{{ $task->namakegiatan }}</td>
-                                <td>{{ $task->satuan }}</td>
-                                <td>{{ $task->volume }}</td>
+                                <td>{{ $task->volume }} {{ $task->satuan }}</td>
                                 <td>{{ $task->tenggat }}</td>
                                 <td>{{ $task->penerimatugas->name }}</td>
-                                <td>{{ $task->status }}</td>
+                                <td class="text-center">
+                                    <a href="/monitoring/{{ $task->slug }}">
+                                        <img class="w-6 h-6 mx-auto" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
+                                    </a>
+                                </td>
                             </tr>
-                            @empty
+                        @empty
                             <tr class="bg-white">
                                 <td class="p-2" colspan="6">Tidak ada tugas</td>
-                            </tr>                        
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
         @endforeach
+
 
     </section>
 
@@ -123,8 +126,15 @@
         document.addEventListener("DOMContentLoaded", function(event) {
             document.getElementById('defaultModalButton').click();
         });
+    </script>
 
-        console.log(@json(Session::get('message')));
+    <script type="text/javascript">
+        @if(session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+        @if(session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
     </script>
 
 </x-layout>

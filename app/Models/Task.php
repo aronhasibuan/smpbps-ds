@@ -85,4 +85,11 @@ class Task extends Model{
         });
     }
     
+    public function getPercentageProgressAttribute(){
+        $volume = $this->volume;
+        $progress = $this->progress;
+
+        $percentageprogress = $progress/$volume*100;
+        return $percentageprogress;
+    }
 }

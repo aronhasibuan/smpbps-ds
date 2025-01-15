@@ -33,7 +33,7 @@
                   <span class="bg-{{ $task->kemajuan['color'] }}-500 text-white text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
                       {{ $task->kemajuan['status'] }}
                   </span>
-                  <span class="text-sm text-black font-bold">Tenggat: {{ $task->formatted_tenggat }} ( {{ $task->waktu_tersisa }} tersisa )</span>
+                  <span class="text-sm text-black font-bold">Batas waktu {{ $task->formatted_tenggat }} ( {{ $task->waktu_tersisa }} tersisa )</span>
               </div>
               <a href="/home/{{ $task->slug }}"><h2 class="hover:underline mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $task->namakegiatan }}</h2></a>
               <p class="mb-5 font-light text-gray-500 dark:text-gray-400">{{ Str::limit($task->deskripsi,140) }}</p>
