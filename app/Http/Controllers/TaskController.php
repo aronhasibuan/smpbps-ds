@@ -7,6 +7,7 @@ use App\Models\Task;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 
 class TaskController extends Controller
 {
@@ -46,4 +47,28 @@ class TaskController extends Controller
         }
         return redirect()->back();
     }
+
+    public function update(Request $request, Task $task){
+        // Validasi input
+        $validatedData = $request->validate([
+            'namakegiatan' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'volume' => 'required|integer|min:1',
+            'tenggat' => 'required|date',
+        ]);
+
+        // Update data tugas
+        $task->update($validatedData);
+
+        // Redirect ke halaman monitoring dengan pesan sukses
+        session()->flash('updated', 'Tugas Berhasil Diperbarui');
+        return redirect()->back();
+    }
+
+
+    public function destroy(Task $task){
+        $task->delete();
+        return redirect('/monitoring')->with('deleted', 'Tugas berhasil dihapus');
+    }
+
 }

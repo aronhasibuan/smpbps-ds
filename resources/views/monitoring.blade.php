@@ -135,6 +135,9 @@
         @if(session('error'))
             toastr.error("{{ session('error') }}");
         @endif
+        @if(session('deleted'))
+            toastr.info("{{ session('deleted') }}");
+        @endif
     </script>
 
 </x-layout>

@@ -60,4 +60,9 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/monitoring/{task:slug}', function(Task $task){
         return view('task', ['headercontent' => 'Detail Tugas', 'task' => $task]);
     });
+
+    Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+
 });
