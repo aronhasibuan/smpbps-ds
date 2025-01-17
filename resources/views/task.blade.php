@@ -6,7 +6,12 @@
       <div class="flex justify-between px-4 mx-auto max-w-screen-xl">
           <article class="mx-auto w-full max-w-4xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
               <header class="mb-4 lg:mb-6 not-format">
-                <a href="/home" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Back to Home</a>
+                @if (Auth::check() && Auth::user()->role == 'anggotatim')
+                    <a href="javascript:history.back()" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Kembali</a>
+                @endif
+                @if (Auth::check() && Auth::user()->role == 'ketuatim')
+                    <a href="/monitoring" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Back to Monitoring</a>
+                @endif
                 <div class="flex justify-between items-center mb-5 text-gray-500 mt-2">
                   <span class="bg-{{ $task->kemajuan['color'] }}-500 text-white text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
                       Tingkat Kemajuan: {{ $task->kemajuan['status'] }}
@@ -35,6 +40,17 @@
               </div>
           </article>
       </div>
+
+      @if (Auth::check() && Auth::user()->role == 'anggotatim' && $task->active)
+        <div class="flex justify-center gap-4 mt-20">
+            <form action="{{ route('tasks.complete', $task->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
+                    Tandai Selesai
+                </button>
+            </form>            
+        </div>          
+      @endif
 
       @if (Auth::check() && Auth::user()->role == 'ketuatim')
         <div class="flex justify-center gap-4 mt-20">

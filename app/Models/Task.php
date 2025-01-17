@@ -13,7 +13,7 @@ class Task extends Model{
 
     use HasFactory;
     
-    protected $fillable = ['namakegiatan','slug','deskripsi','volume','satuan','tenggat','pemberitugas_id','penerimatugas_id','progress','attachment','status'];
+    protected $fillable = ['namakegiatan','slug','deskripsi','volume','satuan','tenggat','pemberitugas_id','penerimatugas_id','progress','attachment','active'];
 
     protected $with = ['pemberitugas','penerimatugas'];
 

@@ -24,15 +24,19 @@ class TaskController extends Controller
                 'attachment' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120',
             ]);
 
-            $judulSlug = Str::slug($validatedData['namakegiatan']); 
-            $tanggalDibuat = Carbon::now()->format('d-m-Y'); 
+            // Ambil ID terakhir dan tambah 1
+            $lastTaskId = Task::latest('id')->first()->id ?? 0;
+            $newTaskId = $lastTaskId + 1;
+
+            $judulSlug = Str::slug($validatedData['namakegiatan']);
+            $tanggalDibuat = Carbon::now()->format('d-m-Y');
             $tanggalTenggat = Carbon::parse($validatedData['tenggat'])->format('d-m-Y');
-            $slug = "{$judulSlug}_{$tanggalDibuat}_{$tanggalTenggat}";
+            $slug = "{$newTaskId}_{$judulSlug}_{$tanggalDibuat}_{$tanggalTenggat}";
 
             // Simpan data
             $task = Task::create([
                 'namakegiatan' => $validatedData['namakegiatan'],
-                'slug' => "$slug",
+                'slug' => $slug,
                 'deskripsi' => $validatedData['deskripsi'],
                 'volume' => $validatedData['volume'],
                 'satuan' => $validatedData['satuan'],
@@ -41,12 +45,15 @@ class TaskController extends Controller
                 'penerimatugas_id' => $validatedData['penerimatugas_id'],
                 'attachment' => $request->hasFile('attachment') ? $request->file('attachment')->store('attachments', 'public') : null,
             ]);
+
             session()->flash('success', 'Data Berhasil Ditambahkan.');
         } catch (\Exception $e) {
-            session()->flash('error', 'Gagal Menambahkan Data');
+            session()->flash('error', 'Gagal Menambahkan Data: ' . $e->getMessage());
         }
+
         return redirect()->back();
     }
+
 
     public function update(Request $request, Task $task){
         // Validasi input
@@ -71,4 +78,11 @@ class TaskController extends Controller
         return redirect('/monitoring')->with('deleted', 'Tugas berhasil dihapus');
     }
 
+    public function markAsDone($id){
+        $task = Task::findOrFail($id);
+        $task->active = false;
+        $task->save();
+
+        return redirect('home')->with('success', 'Tugas berhasil ditandai selesai!');
+    }
 }

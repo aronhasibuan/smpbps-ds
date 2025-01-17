@@ -52,8 +52,7 @@
           </article>
         @empty
         <div>
-          <p class="font-semibold text-xl my-4">Tugas Tidak Ditemukan!</p>
-          <a href="/home" class="block text-blue-600 hover:underline">&laquo; Back to all Task</a>
+          <p class="font-semibold text-xl my-4">Tidak Ada Tugas Tidak Ditemukan!</p>
         </div>
         @endforelse
 
@@ -61,5 +60,11 @@
     </div>
 
     {{ $tasks->links() }}
+
+    <script type="text/javascript">
+      @if(session('success'))
+          toastr.success("{{ session('success') }}");
+      @endif
+    </script>
 
 </x-layout> 

@@ -2,7 +2,6 @@
 
 use App\Models\Task;
 use App\Models\User;
-use App\Models\Importance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
@@ -24,6 +23,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/home', function () {
         $user = Auth::user();
         $tasks = Task::where('penerimatugas_id', $user->id)
+            ->where('active',true)
             ->filter(request(['search']))
             ->paginate(5)
             ->withQueryString();
@@ -44,7 +44,10 @@ Route::middleware(['auth'])->group(function(){
     });
     
     Route::get('/recapitulation', function () {
-        return view('recapitulation', ['headercontent' => 'Rekapitulasi Pekerjaan']);
+        $user = Auth::user();
+        $tasks = Task::where('penerimatugas_id', $user->id)
+            ->where('active',false)->get();
+        return view('recapitulation', ['headercontent' => 'Rekapitulasi Pekerjaan', 'tasks' => $tasks]);
     });
 
     Route::get('/monitoring', function () {
@@ -64,5 +67,8 @@ Route::middleware(['auth'])->group(function(){
     Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+
+    Route::post('/tasks/{id}/complete', [TaskController::class, 'markAsDone'])->name('tasks.complete');
+
 
 });
