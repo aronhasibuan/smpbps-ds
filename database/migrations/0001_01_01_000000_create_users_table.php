@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->enum('role',['ketuatim', 'anggotatim', 'kepalakantor'])->default('anggotatim');
             $table->string('password');
+            $table->string('no_hp');
             $table->rememberToken();
             $table->timestamps();
         });

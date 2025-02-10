@@ -43,6 +43,10 @@ class Task extends Model{
         return Carbon::parse($this->tenggat)->translatedFormat('d F Y');
     }
 
+    public function getFormatteddMAttribute(){
+        return Carbon::parse($this->tenggat)->translatedFormat('d M');
+    }
+
     public function getKemajuanAttribute(){
         
         #Volume ditugaskan dan progress

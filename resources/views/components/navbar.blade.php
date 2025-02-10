@@ -1,9 +1,9 @@
-<nav class="bg-gray-800" x-data="{ isOpen: false }">
+<nav class="bg-white" x-data="{ isOpen: false }">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 items-center justify-between">
         <div class="flex items-center">
           <div class="shrink-0">
-            <img class="size-16" src="{{ asset('img/LogoBPS.png') }}" alt="BPS Kabupaten Deli Serdang">
+            <img class="size-12" src="{{ asset('img/LogoBPS.png') }}" alt="BPS Kabupaten Deli Serdang">
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
@@ -23,7 +23,7 @@
         </div>
         <div class="hidden md:block">
           <div class="ml-4 flex items-center md:ml-6">
-            <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+            <button type="button" class="relative rounded-full bg-white p-1 text-black focus:ring-2">
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">View notifications</span>
               <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
@@ -121,4 +121,6 @@
         </div>
       </div>
     </div>
+
+    <hr>
   </nav>

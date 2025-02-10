@@ -1,54 +1,45 @@
 <x-layout>
-    <x-slot:headercontent>Selamat datang di {{ $headercontent }}, {{ auth()->user()->name }}</x-slot:headercontent>
+    <p class="text-sm text-gray-600 mb-10">Monitoring Pekerjaan</p>
 
     <section>
 
+        <!-- Modal toggle -->
+        <div class="flex mb-10 p-2">
+            <button id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block text-white bg-[#37b5fd] hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
+            + Buat Tugas
+            </button>
+        </div>
+
         {{-- Tabel Tasks --}}
         @foreach ($groupedtasks as $status => $tasks)
-            <div class="mb-10">
-                <h3 class="bg-{{ $tasks->first()->kemajuan['color'] }}-500 text-white font-medium p-1 w-fit rounded-md mb-1">Progress {{ $status }}</h3>
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr>
-                            <th class="p-2 w-1/3">Nama Kegiatan</th>
-                            <th class="w-1/6">Volume/Satuan</th>
-                            <th class="w-1/6">Tenggat</th>
-                            <th class="w-1/3">Penerima Tugas</th>
-                            <th class="w-1/12">Detail</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($tasks as $task)    
-                            <tr class="bg-white border-b">
-                                <td class="p-2">{{ $task->namakegiatan }}</td>
-                                <td>{{ $task->volume }} {{ $task->satuan }}</td>
-                                <td>{{ $task->tenggat }}</td>
-                                <td>{{ $task->penerimatugas->name }}</td>
-                                <td class="text-center">
-                                    <a href="/monitoring/{{ $task->slug }}">
-                                        <img class="w-6 h-6 mx-auto" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
-                                    </a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr class="bg-white">
-                                <td class="p-2" colspan="6">Tidak ada tugas</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+            <div>
+                @forelse ($tasks as $task)    
+                    <div class="bg-white border-b p-3 flex justify-between items-center hover:bg-gray-100">
+
+                        <div class="flex items-center">
+                                <p class="mr-5 p-2 bg-{{ $task->kemajuan['color'] }}-500 text-white rounded-2xl w-36 text-center">{{ $status }}</p>
+                            <p>{{ $task->namakegiatan}}</p>
+                        </div>
+
+                        <div class="flex items-center">
+                            <p class="text-sm text-gray-500">Tenggat: {{ $task->formattedd_m }}</p>
+                            <p class="text-center ml-3">
+                                <a href="/monitoring/{{ $task->slug }}">
+                                 <img class="w-6 h-6 mx-auto" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
+                                </a>
+                            </p>
+                        </div>
+
+                    </div>
+                @empty
+                <p class="bg-white">
+                    <td class="p-2" colspan="6">Tidak ada tugas</td>
+                </p>
+                @endforelse    
             </div>
         @endforeach
 
-
     </section>
-
-    <!-- Modal toggle -->
-    <div class="flex justify-center fixed bottom-4 right-4">
-        <button id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
-        Tambah Tugas
-        </button>
-    </div>
 
     <!-- Main modal -->
     <div id="defaultModal" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">

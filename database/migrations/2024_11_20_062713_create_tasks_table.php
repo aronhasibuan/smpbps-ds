@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('namakegiatan');
-            $table->text('slug')->unique();
+            $table->string('slug')->unique();
             $table->text('deskripsi');
             $table->integer('volume');
             $table->string('satuan');
