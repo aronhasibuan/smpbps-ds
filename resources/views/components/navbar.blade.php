@@ -9,13 +9,13 @@
             <div class="ml-10 flex items-baseline space-x-4">
               <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
               @if (Auth::check() && Auth::user()->role == 'anggotatim')
-                <x-nav-link href="/home" :active="request()->is('home')">Home</x-nav-link>
-                <x-nav-link href="/recapitulation" :active="request()->is('recapitulation')">Recapitulation</x-nav-link>                
+                <x-nav-link href="/home" :active="request()->is('home')">Daftar Tugas</x-nav-link>
+                <x-nav-link href="/recapitulation" :active="request()->is('recapitulation')">Rekaptulasi Tugas</x-nav-link>                
               @endif
 
               @if (Auth::check() && Auth::user()->role == 'ketuatim')
-                <x-nav-link href="/monitoring" :active="request()->is('monitoring')">Daftar Tugas</x-nav-link>
-                <x-nav-link href="#">Penilaian Pegawai</x-nav-link>  
+                <x-nav-link href="/home" :active="request()->is('home')">Monitoring Tugas</x-nav-link>
+                <x-nav-link href="#">Monitoring Pegawai</x-nav-link>  
               @endif
 
             </div>

@@ -1,5 +1,4 @@
 <x-layout>
-  <x-slot:headercontent>{{ $headercontent }}</x-slot:headercontent>
   
     <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased">
 
@@ -10,7 +9,7 @@
                     <a href="javascript:history.back()" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Kembali</a>
                 @endif
                 @if (Auth::check() && Auth::user()->role == 'ketuatim')
-                    <a href="/monitoring" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Back to Monitoring</a>
+                    <a href="/home" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Back to Monitoring</a>
                 @endif
                 <div class="flex justify-between items-center mb-5 text-gray-500 mt-2">
                   <span class="bg-{{ $task->kemajuan['color'] }}-500 text-white text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">

@@ -22,45 +22,39 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('/home', function () {
         $user = Auth::user();
-        $tasks = Task::where('penerimatugas_id', $user->id)
-            ->where('active',true)
-            ->filter(request(['search']))
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('home', ['headercontent' => 'Dashboard', 'tasks' => $tasks]);
-    });
+        $tasksQuery = Task::where('active', true)->filter(request(['search']));
+    
+        if ($user->role === 'anggotatim') {
+            $tasksQuery->where('penerimatugas_id', $user->id);
+        } elseif ($user->role === 'ketuatim') {
+            $tasksQuery->where('pemberitugas_id', $user->id);
+        }
+    
+        $sort = request('sort', 'id'); 
+    
+        if (in_array($sort, ['id', 'tenggat', 'priority'])) {
+            $tasksQuery->orderBy($sort);
+        }
+    
+        $tasks = $tasksQuery->paginate(5)->withQueryString();
+    
+        return view('home', [
+            'anggotatim' => User::where('role', 'anggotatim')->get(),
+            'tasks' => $tasks,
+        ]);
+    })->name('home');
+        
+    
+    Route::post('/home', [TaskController::class, 'create']);
 
     Route::get('/home/{task:slug}', function(Task $task){
-        return view('task', ['headercontent' => 'Detail Tugas', 'task' => $task]);
-    });
-
-    Route::get('/AnggotaTim/{user:username}', function(User $user){
-        return view('home', ['headercontent' => count($user->menerimatugas).' Tugas Dimiliki Oleh '.$user->name, 'tasks' => $user->menerimatugas]);
-    });
-
-    Route::get('/KetuaTim/{user:username}', function(User $user){
-        return view('home', ['headercontent' => count($user->memberitugas).' Tugas Diberikan Oleh '.$user->name, 'tasks' => $user->memberitugas]);
+        return view('task', ['task' => $task]);
     });
     
     Route::get('/recapitulation', function () {
         $user = Auth::user();
-        $tasks = Task::where('penerimatugas_id', $user->id)
-            ->where('active',false)->get();
+        $tasks = Task::where('penerimatugas_id', $user->id)->where('active',false)->get();
         return view('recapitulation', ['headercontent' => 'Rekapitulasi Pekerjaan', 'tasks' => $tasks]);
-    });
-
-    Route::get('/monitoring', function () {
-        $groupedTasks = Task::groupedByKemajuan();
-        return view('monitoring', [ 'anggotatim'=>User::where('role','anggotatim')->get(), 
-                                    'groupedtasks' => $groupedTasks,
-                                ]);
-    })->name('monitoring')->middleware('is_ketuatim');
-
-    Route::post('/monitoring', [TaskController::class, 'create']);
-
-    Route::get('/monitoring/{task:slug}', function(Task $task){
-        return view('task', ['headercontent' => 'Detail Tugas', 'task' => $task]);
     });
 
     Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
@@ -68,6 +62,5 @@ Route::middleware(['auth'])->group(function(){
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
     Route::post('/tasks/{id}/complete', [TaskController::class, 'markAsDone'])->name('tasks.complete');
-
 
 });

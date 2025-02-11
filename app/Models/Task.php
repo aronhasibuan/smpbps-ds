@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -59,41 +58,33 @@ class Task extends Model{
         $hariberlalu = $createdAt->diffInDays(Carbon::now());
 
         #Hitung target yang harusnya tercapai
-        $targetperhari = $volume/$tenggat->diffInDays($createdAt,true);
-        $targetharustercapai = $hariberlalu * $targetperhari;
+        $targetperhari = $volume/($tenggat->diffInDays($createdAt,true));
+        $targetharustercapai = ceil($hariberlalu * $targetperhari);
 
         #Bandingkan progress dengan target tercapai
-        if ($progress > $targetharustercapai){
+        if ($progress < $targetharustercapai){
             return [
-                'status' => 'Cepat',
-                'color' => 'green',
+                'status' => 'Terlambat',
+                'color' => 'red',
             ];
-        } elseif ($progress = $targetharustercapai){
+        } elseif ($progress == $targetharustercapai){
             return [
                 'status' => 'Tepat Waktu',
                 'color' => 'yellow',
             ];
         } else {
             return [
-                'status' => 'Terlambat',
-                'color' => 'red',
+                'status' => 'Cepat',
+                'color' => 'green',
             ];;
         }
-    }
-
-    public static function groupedByKemajuan(){
-        $user = Auth::user();
-        $tasks = Task::where('pemberitugas_id', $user->id)->get();
-        return $tasks->groupBy(function ($task) {
-            return $task->kemajuan['status'];
-        });
     }
     
     public function getPercentageProgressAttribute(){
         $volume = $this->volume;
         $progress = $this->progress;
 
-        $percentageprogress = $progress/$volume*100;
+        $percentageprogress = floor($progress/$volume*100);
         return $percentageprogress;
     }
 }
