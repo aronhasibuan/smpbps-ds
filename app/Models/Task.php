@@ -48,34 +48,52 @@ class Task extends Model{
 
     public function getKemajuanAttribute(){
         
-        #Volume ditugaskan dan progress
         $volume = $this->volume;
         $progress = $this->progress;
+        $tenggat = Carbon::parse($this->tenggat)->endOfDay();
+        $createdAt = Carbon::parse($this->created_at)->startOfDay();
+        $hariberlalu = ceil($createdAt->diffInDays(Carbon::now()->endOfDay()));
+        $selangharitugas = ceil($tenggat->diffInDays($createdAt,true));
+        $targetperhari = ceil($volume/$selangharitugas);
+        $targetharustercapai_PHP = ceil($hariberlalu * $targetperhari);
 
-        #Hitung jumlah hari yang berlalu
-        $tenggat = Carbon::parse($this->tenggat);
-        $createdAt = Carbon::parse($this->created_at);
-        $hariberlalu = $createdAt->diffInDays(Carbon::now());
-
-        #Hitung target yang harusnya tercapai
-        $targetperhari = $volume/($tenggat->diffInDays($createdAt,true));
-        $targetharustercapai = ceil($hariberlalu * $targetperhari);
-
-        #Bandingkan progress dengan target tercapai
-        if ($progress < $targetharustercapai){
-            return [
+        if ($tenggat < Carbon::today()){
+            return[
                 'status' => 'Terlambat',
-                'color' => 'red',
+                'color' => 'black',
+                'hariberlalu' => $hariberlalu,
+                'selangharitugas_PHP' => $selangharitugas,
+                'targetperhari_PHP' => $targetperhari,
+                'tht' => $targetharustercapai_PHP,
             ];
-        } elseif ($progress == $targetharustercapai){
+        }
+
+        if ($progress < $targetharustercapai_PHP){
             return [
-                'status' => 'Tepat Waktu',
+                'status' => 'Progress Lambat',
+                'color' => 'red',
+                'hariberlalu' => $hariberlalu,
+                'selangharitugas_PHP' => $selangharitugas,
+                'targetperhari_PHP' => $targetperhari,
+                'tht' => $targetharustercapai_PHP,
+            ];
+        } elseif ($progress == $targetharustercapai_PHP){
+            return [
+                'status' => 'Progress On Time',
                 'color' => 'yellow',
+                'hariberlalu' => $hariberlalu,
+                'selangharitugas_PHP' => $selangharitugas,
+                'targetperhari_PHP' => $targetperhari,
+                'tht' => $targetharustercapai_PHP,
             ];
         } else {
             return [
-                'status' => 'Cepat',
+                'status' => 'Progress Cepat',
                 'color' => 'green',
+                'hariberlalu' => $hariberlalu,
+                'selangharitugas_PHP' => $selangharitugas,
+                'targetperhari_PHP' => $targetperhari,
+                'tht' => $targetharustercapai_PHP,
             ];;
         }
     }

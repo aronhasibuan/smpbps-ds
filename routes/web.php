@@ -2,6 +2,7 @@
 
 use App\Models\Task;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
@@ -22,7 +23,24 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('/home', function () {
         $user = Auth::user();
-        $tasksQuery = Task::where('active', true)->filter(request(['search']));
+        $tasksQuery = Task::select(
+            'tasks.*',
+            DB::raw("
+                CEIL(DATEDIFF(NOW(), created_at)) + 1 AS hariberlalu_MySQL,
+                DATEDIFF(tenggat, created_at) + 1 AS selangharitugas_MySQL,
+                CEIL(volume / (DATEDIFF(tenggat, created_at) + 1)) AS targetperhari_MySQL,
+                CEIL((DATEDIFF(NOW(), created_at)+1) * (volume / (DATEDIFF(tenggat, created_at) + 1))) AS targetharustercapai_MySQL,
+                
+                FLOOR((progress / volume) * 100) AS percentage_progress,
+
+                CASE 
+                WHEN tenggat < CURDATE() THEN 1
+                WHEN progress < CEIL((DATEDIFF(NOW(), created_at)+1) * (volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 2
+                WHEN progress = CEIL((DATEDIFF(NOW(), created_at)+1) * (volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 3
+                WHEN progress > CEIL((DATEDIFF(NOW(), created_at)+1) * (volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 4  
+                END AS kodekategori
+            ")
+        )->where('active', true)->filter(request(['search']));
     
         if ($user->role === 'anggotatim') {
             $tasksQuery->where('penerimatugas_id', $user->id);
@@ -30,10 +48,12 @@ Route::middleware(['auth'])->group(function(){
             $tasksQuery->where('pemberitugas_id', $user->id);
         }
     
-        $sort = request('sort', 'id'); 
+        $sort = request('sort', 'priority'); 
     
-        if (in_array($sort, ['id', 'tenggat', 'priority'])) {
+        if (in_array($sort, ['id', 'tenggat'])) {
             $tasksQuery->orderBy($sort);
+        } elseif ($sort === 'priority'){
+            $tasksQuery->orderBy('kodekategori')->orderBy('tenggat','ASC')->orderBy('percentage_progress','ASC');            
         }
     
         $tasks = $tasksQuery->paginate(5)->withQueryString();
