@@ -4,14 +4,24 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Services\NotifyService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 
 class TaskController extends Controller
 {
     
+    protected $notifyService;
+
+    public function __construct(NotifyService $notifyService)
+    {
+        $this->notifyService = $notifyService;
+    }
+
     public function create(Request $request){
         try {
             $validatedData = $request->validate([
@@ -46,11 +56,18 @@ class TaskController extends Controller
                 'attachment' => $request->hasFile('attachment') ? $request->file('attachment')->store('attachments', 'public') : null,
             ]);
 
+            // Notify Pegawai
+            $namakegiatan = $validatedData['namakegiatan'];
+            $penerimatugas = User::find($validatedData['penerimatugas_id']);
+            if ($penerimatugas && $penerimatugas->no_hp) {
+                $pesannotifikasi = "Halo ".$penerimatugas->name.". Anda telah menerima tugas baru pada kegiatan ".$validatedData['namakegiatan'].". Silahkan cek http://smpbps-ds.test/login untuk info selengkapnya";
+                $responseCode = $this->notifyService->sendFonnteNotification($penerimatugas->no_hp, $pesannotifikasi);
+            }
             session()->flash('success', 'Data Berhasil Ditambahkan.');
         } catch (\Exception $e) {
             session()->flash('error', 'Gagal Menambahkan Data: ' . $e->getMessage());
         }
-
+        
         return redirect()->back();
     }
 

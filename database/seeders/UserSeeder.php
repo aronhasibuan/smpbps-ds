@@ -123,5 +123,15 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
+
+        User::create([
+            'name' => 'Aron Zyode Kaxanca Hasibuan',
+            'username' => 'aronhsb16',
+            'email' => 'AronHasibuan@bps.go.id',
+            'role' => 'anggotatim',
+            'no_hp' => '08887654811',
+            'password' => Hash::make('password'),
+            'remember_token' => Str::random(10)
+        ]);
     }
 }
