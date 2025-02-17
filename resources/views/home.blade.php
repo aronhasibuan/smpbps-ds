@@ -1,4 +1,5 @@
 <x-layout>
+<div class="min-h-screen overflow-y-visible">
 
     {{-- Judul Halaman --}}
     @if (Auth::check() && Auth::user()->role == 'ketuatim')
@@ -51,6 +52,23 @@
         {{-- Tombol Mengurutkan --}}
         <div class="mb-4 ">
 
+            <select id="filter" class="hover:cursor-pointer focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                <option value="" {{ request('filter') == '' ? 'selected' : '' }}>Semua</option>
+                <option value="terlambat" {{ request('filter') == 'terlambat' ? 'selected' : '' }}>Terlambat</option>
+                <option value="progress_lambat" {{ request('filter') == 'progress_lambat' ? 'selected' : '' }}>Progress Lambat</option>
+                <option value="progress_ontime" {{ request('filter') == 'progress_ontime' ? 'selected' : '' }}>Progress On Time</option>
+                <option value="progress_cepat" {{ request('filter') == 'progress_cepat' ? 'selected' : '' }}>Progress Cepat</option>
+            </select>
+            
+            <script>
+                document.getElementById('filter').addEventListener('change', function() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    urlParams.set('filter', this.value);
+                    urlParams.set('page', 1);
+                    window.location.href = window.location.pathname + '?' + urlParams.toString();
+                });
+            </script>
+            
             <select id="sort" class="hover:cursor-pointer focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5">
                 <option value="priority" {{ request('sort') == 'priority' ? 'selected' : '' }}>Tingkat Prioritas</option>
                 <option value="id" {{ request('sort') == 'id' ? 'selected' : '' }}>Tugas Diberikan</option>
@@ -70,7 +88,6 @@
     </div>
 
     {{-- Daftar Tugas --}}
-    {{-- x-data @click="console.log(` Kode Kategori: {{ $task->kodekategori }},\n Progress Tercapai: {{ $task->progress }},\n Volume: {{ $task->volume }}\n\n Hari Berlalu (PHP): {{ $task->kemajuan['hariberlalu'] }},\n Hari Berlalu (MySQL): {{ $task->hariberlalu_MySQL }}\n\n Jumlah Hari Tugas (PHP): {{ $task->kemajuan['selangharitugas_PHP'] }}\n Jumlah Hari Tugas (MySQL): {{ $task->selangharitugas_MySQL }} \n\n Target Perhari (PHP): {{ $task->kemajuan['targetperhari_PHP'] }} \n Target Perhari (MySQL): {{ $task->targetperhari_MySQL }}\n\n Target Harus Tercapai (PHP): {{ $task->kemajuan['tht'] }},\n Target Harus Tercapai (MySQL): {{ $task->targetharustercapai_MySQL }}`)" --}}
     <div x-data="{ openTask: null }">  
 
         {{ $tasks->links() }}
@@ -113,7 +130,24 @@
                     x-transition:leave="transition transform ease-in duration-500"
                     x-transition:leave-start="opacity-100 scale-y-100"
                     x-transition:leave-end="opacity-0 scale-y-0"
-                    class="border p-8 rounded-b-md shadow-md mb-5 overflow-hidden origin-top">
+                    class="border p-8 rounded-b-md shadow-md mb-5 overflow-hidden origin-top"
+                    x-data x-effect="if (openTask === {{ $task->id }}) { console.log(
+                    ' Kode Kategori: {{ $task->kodekategori }}\n', 
+                    'Progress Tercapai: {{ $task->progress }}\n', 
+                    'Volume: {{ $task->volume }}\n\n',
+
+                    'Hari Berlalu (PHP): {{ $task->kemajuan['hariberlalu'] }}\n', 
+                    'Hari Berlalu (MySQL): {{ $task->hariberlalu_MySQL }}\n\n',
+
+                    'Jumlah Hari Tugas (PHP): {{ $task->kemajuan['selangharitugas_PHP'] }}\n',
+                    'Jumlah Hari Tugas (MySQL): {{ $task->selangharitugas_MySQL }}\n\n',
+
+                    'Target Perhari (PHP): {{ $task->kemajuan['targetperhari_PHP'] }} \n',
+                    'Target Perhari (MySQL): {{ $task->targetperhari_MySQL }} \n\n', 
+
+                    'Target Harus Tercapai (PHP): {{ $task->kemajuan['tht'] }}\n',
+                    'Target Harus Tercapai (MySQL): {{ $task->targetharustercapai_MySQL }}',
+                    );}">
                     
                     <p class="text-sm text-gray-400 mb-3">Posted {{ $task->created_at->format('F d') }}</p>
                     <p>Deskripsi Pekerjaan:</p>
@@ -183,10 +217,11 @@
                       <div class="mb-4">
                           <label for="penerimatugas_id" class="block text-sm font-medium text-gray-900 dark:text-white">Penerima Tugas</label>
                           <select id="penerimatugas_id" name="penerimatugas_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                              <option selected="" disabled>Pilih Anggota Tim</option>
+                              {{-- <option selected="" disabled>Pilih Anggota Tim</option>
                               @foreach ($anggotatim as $user)
                                   <option value="{{ $user->id }}">{{ $user->name }}</option>
-                              @endforeach
+                              @endforeach --}}
+                              <option value="12">Aron Zyode Kaxanca Hasibuan</option>
                           </select>
                       </div>
                   </div>
@@ -225,4 +260,5 @@
       @endif
   </script>
 
+</div>
 </x-layout> 

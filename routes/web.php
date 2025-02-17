@@ -42,6 +42,25 @@ Route::middleware(['auth'])->group(function(){
             ")
         )->where('active', true)->filter(request(['search']));
     
+        $filter = request('filter');
+
+        if ($filter) {
+            switch ($filter) {
+                case 'terlambat':
+                    $tasksQuery->having('kodekategori', 1);
+                    break;
+                case 'progress_lambat':
+                    $tasksQuery->having('kodekategori', 2);
+                    break;
+                case 'progress_ontime':
+                    $tasksQuery->having('kodekategori', 3);
+                    break;
+                case 'progress_cepat':
+                    $tasksQuery->having('kodekategori', 4);
+                    break;
+            }
+        }
+
         if ($user->role === 'anggotatim') {
             $tasksQuery->where('penerimatugas_id', $user->id);
         } elseif ($user->role === 'ketuatim') {
@@ -63,7 +82,6 @@ Route::middleware(['auth'])->group(function(){
             'tasks' => $tasks,
         ]);
     })->name('home');
-        
     
     Route::post('/home', [TaskController::class, 'create']);
 

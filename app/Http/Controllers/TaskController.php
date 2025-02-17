@@ -98,6 +98,7 @@ class TaskController extends Controller
     public function markAsDone($id){
         $task = Task::findOrFail($id);
         $task->active = false;
+        $task->progress = $task->volume;
         $task->save();
 
         return redirect('home')->with('success', 'Tugas berhasil ditandai selesai!');

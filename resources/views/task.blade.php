@@ -1,21 +1,22 @@
 <x-layout>
   
-    <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased">
+    <main class="pt-4 pb-16 bg-white dark:bg-gray-900 antialiased">
 
       <div class="flex justify-between px-4 mx-auto max-w-screen-xl">
           <article class="mx-auto w-full max-w-4xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
               <header class="mb-4 lg:mb-6 not-format">
                 @if (Auth::check() && Auth::user()->role == 'anggotatim')
-                    <a href="javascript:history.back()" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Kembali</a>
+                    <a href="javascript:history.back()" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
                 @endif
                 @if (Auth::check() && Auth::user()->role == 'ketuatim')
-                    <a href="/home" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Back to Monitoring</a>
+                    <a href="/home" class="font-medium text-base text-blue-600 hover:underline">&laquo; Back to Monitoring</a>
                 @endif
                 <div class="flex justify-between items-center mb-5 text-gray-500 mt-2">
                   <span class="bg-{{ $task->kemajuan['color'] }}-500 text-white text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
                       Tingkat Kemajuan: {{ $task->kemajuan['status'] }}
                   </span>
                 </div>
+                <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">{{ $task->namakegiatan }}</h1>
                 <address class="flex items-center my-6 not-italic justify-between">
                     <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
                         <img class="mr-4 w-16 h-16 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="{{ $task->pemberitugas->name }}">
@@ -24,11 +25,12 @@
                               <p class="text-base text-gray-500 dark:text-gray-400">{{ $task->created_at->format('F d') }}</p>
                         </div>
                     </div>
-                    <p class="text-base font-bold text-black">Batas waktu {{ $task->formatted_tenggat }} ( {{ $task->waktu_tersisa }} tersisa )</p>
+                    <p class="text-base font-bold text-black">Tenggat: {{ $task->formatted_tenggat }}</p>
                 </address>
-                <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">{{ $task->namakegiatan }}</h1>
               </header>
-              <p>{{ $task->deskripsi }}</p>
+              <div class="border-t border-b border-gray-300">
+                  <p>{{ $task->deskripsi }}</p>
+              </div>
               <p>{{ $task->volume }} {{ $task->satuan }}</p>
               <div class="mb-4">
                 <label class="text-gray-700 font-bold mb-2 block">Progress:</label>
