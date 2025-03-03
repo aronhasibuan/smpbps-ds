@@ -25,7 +25,7 @@
                               <p class="text-base text-gray-500 dark:text-gray-400">{{ $task->created_at->format('F d') }}</p>
                         </div>
                     </div>
-                    <p class="text-base font-bold text-black">Tenggat: {{ $task->formatted_tenggat }}</p>
+                    <p class="text-base text-black">Tenggat: {{ $task->formatted_tenggat }}</p>
                 </address>
               </header>
               <div class="border-t border-b border-gray-300">

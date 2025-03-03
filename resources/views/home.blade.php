@@ -90,7 +90,7 @@
     {{-- Daftar Tugas --}}
     <div x-data="{ openTask: null }">  
 
-        {{ $tasks->links() }}
+        {{-- {{ $tasks->links() }} --}}
     
         <div class="py-8">
     

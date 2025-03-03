@@ -55,7 +55,7 @@ class Task extends Model{
         $hariberlalu = ceil($createdAt->diffInDays(Carbon::now()->endOfDay()));
         $selangharitugas = ceil($tenggat->diffInDays($createdAt,true));
         $targetperhari = ceil($volume/$selangharitugas);
-        $targetharustercapai_PHP = ceil($hariberlalu * $targetperhari);
+        $targetharustercapai_PHP = min($volume, ceil($hariberlalu * $targetperhari));
 
         if ($tenggat < Carbon::today()){
             return[
