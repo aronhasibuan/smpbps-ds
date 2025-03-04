@@ -8,9 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\NotifyService;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 
 class TaskController extends Controller
 {
@@ -102,5 +101,20 @@ class TaskController extends Controller
         $task->save();
 
         return redirect('home')->with('success', 'Tugas berhasil ditandai selesai!');
+    }
+
+    public function getActiveTasks()
+    {
+        $tasks = User::where('role', 'anggotatim') // Filter hanya anggota tim
+            ->leftJoin('tasks', 'users.id', '=', 'tasks.penerimatugas_id')
+            ->select('users.name as nama', DB::raw('COUNT(tasks.id) as jumlah_tugas'))
+            ->where(function ($query) {
+                $query->where('tasks.active', 1)
+                      ->orWhereNull('tasks.active'); // Termasuk pegawai tanpa tugas
+            })
+            ->groupBy('users.id', 'users.name')
+            ->get();
+
+        return response()->json($tasks);
     }
 }

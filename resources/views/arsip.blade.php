@@ -1,4 +1,5 @@
 <x-layout>
+  <p class="text-sm text-gray-600 mb-4">Arsip Tugas</p>
   <table class="min-w-full table-auto border-collapse border border-gray-300">
     <thead>
       <tr>

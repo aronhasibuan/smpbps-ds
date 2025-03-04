@@ -90,10 +90,10 @@ Route::middleware(['auth'])->group(function(){
         return view('task', ['task' => $task]);
     });
     
-    Route::get('/recapitulation', function () {
+    Route::get('/arsip', function () {
         $user = Auth::user();
         $tasks = Task::where('penerimatugas_id', $user->id)->where('active',false)->get();
-        return view('recapitulation', ['headercontent' => 'Rekapitulasi Pekerjaan', 'tasks' => $tasks]);
+        return view('arsip', ['tasks' => $tasks]);
     });
 
     Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
@@ -111,4 +111,10 @@ Route::middleware(['auth'])->group(function(){
     
         return response()->file(storage_path("app/public/{$path}"));
     })->where('filename', '.*');
+
+    Route::get('/monitoring', function(){
+        return view('monitoring');
+    });
+
+    Route::get('/monitoring/active', [TaskController::class, 'getActiveTasks'])->name('tasks.active');
 });
