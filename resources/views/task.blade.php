@@ -33,6 +33,11 @@
               </div>
               <p>{{ $task->volume }} {{ $task->satuan }}</p>
               <div class="mb-4">
+              @if ($task->attachment)
+                <div class="cursor-pointer mb-10">
+                        <a href="{{ url('/file/' . basename($task->attachment)) }}" target="_blank" class="no-underline bg-[#228be6] text-white text-md p-2 rounded-md">Lihat Lampiran</a>
+                </div>
+              @endif
                 <label class="text-gray-700 font-bold mb-2 block">Progress:</label>
                 <div class="relative w-full bg-gray-300 rounded-full h-6">
                     <div class="bg-blue-600 h-6 rounded-full" style="width: {{ $task->percentage_progress }}%;"></div>

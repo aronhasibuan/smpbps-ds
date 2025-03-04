@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -101,4 +102,13 @@ Route::middleware(['auth'])->group(function(){
 
     Route::post('/tasks/{id}/complete', [TaskController::class, 'markAsDone'])->name('tasks.complete');
 
+    Route::get('/file/{filename}', function ($filename) {
+        $path = "attachments/{$filename}";
+    
+        if (!Storage::disk('public')->exists($path)) {
+            abort(404);
+        }
+    
+        return response()->file(storage_path("app/public/{$path}"));
+    })->where('filename', '.*');
 });

@@ -115,7 +115,7 @@
                     <div class="flex items-center">
                         <p class="text-sm text-gray-500">Tenggat: {{ $task->formattedd_m }}</p>
                         <p class="text-center ml-3">
-                            <a href="/home/{{ $task->slug }}">
+                            <a href="/home/{{ $task->slug }}" @click.stop>
                                 <img class="w-6 h-6 mx-auto" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                             </a>
                         </p>
@@ -124,12 +124,6 @@
                 </div>
             
                 <div x-show="openTask === {{ $task->id }}" 
-                    x-transition:enter="transition transform ease-out duration-500"
-                    x-transition:enter-start="opacity-0 scale-y-0"
-                    x-transition:enter-end="opacity-100 scale-y-100"
-                    x-transition:leave="transition transform ease-in duration-500"
-                    x-transition:leave-start="opacity-100 scale-y-100"
-                    x-transition:leave-end="opacity-0 scale-y-0"
                     class="border p-8 rounded-b-md shadow-md mb-5 overflow-hidden origin-top"
                     x-data x-effect="if (openTask === {{ $task->id }}) { console.log(
                     ' Kode Kategori: {{ $task->kodekategori }}\n', 
