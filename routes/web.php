@@ -30,15 +30,15 @@ Route::middleware(['auth'])->group(function(){
                 CEIL(DATEDIFF(NOW(), created_at)) + 1 AS hariberlalu_MySQL,
                 DATEDIFF(tenggat, created_at) + 1 AS selangharitugas_MySQL,
                 CEIL(volume / (DATEDIFF(tenggat, created_at) + 1)) AS targetperhari_MySQL,
-                LEAST(volume, CEIL((DATEDIFF(NOW(), created_at)+1) * (volume / (DATEDIFF(tenggat, created_at) + 1)))) AS targetharustercapai_MySQL,
+                LEAST(volume, (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1)))) AS targetharustercapai_MySQL,
                 
                 FLOOR((progress / volume) * 100) AS percentage_progress,
 
                 CASE 
                 WHEN tenggat < CURDATE() THEN 1
-                WHEN progress < CEIL((DATEDIFF(NOW(), created_at)+1) * (volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 2
-                WHEN progress = CEIL((DATEDIFF(NOW(), created_at)+1) * (volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 3
-                WHEN progress > CEIL((DATEDIFF(NOW(), created_at)+1) * (volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 4  
+                WHEN progress < (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 2
+                WHEN progress = (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 3
+                WHEN progress > (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 4  
                 END AS kodekategori
             ")
         )->where('active', true)->filter(request(['search']));

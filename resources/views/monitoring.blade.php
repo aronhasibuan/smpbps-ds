@@ -1,11 +1,11 @@
 <x-layout>
     <p class="text-sm text-gray-600 mb-4">Monitoring Pegawai</p>
     
-    <div>
-        <h3 class="text-center">Frekuensi Pekerjaan Aktif Masing-Masing Pegawai</h3>
+    <div class="items-center">
+        <h3 class="text-center mb-5">Frekuensi Pekerjaan Aktif Masing-Masing Pegawai</h3>
 
-        <div style="width: 100%; overflow-x: auto;">
-            <canvas id="taskChart" style="min-width: 600px;"></canvas>
+        <div class="w-10/12">
+            <canvas id="taskChart"></canvas>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

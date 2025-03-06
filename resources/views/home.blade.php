@@ -90,7 +90,7 @@
     {{-- Daftar Tugas --}}
     <div x-data="{ openTask: null }">  
 
-        {{-- {{ $tasks->links() }} --}}
+        {{ $tasks->links() }}
     
         <div class="py-8">
     
@@ -252,6 +252,14 @@
       @if(session('deleted'))
           toastr.info("{{ session('deleted') }}");
       @endif
+  </script>
+
+    <script>
+    flatpickr("#tenggat", {
+      dateFormat: "d/m/Y",  
+      minDate: "today",      
+      disableMobile: true 
+    });
   </script>
 
 </div>
