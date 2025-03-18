@@ -25,51 +25,53 @@ class TaskController extends Controller
         try {
             $validatedData = $request->validate([
                 'namakegiatan' => 'required|string|max:255',
-                'deskripsi' => 'required|string|max:1000',
-                'volume' => 'required|numeric',
+                'deskripsi' => 'required|array',
+                'deskripsi.*' => 'string|max:1000',
+                'volume' => 'required|array',
+                'volume.*' => 'numeric',
                 'satuan' => 'required|string|max:255',
                 'tenggat' => 'required|date',
-                'penerimatugas_id' => 'required',
+                'penerimatugas_id' => 'required|array',
+                'penerimatugas_id.*' => 'exists:users,id',
                 'attachment' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120',
             ]);
 
-            // Ambil ID terakhir dan tambah 1
-            $lastTaskId = Task::latest('id')->first()->id ?? 0;
-            $newTaskId = $lastTaskId + 1;
+            $attachmentPath = $request->hasFile('attachment') ? $request->file('attachment')->store('attachments', 'public') : null;
 
-            $judulSlug = Str::slug($validatedData['namakegiatan']);
-            $tanggalDibuat = Carbon::now()->format('d-m-Y');
-            $tanggalTenggat = Carbon::parse($validatedData['tenggat'])->format('d-m-Y');
-            $slug = "{$newTaskId}_{$judulSlug}_{$tanggalDibuat}_{$tanggalTenggat}";
+            foreach ($validatedData['penerimatugas_id'] as $index => $penerimaId) {
+                $lastTaskId = Task::latest('id')->first()->id ?? 0;
+                $newTaskId = $lastTaskId + 1;
 
-            // Simpan data
-            $task = Task::create([
-                'namakegiatan' => $validatedData['namakegiatan'],
-                'slug' => $slug,
-                'deskripsi' => $validatedData['deskripsi'],
-                'volume' => $validatedData['volume'],
-                'satuan' => $validatedData['satuan'],
-                'tenggat' => $validatedData['tenggat'],
-                'pemberitugas_id' => Auth::id(),
-                'penerimatugas_id' => $validatedData['penerimatugas_id'],
-                'attachment' => $request->hasFile('attachment') ? $request->file('attachment')->store('attachments', 'public') : null,
-            ]);
+                $judulSlug = Str::slug($validatedData['namakegiatan']);
+                $tanggalDibuat = Carbon::now()->format('d-m-Y');
+                $tanggalTenggat = Carbon::parse($validatedData['tenggat'])->format('d-m-Y');
+                $slug = "{$newTaskId}_{$judulSlug}_{$tanggalDibuat}_{$tanggalTenggat}";
 
-            // Notify Pegawai
-            $namakegiatan = $validatedData['namakegiatan'];
-            $penerimatugas = User::find($validatedData['penerimatugas_id']);
-            if ($penerimatugas && $penerimatugas->no_hp) {
-                $pesannotifikasi = "Halo ".$penerimatugas->name.". Anda telah menerima tugas baru pada kegiatan ".$validatedData['namakegiatan'].". Silahkan cek http://smpbps-ds.test/login untuk info selengkapnya";
-                $responseCode = $this->notifyService->sendFonnteNotification($penerimatugas->no_hp, $pesannotifikasi);
+            
+                Task::create([
+                    'namakegiatan' => $validatedData['namakegiatan'],
+                    'slug' => $slug,
+                    'deskripsi' => $validatedData['deskripsi'][$index],
+                    'volume' => $validatedData['volume'][$index],
+                    'satuan' => $validatedData['satuan'],
+                    'tenggat' => Carbon::parse($validatedData['tenggat'])->format('Y-m-d'),
+                    'pemberitugas_id' => Auth::id(),
+                    'penerimatugas_id' => $penerimaId,
+                    'attachment' => $attachmentPath,
+                ]);
+
+                $penerima = User::find($penerimaId);
+                if ($penerima && $penerima->no_hp) {
+                    $pesanNotifikasi = "Halo {$penerima->name}. Anda telah menerima tugas baru dalam kegiatan {$validatedData['namakegiatan']}. Silakan cek http://smpbps-ds.test/login untuk info lebih lanjut.";
+                    $this->notifyService->sendFonnteNotification($penerima->no_hp, $pesanNotifikasi);
+                }
             }
-            session()->flash('success', 'Data Berhasil Ditambahkan.');
+            session()->flash('success', 'Kegiatan dan tugas berhasil ditambahkan.');
         } catch (\Exception $e) {
-            session()->flash('error', 'Gagal Menambahkan Data: ' . $e->getMessage());
+            session()->flash('error', 'Gagal menambahkan data: ' . $e->getMessage());
         }
-        
         return redirect()->back();
     }
-
 
     public function update(Request $request, Task $task){
         // Validasi input

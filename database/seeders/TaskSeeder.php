@@ -21,7 +21,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'Blok Sensus',
             'tenggat' => now()->addDays(6)->format('Y-m-d'),
             'pemberitugas_id' => 3,
-            'penerimatugas_id' => 12, //7
+            'penerimatugas_id' => 7, //7
             'progress' => 0,
             'attachment' => NULL,
             'active' => TRUE
@@ -35,7 +35,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'Publikasi',
             'tenggat' => now()->addDays(5)->format('Y-m-d'),
             'pemberitugas_id' => 4,
-            'penerimatugas_id' => 12, //5
+            'penerimatugas_id' => 5, //5
             'progress' => 1,
             'attachment' => NULL,
             'active' => TRUE
@@ -49,7 +49,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'Blok Sensus',
             'tenggat' => now()->addDays(2)->format('Y-m-d'),
             'pemberitugas_id' => 3,
-            'penerimatugas_id' => 12, //7
+            'penerimatugas_id' => 7, //7
             'progress' => 4,
             'attachment' => NULL,
             'active' => TRUE,
@@ -64,7 +64,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'Responden',
             'tenggat' => now()->subDays(2)->format('Y-m-d'),
             'pemberitugas_id' => 2,
-            'penerimatugas_id' => 12, //6
+            'penerimatugas_id' => 6, //6
             'progress' => 1,
             'attachment' => NULL,
             'active' => TRUE,
@@ -79,7 +79,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'Segmen',
             'tenggat' => now()->format('Y-m-d'),
             'pemberitugas_id' => 9,
-            'penerimatugas_id' => 12, //10
+            'penerimatugas_id' => 10, //10
             'progress' => 0,
             'attachment' => NULL,
             'active' => TRUE,
@@ -94,7 +94,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'Rumah Tangga',
             'tenggat' => now()->addDays(6)->format('Y-m-d'),
             'pemberitugas_id' => 2,
-            'penerimatugas_id' => 12, //6
+            'penerimatugas_id' => 6, //6
             'progress' => 5,
             'attachment' => NULL,
             'active' => TRUE,
@@ -108,7 +108,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'Rumah Tangga',
             'tenggat' => now()->addDays(3)->format('Y-m-d'),
             'pemberitugas_id' => 2,
-            'penerimatugas_id' => 12, //11
+            'penerimatugas_id' => 11, //11
             'progress' => 0,
             'attachment' => NULL,
             'active' => TRUE,
@@ -122,7 +122,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'Bab Publikasi',
             'tenggat' => now()->addDays(7)->format('Y-m-d'),
             'pemberitugas_id' => 4,
-            'penerimatugas_id' => 12, //8
+            'penerimatugas_id' => 8, //8
             'progress' => 1,
             'attachment' => NULL,
             'active' => TRUE,

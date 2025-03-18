@@ -23,7 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'no_hp'
+        'no_hp' //Unique Key
     ];
 
     /**

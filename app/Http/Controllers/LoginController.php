@@ -19,7 +19,13 @@ class LoginController extends Controller
  
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/home');
+            if(Auth::user()->role == 'ketuatim'){
+                return redirect('/monitoringkegiatan');
+            }elseif(Auth::user()->role == 'anggotatim'){
+                return redirect('/home');
+            }elseif(Auth::user()->role == 'kepalakantor'){
+                return redirect('/monitoringkegiatan');
+            }
         }
  
         return back()->withErrors('Email dan Password yang dimasukkan tidak sesuai')->withInput();

@@ -62,11 +62,7 @@ Route::middleware(['auth'])->group(function(){
             }
         }
 
-        if ($user->role === 'anggotatim') {
-            $tasksQuery->where('penerimatugas_id', $user->id);
-        } elseif ($user->role === 'ketuatim') {
-            $tasksQuery->where('pemberitugas_id', $user->id);
-        }
+        // $tasksQuery->where('penerimatugas_id', $user->id);
     
         $sort = request('sort', 'priority'); 
     
@@ -78,10 +74,7 @@ Route::middleware(['auth'])->group(function(){
     
         $tasks = $tasksQuery->paginate(5)->withQueryString();
     
-        return view('home', [
-            'anggotatim' => User::where('role', 'anggotatim')->get(),
-            'tasks' => $tasks,
-        ]);
+        return view('home', ['tasks' => $tasks]);
     })->name('home');
     
     Route::post('/home', [TaskController::class, 'create']);
@@ -112,8 +105,12 @@ Route::middleware(['auth'])->group(function(){
         return response()->file(storage_path("app/public/{$path}"));
     })->where('filename', '.*');
 
-    Route::get('/monitoring', function(){
-        return view('monitoring');
+    Route::get('/monitoringkegiatan', function(){
+        return view('monitoringkegiatan',['anggotatim' => User::where('role', 'anggotatim')->get()]);
+    });
+
+    Route::get('/monitoringpegawai', function(){
+        return view('monitoringpegawai');
     });
 
     Route::get('/monitoring/active', [TaskController::class, 'getActiveTasks'])->name('tasks.active');
