@@ -106,6 +106,33 @@
             </div>
         </div>
 
+        {{ $groups->links() }}
+
+        {{-- Daftar Kegiatan --}}
+        <div class="mt-5">
+            @foreach ($groups as $group)
+                <div class="flex items-center border-y py-5 justify-between">
+                    <div class="w-full">
+                        <div class="flex justify-between">
+                            <p>{{ $group->namakegiatan }}</p>
+                            <p>{{ \Carbon\Carbon::parse($group->tenggat)->translatedFormat('d F Y') }}</p>
+                        </div>
+                        <div class="bg-gray-400 rounded-full h-6 relative">
+                            <div class="bg-blue-700 h-6 rounded-full" style="width: {{ $group->percentage }}%;"></div>
+                            <p class="text-center absolute inset-0 flex items-center justify-center text-white font-semibold">{{ number_format($group->percentage, 2) }}%</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-center ml-10">
+                            <a href="/monitoringkegiatan/{{ $group->grouptask_slug }}">
+                                <img class="w-8 h-8 mx-auto" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
         <script>
             document.addEventListener("DOMContentLoaded", function(event) {
                 document.getElementById('defaultModalButton').click();

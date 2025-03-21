@@ -2,7 +2,6 @@
 
 use App\Models\Task;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -22,60 +21,7 @@ Route::middleware(['guest'])->group(function(){
 Route::middleware(['auth'])->group(function(){
     Route::post('/logout', LogoutController::class)->name('logout');
 
-    Route::get('/home', function () {
-        $user = Auth::user();
-        $tasksQuery = Task::select(
-            'tasks.*',
-            DB::raw("
-                CEIL(DATEDIFF(NOW(), created_at)) + 1 AS hariberlalu_MySQL,
-                DATEDIFF(tenggat, created_at) + 1 AS selangharitugas_MySQL,
-                CEIL(volume / (DATEDIFF(tenggat, created_at) + 1)) AS targetperhari_MySQL,
-                LEAST(volume, (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1)))) AS targetharustercapai_MySQL,
-                
-                FLOOR((progress / volume) * 100) AS percentage_progress,
-
-                CASE 
-                WHEN tenggat < CURDATE() THEN 1
-                WHEN progress < (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 2
-                WHEN progress = (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 3
-                WHEN progress > (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 4  
-                END AS kodekategori
-            ")
-        )->where('active', true)->filter(request(['search']));
-    
-        $filter = request('filter');
-
-        if ($filter) {
-            switch ($filter) {
-                case 'terlambat':
-                    $tasksQuery->having('kodekategori', 1);
-                    break;
-                case 'progress_lambat':
-                    $tasksQuery->having('kodekategori', 2);
-                    break;
-                case 'progress_ontime':
-                    $tasksQuery->having('kodekategori', 3);
-                    break;
-                case 'progress_cepat':
-                    $tasksQuery->having('kodekategori', 4);
-                    break;
-            }
-        }
-
-        // $tasksQuery->where('penerimatugas_id', $user->id);
-    
-        $sort = request('sort', 'priority'); 
-    
-        if (in_array($sort, ['id', 'tenggat'])) {
-            $tasksQuery->orderBy($sort);
-        } elseif ($sort === 'priority'){
-            $tasksQuery->orderBy('kodekategori')->orderBy('tenggat','ASC')->orderBy('percentage_progress','ASC');            
-        }
-    
-        $tasks = $tasksQuery->paginate(5)->withQueryString();
-    
-        return view('home', ['tasks' => $tasks]);
-    })->name('home');
+    Route::get('/home', [TaskController::class, 'home'])->name('home');
     
     Route::post('/home', [TaskController::class, 'create']);
 
@@ -83,11 +29,7 @@ Route::middleware(['auth'])->group(function(){
         return view('task', ['task' => $task]);
     });
     
-    Route::get('/arsip', function () {
-        $user = Auth::user();
-        $tasks = Task::where('penerimatugas_id', $user->id)->where('active',false)->get();
-        return view('arsip', ['tasks' => $tasks]);
-    });
+    Route::get('/arsip', [TaskController::class, 'arsip'])->name('arsip');
 
     Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 
@@ -105,9 +47,9 @@ Route::middleware(['auth'])->group(function(){
         return response()->file(storage_path("app/public/{$path}"));
     })->where('filename', '.*');
 
-    Route::get('/monitoringkegiatan', function(){
-        return view('monitoringkegiatan',['anggotatim' => User::where('role', 'anggotatim')->get()]);
-    });
+    Route::get('/monitoringkegiatan', [TaskController::class, 'monitoringkegiatan']);
+
+    Route::get('/monitoringkegiatan/{grouptask_slug}', [TaskController::class, 'kegiatan']);
 
     Route::get('/monitoringpegawai', function(){
         return view('monitoringpegawai');

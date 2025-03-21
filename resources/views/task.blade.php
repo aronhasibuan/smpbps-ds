@@ -21,7 +21,7 @@
                     <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
                         <img class="mr-4 w-16 h-16 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="{{ $task->pemberitugas->name }}">
                         <div>
-                              <a href="#" rel="author" class="text-xl font-bold text-gray-900 dark:text-white">{{ $task->pemberitugas->name }}</a>
+                              <p class="text-xl font-bold text-gray-900 dark:text-white">{{ $task->pemberitugas->name }}</p>
                               <p class="text-base text-gray-500 dark:text-gray-400">{{ $task->created_at->format('F d') }}</p>
                         </div>
                     </div>
