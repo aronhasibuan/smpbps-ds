@@ -117,8 +117,8 @@
                             <p>{{ $group->namakegiatan }}</p>
                             <p>{{ \Carbon\Carbon::parse($group->tenggat)->translatedFormat('d F Y') }}</p>
                         </div>
-                        <div class="bg-gray-400 rounded-full h-6 relative">
-                            <div class="bg-blue-700 h-6 rounded-full" style="width: {{ $group->percentage }}%;"></div>
+                        <div class="bg-gray-400 rounded-full h-8 relative">
+                            <div class="bg-blue-700 h-8 rounded-full" style="width: {{ $group->percentage }}%;"></div>
                             <p class="text-center absolute inset-0 flex items-center justify-center text-white font-semibold">{{ number_format($group->percentage, 2) }}%</p>
                         </div>
                     </div>

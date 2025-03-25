@@ -5,14 +5,14 @@
       <div class="flex justify-between px-4 mx-auto max-w-screen-xl">
           <article class="mx-auto w-full max-w-4xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
               <header class="mb-4 lg:mb-6 not-format">
-                @if (Auth::check() && Auth::user()->role == 'anggotatim')
-                    <a href="javascript:history.back()" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
-                @endif
-                @if (Auth::check() && Auth::user()->role == 'ketuatim')
-                    <a href="/home" class="font-medium text-base text-blue-600 hover:underline">&laquo; Back to Monitoring</a>
-                @endif
+               <a href="javascript:history.back()" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+               
                 <div class="flex justify-between items-center mb-5 text-gray-500 mt-2">
-                  <span class="bg-{{ $task->kemajuan['color'] }}-500 text-white text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
+                    @php
+                        $color = $task->kemajuan['color'];
+                        $backgroundColor = in_array($color, ['red', 'yellow', 'green']) ? "bg-{$color}-500" : 'bg-black'; 
+                    @endphp
+                  <span class="{{ $backgroundColor }} text-white text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
                       Tingkat Kemajuan: {{ $task->kemajuan['status'] }}
                   </span>
                 </div>

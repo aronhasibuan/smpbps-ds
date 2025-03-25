@@ -89,7 +89,10 @@ class TaskController extends Controller
 
     public function monitoringkegiatan()
     {
+        $user = Auth::user();
+
         $groups = Task::selectRaw('grouptask_slug,namakegiatan, SUM(progress) as total_progress, SUM(volume) as total_volume, MAX(tenggat) as tenggat')
+            ->where('pemberitugas_id',$user->id)
             ->groupBy('grouptask_slug', 'namakegiatan')
             ->paginate(5);
 
