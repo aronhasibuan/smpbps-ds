@@ -47,16 +47,29 @@
           </article>
       </div>
 
+      {{-- Update Progress --}}
       @if (Auth::check() && Auth::user()->role == 'anggotatim' && $task->active)
         <div class="flex justify-center gap-4 mt-20">
-            <form action="{{ route('tasks.complete', $task->id) }}" method="POST">
+            <button type="submit" id="openModal" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
+                Perbarui Progress
+            </button>
+        </div>
+        
+        <div id="popupModal" class="fixed inset-0 items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 class="text-lg font-semibold mb-4">Masukkan Progress Terbaru</h2>
+                <form action="{{ route('tasks.updateprogress', $task->id) }}" method="POST">
                 @csrf
-                <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
-                    Tandai Selesai
-                </button>
-            </form>            
-        </div>          
+                    <input type="number" id="quantity" name="quantity" min="{{ $task->progress + 1}}" value="{{ $task->progress + 1 }}" max="{{ $task->volume }}" class="border border-gray-300 p-2 rounded-md w-full">
+                    <div class="flex justify-end mt-4">
+                        <button id="closeModal" type="button" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition">Batal</button>
+                        <button id="submitData" class="bg-blue-600 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-700 transition">Kirim</button>
+                    </div>
+                </form>
+            </div>
+        </div>
       @endif
+        
 
       @if (Auth::check() && Auth::user()->role == 'ketuatim')
         <div class="flex justify-center gap-4 mt-20">
@@ -133,10 +146,24 @@
             </div>
         </div>
     </div>
-
+    
         <script>
+            const modal = document.getElementById('popupModal');
+            const openModal = document.getElementById('openModal');
+            const closeModal = document.getElementById('closeModal');
+
             document.addEventListener("DOMContentLoaded", function(event) {
                 document.getElementById('defaultModalButton').click();
+            });
+
+            openModal.addEventListener('click', function () {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            });
+
+            closeModal.addEventListener('click', function () {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex'); // Menyembunyikan modal
             });
         </script>
 

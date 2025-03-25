@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function(){
 
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
-    Route::post('/tasks/{id}/complete', [TaskController::class, 'markAsDone'])->name('tasks.complete');
+    Route::post('/tasks/{id}/complete', [TaskController::class, 'updateprogress'])->name('tasks.updateprogress');
 
     Route::get('/file/{filename}', function ($filename) {
         $path = "attachments/{$filename}";

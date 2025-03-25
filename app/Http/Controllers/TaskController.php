@@ -194,14 +194,27 @@ class TaskController extends Controller
         return redirect('/monitoring')->with('deleted', 'Tugas berhasil dihapus');
     }
 
-    public function markAsDone($id){
+    public function updateprogress(Request $request, $id)
+    {
         $task = Task::findOrFail($id);
-        $task->active = false;
-        $task->progress = $task->volume;
+
+        $request->validate([
+            'quantity' => 'required|integer|min:' . ($task->progress + 1) . '|max:' . $task->volume,
+        ]);
+
+        $task->progress = $request->quantity;
+    
+        if ($task->progress == $task->volume) {
+            $task->active = false;
+            $task->save();
+            return redirect('home')->with('success', 'Tugas berhasil ditandai selesai!'); 
+        }
+
         $task->save();
 
-        return redirect('home')->with('success', 'Tugas berhasil ditandai selesai!');
+        return redirect('home')->with('success', 'Progress berhasil diperbarui!');
     }
+
 
     public function getActiveTasks()
     {
