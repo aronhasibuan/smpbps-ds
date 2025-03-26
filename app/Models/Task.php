@@ -7,14 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Task extends Model{
 
     use HasFactory;
     
-    protected $fillable = ['namakegiatan','slug','deskripsi','volume','satuan','tenggat','pemberitugas_id','penerimatugas_id', 'grouptask_id', 'grouptask_slug','progress','attachment','active'];
+    protected $fillable = ['namakegiatan','slug','deskripsi','volume','satuan','tenggat','pemberitugas_id','penerimatugas_id', 'grouptask_id', 'grouptask_slug','attachment','active'];
 
-    protected $with = ['pemberitugas','penerimatugas'];
+    protected $with = ['pemberitugas','penerimatugas','progress'];
 
     public function pemberitugas(): BelongsTo{
         return $this->belongsTo(User::class);
@@ -22,6 +23,10 @@ class Task extends Model{
 
     public function penerimatugas(): BelongsTo{
         return $this->belongsTo(User::class);
+    }
+
+    public function progress(): HasMany{
+        return $this->hasMany(Progress::class, 'task_id');
     }
 
     public function scopeFilter(Builder $query, array $filters): void{
@@ -49,7 +54,7 @@ class Task extends Model{
     public function getKemajuanAttribute(){
         
         $volume = $this->volume;
-        $progress = $this->progress;
+        $progress = $this->latest_progress;
         $tenggat = Carbon::parse($this->tenggat)->endOfDay();
         $createdAt = Carbon::parse($this->created_at)->startOfDay();
         $hariberlalu = ceil($createdAt->diffInDays(Carbon::now()->endOfDay()));
@@ -100,9 +105,12 @@ class Task extends Model{
     
     public function getPercentageProgressAttribute(){
         $volume = $this->volume;
-        $progress = $this->progress;
-
+        $progress = $this->progress()->latest('created_at')->first()->progress;
         $percentageprogress = floor($progress/$volume*100);
         return $percentageprogress;
+    }
+
+    public function getLatestProgressAttribute(){
+        return  $this->progress()->latest('created_at')->first()->progress; 
     }
 }

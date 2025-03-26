@@ -22,12 +22,13 @@ class LoginController extends Controller
             if(Auth::user()->role == 'ketuatim'){
                 return redirect('/monitoringkegiatan');
             }elseif(Auth::user()->role == 'anggotatim'){
-                return redirect('/home');
+                return redirect('/home')->with('success', 'Login berhasil, selamat datang!');
             }elseif(Auth::user()->role == 'kepalakantor'){
                 return redirect('/monitoringkegiatan');
             }
         }
  
-        return back()->withErrors('Email dan Password yang dimasukkan tidak sesuai')->withInput();
+        session()->flash('error', 'Email atau Password yang dimasukkan tidak sesuai, silakan coba lagi');
+        return back();
     }
 }

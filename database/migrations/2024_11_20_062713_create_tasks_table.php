@@ -29,7 +29,6 @@ return new class extends Migration
             );
             $table->integer('grouptask_id');
             $table->string('grouptask_slug');
-            $table->string('progress')->default(0);
             $table->string('attachment')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();

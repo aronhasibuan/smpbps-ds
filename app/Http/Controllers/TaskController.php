@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Progress;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\NotifyService;
@@ -26,26 +27,43 @@ class TaskController extends Controller
         $user = Auth::user();
 
         $tasksQuery = Task::where('penerimatugas_id', $user->id)
-            ->where('active', true)
-            ->select(
-                'tasks.*',
-                DB::raw("
-                    CEIL(DATEDIFF(NOW(), created_at)) + 1 AS hariberlalu_MySQL,
-                    DATEDIFF(tenggat, created_at) + 1 AS selangharitugas_MySQL,
-                    CEIL(volume / (DATEDIFF(tenggat, created_at) + 1)) AS targetperhari_MySQL,
-                    LEAST(volume, (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1)))) AS targetharustercapai_MySQL,
-                    
-                    FLOOR((progress / volume) * 100) AS percentage_progress,
+        ->where('active', true)
+        ->select(
+            'tasks.*',
+            DB::raw("
+                (SELECT p.progress FROM progress p WHERE p.task_id = tasks.id ORDER BY p.created_at DESC LIMIT 1) AS progress_terbaru"),
+            DB::raw("
+                CEIL(DATEDIFF(NOW(), created_at)) + 1 AS hariberlalu_MySQL,
+                DATEDIFF(tenggat, created_at) + 1 AS selangharitugas_MySQL,
+                CEIL(volume / (DATEDIFF(tenggat, created_at) + 1)) AS targetperhari_MySQL,
+                LEAST(volume, (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1)))) AS targetharustercapai_MySQL,
 
-                    CASE 
-                        WHEN tenggat < CURDATE() THEN 1
-                        WHEN progress < (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 2
-                        WHEN progress = (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 3
-                        WHEN progress > (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 4  
-                    END AS kodekategori
-                ")
-            )
-            ->filter($request->only(['search']));
+                FLOOR((IFNULL((SELECT p.progress FROM progress p WHERE p.task_id = tasks.id ORDER BY p.created_at DESC LIMIT 1), 0) / volume) * 100) AS percentage_progress,
+
+                CASE 
+                    WHEN tenggat < CURDATE() THEN 1
+                    WHEN IFNULL((SELECT p.progress 
+                     FROM progress p 
+                     WHERE p.task_id = tasks.id 
+                     ORDER BY p.created_at DESC 
+                     LIMIT 1), 0) 
+                    < (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 2
+                    WHEN IFNULL((SELECT p.progress 
+                     FROM progress p 
+                     WHERE p.task_id = tasks.id 
+                     ORDER BY p.created_at DESC 
+                     LIMIT 1), 0) 
+                    = (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 3
+                    WHEN IFNULL((SELECT p.progress 
+                     FROM progress p 
+                     WHERE p.task_id = tasks.id 
+                     ORDER BY p.created_at DESC 
+                     LIMIT 1), 0) 
+                    > (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 4  
+                END AS kodekategori
+            ")
+        )
+        ->filter($request->only(['search']));
 
         if ($request->has('filter')) {
             switch ($request->filter) {
@@ -91,8 +109,9 @@ class TaskController extends Controller
     {
         $user = Auth::user();
 
-        $groups = Task::selectRaw('grouptask_slug,namakegiatan, SUM(progress) as total_progress, SUM(volume) as total_volume, MAX(tenggat) as tenggat')
-            ->where('pemberitugas_id',$user->id)
+        $groups = Task::selectRaw('tasks.grouptask_slug, tasks.namakegiatan, SUM(tasks.volume) as total_volume, MAX(tasks.tenggat) as tenggat, COALESCE(SUM(progress.progress), 0) as total_progress')
+            ->leftJoin('progress','tasks.id','=','progress.task_id')
+            ->where('pemberitugas_id', $user->id)
             ->groupBy('grouptask_slug', 'namakegiatan')
             ->paginate(5);
 
@@ -114,6 +133,12 @@ class TaskController extends Controller
         }
 
         return view('kegiatan', ['tasks' => $tasks]);
+    }
+
+    public function task(Task $task)
+    {
+        $progress = Progress::where('task_id', $task->id)->get();
+        return view('task', ['task' => $task, 'progresses'=>$progress]);
     }
 
     public function create(Request $request){
@@ -142,9 +167,8 @@ class TaskController extends Controller
                 $lastTaskId = Task::latest('id')->first()->id ?? 0;
                 $newTaskId = $lastTaskId + 1;
 
-                $tanggalDibuat = Carbon::now()->format('d-m-Y');
-                $tanggalTenggat = Carbon::parse($validatedData['tenggat'])->format('d-m-Y');
-                $slug = "{$newTaskId}_{$judulSlug}_{$tanggalDibuat}_{$tanggalTenggat}";
+                $penerima = User::find($penerimaId);
+                $slug = "{$newTaskId}_{$penerima->username}";
 
             
                 Task::create([
@@ -161,7 +185,13 @@ class TaskController extends Controller
                     'attachment' => $attachmentPath,
                 ]);
 
-                $penerima = User::find($penerimaId);
+                Progress::create([
+                    'task_id' => $newTaskId,
+                    'tanggal' => Carbon::now()->format('Y-m-d'),
+                    'progress' => 0,
+                    'dokumentasi' => null,
+                ]);
+
                 if ($penerima && $penerima->no_hp) {
                     $pesanNotifikasi = "Halo {$penerima->name}. Anda telah menerima tugas baru dalam kegiatan {$validatedData['namakegiatan']}. Silakan cek http://smpbps-ds.test/login untuk info lebih lanjut.";
                     $this->notifyService->sendFonnteNotification($penerima->no_hp, $pesanNotifikasi);
@@ -199,12 +229,20 @@ class TaskController extends Controller
         $task = Task::findOrFail($id);
 
         $request->validate([
-            'quantity' => 'required|integer|min:' . ($task->progress + 1) . '|max:' . $task->volume,
+            'quantity' => 'required|integer|min:' . ($task->latest_progress + 1) . '|max:' . $task->volume,
+            'dokumentasi' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120'
         ]);
 
-        $task->progress = $request->quantity;
+        $attachmentPath = $request->hasFile('attachment') ? $request->file('attachment')->store('attachments', 'public') : null;
+
+        Progress::create([
+            'task_id' => $id,
+            'tanggal' => Carbon::now()->format('Y-m-d'),
+            'progress' => $request->quantity,
+            'dokumentasi' => $attachmentPath,
+        ]);
     
-        if ($task->progress == $task->volume) {
+        if ($task->volume == $request->quantity) {
             $task->active = false;
             $task->save();
             return redirect('home')->with('success', 'Tugas berhasil ditandai selesai!'); 

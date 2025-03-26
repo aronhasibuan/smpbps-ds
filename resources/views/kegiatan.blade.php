@@ -41,7 +41,7 @@
     
                 </div>
                 
-                <p class="text-gray-600">Tugas Selesai: {{ $task->progress }} dari {{ $task->volume }}</p>
+                <p class="text-gray-600">Tugas Selesai: {{$task->latest_progress}} dari {{ $task->volume }}</p>
 
             </div>
 

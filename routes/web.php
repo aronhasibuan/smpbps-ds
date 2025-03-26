@@ -25,9 +25,7 @@ Route::middleware(['auth'])->group(function(){
     
     Route::post('/home', [TaskController::class, 'create']);
 
-    Route::get('/home/{task:slug}', function(Task $task){
-        return view('task', ['task' => $task]);
-    });
+    Route::get('/home/{task:slug}', [TaskController::class, 'task']);
     
     Route::get('/arsip', [TaskController::class, 'arsip'])->name('arsip');
 

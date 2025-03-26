@@ -39,6 +39,20 @@
                 </div>
               @endif
                 <label class="text-gray-700 font-bold mb-2 block">Progress:</label>
+                <div>
+                    <table class="flex" border="1">
+                        <tr>
+                            @foreach ($progresses as $progress)
+                                <th>{{ $progress->tanggal }}</th>
+                            @endforeach
+                        </tr>
+                        <tr>
+                            @foreach ($progresses as $progress)
+                                <th>{{ $progress->progress }}</th>                        
+                            @endforeach
+                        </tr>
+                    </table>
+                </div>
                 <div class="relative w-full bg-gray-300 rounded-full h-6">
                     <div class="bg-blue-600 h-6 rounded-full" style="width: {{ $task->percentage_progress }}%;"></div>
                     <span class="absolute left-1/2 transform -translate-x-1/2 font-bold">{{ $task->percentage_progress }}%</span>
@@ -60,7 +74,7 @@
                 <h2 class="text-lg font-semibold mb-4">Masukkan Progress Terbaru</h2>
                 <form action="{{ route('tasks.updateprogress', $task->id) }}" method="POST">
                 @csrf
-                    <input type="number" id="quantity" name="quantity" min="{{ $task->progress + 1}}" value="{{ $task->progress + 1 }}" max="{{ $task->volume }}" class="border border-gray-300 p-2 rounded-md w-full">
+                    <input type="number" id="quantity" name="quantity" min="{{ $task->latest_progress + 1}}" value="{{ $task->latest_progress + 1 }}" max="{{ $task->volume }}" class="border border-gray-300 p-2 rounded-md w-full">
                     <div class="flex justify-end mt-4">
                         <button id="closeModal" type="button" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition">Batal</button>
                         <button id="submitData" class="bg-blue-600 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-700 transition">Kirim</button>
