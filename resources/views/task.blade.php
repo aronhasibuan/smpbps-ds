@@ -74,7 +74,7 @@
                 <h2 class="text-lg font-semibold mb-4">Masukkan Progress Terbaru</h2>
                 <form action="{{ route('tasks.updateprogress', $task->id) }}" method="POST">
                 @csrf
-                    <input type="number" id="quantity" name="quantity" min="{{ $task->latest_progress + 1}}" value="{{ $task->latest_progress + 1 }}" max="{{ $task->volume }}" class="border border-gray-300 p-2 rounded-md w-full">
+                    <input type="number" id="quantity" name="quantity" min="{{ $task->latestprogress + 1}}" value="{{ $task->latestprogress + 1 }}" max="{{ $task->volume }}" class="border border-gray-300 p-2 rounded-md w-full">
                     <div class="flex justify-end mt-4">
                         <button id="closeModal" type="button" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition">Batal</button>
                         <button id="submitData" class="bg-blue-600 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-700 transition">Kirim</button>

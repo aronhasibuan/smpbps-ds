@@ -110,7 +110,7 @@
                         class="border p-8 rounded-b-md shadow-md mb-5 overflow-hidden origin-top"
                         x-data x-effect="if (openTask === {{ $task->id }}) { console.log(
                         ' Kode Kategori: {{ $task->kodekategori }}\n', 
-                        'Progress Tercapai: {{ $task->progress }}\n', 
+                        'Progress Tercapai: {{ $task->latestprogress }}\n', 
                         'Volume: {{ $task->volume }}\n\n',
 
                         'Hari Berlalu (PHP): {{ $task->kemajuan['hariberlalu'] }}\n', 

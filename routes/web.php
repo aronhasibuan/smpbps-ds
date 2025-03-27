@@ -8,33 +8,36 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\DataflowController;
+
+// GET, POST, PUT, PATCH, DELETE
 
 Route::get('/', function () {
     return redirect('/login');
 });
 
 Route::middleware(['guest'])->group(function(){
+    // login
     Route::get('/login', [LoginController::class, 'loginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'authenticate']);
 });
 
 Route::middleware(['auth'])->group(function(){
+    // logout
     Route::post('/logout', LogoutController::class)->name('logout');
 
-    Route::get('/home', [TaskController::class, 'home'])->name('home');
-    
+    // home
+    Route::get('/home', [DataflowController::class, 'home'])->name('home');
     Route::post('/home', [TaskController::class, 'create']);
 
-    Route::get('/home/{task:slug}', [TaskController::class, 'task']);
-    
-    Route::get('/arsip', [TaskController::class, 'arsip'])->name('arsip');
-
-    Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
-
-    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
-
+    // task
+    Route::get('/home/{task:slug}', [DataflowController::class, 'task']);
+    Route::get('/monitoringkegiatan/{grouptask_slug}/{slug}', [DataflowController::class, 'taskmonitoring'])->name('dataflow.taskmonitoring');
     Route::post('/tasks/{id}/complete', [TaskController::class, 'updateprogress'])->name('tasks.updateprogress');
-
+    Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    
+    // task (attachment)
     Route::get('/file/{filename}', function ($filename) {
         $path = "attachments/{$filename}";
     
@@ -45,13 +48,19 @@ Route::middleware(['auth'])->group(function(){
         return response()->file(storage_path("app/public/{$path}"));
     })->where('filename', '.*');
 
-    Route::get('/monitoringkegiatan', [TaskController::class, 'monitoringkegiatan']);
+    // arsip
+    Route::get('/arsip', [DataflowController::class, 'arsip'])->name('arsip');
 
-    Route::get('/monitoringkegiatan/{grouptask_slug}', [TaskController::class, 'kegiatan']);
+    // monitoringkegiatan
+    Route::get('/monitoringkegiatan', [DataflowController::class, 'monitoringkegiatan']);
 
+    // monitoringpegawai
     Route::get('/monitoringpegawai', function(){
         return view('monitoringpegawai');
     });
+
+    // kegiatan
+    Route::get('/monitoringkegiatan/{grouptask_slug}', [DataflowController::class, 'kegiatan']);
 
     Route::get('/monitoring/active', [TaskController::class, 'getActiveTasks'])->name('tasks.active');
 });

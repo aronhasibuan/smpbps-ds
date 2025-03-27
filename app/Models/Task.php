@@ -13,7 +13,7 @@ class Task extends Model{
 
     use HasFactory;
     
-    protected $fillable = ['namakegiatan','slug','deskripsi','volume','satuan','tenggat','pemberitugas_id','penerimatugas_id', 'grouptask_id', 'grouptask_slug','attachment','active'];
+    protected $fillable = ['namakegiatan','slug','deskripsi','volume','satuan','tenggat','pemberitugas_id','penerimatugas_id', 'latestprogress','grouptask_id', 'grouptask_slug','attachment','active'];
 
     protected $with = ['pemberitugas','penerimatugas','progress'];
 
@@ -54,7 +54,7 @@ class Task extends Model{
     public function getKemajuanAttribute(){
         
         $volume = $this->volume;
-        $progress = $this->latest_progress;
+        $progress = $this->latestprogress;
         $tenggat = Carbon::parse($this->tenggat)->endOfDay();
         $createdAt = Carbon::parse($this->created_at)->startOfDay();
         $hariberlalu = ceil($createdAt->diffInDays(Carbon::now()->endOfDay()));
@@ -105,12 +105,8 @@ class Task extends Model{
     
     public function getPercentageProgressAttribute(){
         $volume = $this->volume;
-        $progress = $this->progress()->latest('created_at')->first()->progress;
+        $progress = $this->latestprogress;
         $percentageprogress = floor($progress/$volume*100);
         return $percentageprogress;
-    }
-
-    public function getLatestProgressAttribute(){
-        return  $this->progress()->latest('created_at')->first()->progress; 
     }
 }

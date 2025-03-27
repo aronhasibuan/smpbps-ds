@@ -33,7 +33,7 @@
                     <div class="flex items-center">
                         <p class="text-sm text-gray-500">Tenggat: {{ $task->formattedd_m }}</p>
                         <p class="text-center ml-3">
-                            <a href="/home/{{ $task->slug }}" @click.stop>
+                            <a href="{{ route('dataflow.taskmonitoring', ['grouptask_slug' => $task->grouptask_slug, 'slug'=>$task->slug])}}" @click.stop>
                                 <img class="w-6 h-6 mx-auto" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                             </a>
                         </p>
@@ -41,7 +41,7 @@
     
                 </div>
                 
-                <p class="text-gray-600">Tugas Selesai: {{$task->latest_progress}} dari {{ $task->volume }}</p>
+                <p class="text-gray-600">Tugas Selesai: {{$task->latestprogress}} dari {{ $task->volume }}</p>
 
             </div>
 
