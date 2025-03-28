@@ -8,7 +8,7 @@ export default {
       "./node_modules/flowbite/**/*.js",
       './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
     ],
-    darkMode: 'class',
+    darkMode: 'media',
     theme: {
       extend: {
         fontFamily: {

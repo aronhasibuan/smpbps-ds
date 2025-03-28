@@ -1,126 +1,83 @@
-<nav class="bg-white" x-data="{ isOpen: false }">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <div class="flex items-center">
-          <div class="shrink-0">
-            <img class="size-12" src="{{ asset('img/LogoBPS.png') }}" alt="BPS Kabupaten Deli Serdang">
-          </div>
-          <div class="hidden md:block">
-            <div class="ml-10 flex items-baseline space-x-4">
-              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-              @if (Auth::check() && Auth::user()->role == 'anggotatim')
-                <x-nav-link href="/home" :active="request()->is('home')">Daftar Tugas</x-nav-link>
-                <x-nav-link href="/arsip" :active="request()->is('arsip')">Arsip Tugas</x-nav-link>                
-              @endif
+<header>
+    <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800" x-data="{profilemenu: false}">
+        <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
 
-              @if (Auth::check() && Auth::user()->role == 'ketuatim')
-                <x-nav-link href="/monitoringkegiatan" :active="request()->is('monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
-                <x-nav-link href="/monitoringpegawai" :active="request()->is('monitoringpegawai')">Monitoring Pegawai</x-nav-link>  
-              @endif
+            {{-- logo bps --}}
+            <a href="https://deliserdangkab.bps.go.id/id" class="flex items-center">
+                <img src="{{ asset('img/LogoBPS.png') }}" class="mr-3 h-6 sm:h-9" alt="Logo BPS" />
+            </a>
 
-            </div>
-          </div>
-        </div>
-        <div class="hidden md:block">
-          <div class="ml-4 flex items-center md:ml-6">
-            <button type="button" class="relative rounded-full bg-white p-1 text-black focus:ring-2">
-              <span class="absolute -inset-1.5"></span>
-              <span class="sr-only">View notifications</span>
-              <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-              </svg>
-            </button>
+            <div class="flex items-center lg:order-2">
+                
+                {{-- menu profile & logout --}}
+                <div class="md:block">
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <div class="relative ml-3">
+                          
+                            <div class="relative">
+                                <button type="button" @click="profilemenu = !profilemenu" class="relative flex max-w-xs items-center rounded-full bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <span class="absolute -inset-1.5"></span>
+                                    <span class="sr-only">Open user menu</span>
+                                    <img class="size-8 rounded-full" x-data="{ darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches }" x-init="window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => darkMode = event.matches)" :src="darkMode ? '{{ asset('img/profile-white.svg') }}' : '{{ asset('img/profile-black.svg') }}'" alt="Profile">
+                                </button>
+                            </div>
+    
+                            <div x-show="profilemenu"
+                                x-transition:enter="transition ease-out duration-100 transform"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75 transform"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95"
+                                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Profil</a>
+                                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                                @csrf
+                                    <button type="submit" class="block px-4 py-2 text-sm text-gray-700" style="background: none; border: none; cursor: pointer;">
+                                        Keluar
+                                    </button>
+                                </form>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
 
-            <!-- Profile dropdown -->
-            <div class="relative ml-3">
-              <div class="relative">
-                <button type="button" @click="isOpen = !isOpen" class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                  <span class="absolute -inset-1.5"></span>
-                  <span class="sr-only">Open user menu</span>
-                  <img class="size-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                {{-- tombol buka menu mobile --}}
+                <button data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                    <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                 </button>
-              </div>
-
-              <div x-show="isOpen"
-                  x-transition:enter="transition ease-out duration-100 transform"
-                  x-transition:enter-start="opacity-0 scale-95"
-                  x-transition:enter-end="opacity-100 scale-100"
-                  x-transition:leave="transition ease-in duration-75 transform"
-                  x-transition:leave-start="opacity-100 scale-100"
-                  x-transition:leave-end="opacity-0 scale-95"
-                  class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                <!-- Active: "bg-gray-100 outline-none", Not Active: "" -->
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                  @csrf
-                    <button type="submit" class="block px-4 py-2 text-sm text-gray-700" style="background: none; border: none; cursor: pointer;">
-                        Sign out
-                    </button>
-                </form>
-              </div>
             </div>
-          </div>
-        </div>
-        <div class="-mr-2 flex md:hidden">
-          <!-- Mobile menu button -->
-          <button @click="isOpen = !isOpen" type="button" class="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" aria-controls="mobile-menu" aria-expanded="false">
-            <span class="absolute -inset-0.5"></span>
-            <span class="sr-only">Open main menu</span>
-            <!-- Menu open: "hidden", Menu closed: "block" -->
-            <svg
-              :class="{'hidden': isOpen, 'block': !isOpen }"
-              class="block size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-            <!-- Menu open: "block", Menu closed: "hidden" -->
-            <svg
-              :class="{'block': isOpen, 'hidden': !isOpen }" 
-              class="hidden size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
 
-    <!-- Mobile menu, show/hide based on menu state. -->
-    <div x-show="isOpen" class="md:hidden" id="mobile-menu">
-      <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-        <x-nav-link href="/home" :active="request()->is('home')">Home</x-nav-link>
-        <x-nav-link href="/recapitulation" :active="request()->is('recapitulation')">Recapitulation</x-nav-link>
-        <x-nav-link href="/monitoring" :active="request()->is('monitoring')">Monitoring</x-nav-link>
-      </div>
-      <div class="border-t border-gray-700 pb-3 pt-4">
-        <div class="flex items-center px-5">
-          <div class="shrink-0">
-            <img class="size-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-          </div>
-          <div class="ml-3">
-            <div class="text-base/5 font-medium text-white">Tom Cook</div>
-            <div class="text-sm font-medium text-gray-400">tom@example.com</div>
-          </div>
-          <button type="button" class="relative ml-auto shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-            <span class="absolute -inset-1.5"></span>
-            <span class="sr-only">View notifications</span>
-            <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-            </svg>
-          </button>
-        </div>
-        <div class="mt-3 space-y-1 px-2">
-          <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</a>
-          <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
-          <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-            @csrf
-              <button type="submit" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white" style="background: none; border: none; cursor: pointer;">
-                  Sign out
-              </button>
-          </form>        
-        </div>
-      </div>
-    </div>
+            {{-- nav link --}}
+            <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
+                <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
 
-    <hr>
-  </nav>
+                    @if (Auth::check() && Auth::user()->role == 'anggotatim')
+                        <li>
+                            <x-nav-link href="/home" :active="request()->is('home')">Daftar Tugas</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/arsip" :active="request()->is('arsip')">Arsip Tugas</x-nav-link>
+                        </li>
+                                                                    
+                    @endif
+
+                    @if (Auth::check() && Auth::user()->role == 'ketuatim')
+                        <li>
+                            <x-nav-link href="/monitoringkegiatan" :active="request()->is('monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/monitoringpegawai" :active="request()->is('monitoringpegawai')">Monitoring Pegawai</x-nav-link>
+                        </li>              
+                    @endif
+
+                </ul>
+            </div>
+                  
+        </div>
+    </nav>
+</header>
+<hr>
