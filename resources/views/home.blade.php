@@ -1,162 +1,116 @@
 <x-layout>
-    <div class="min-h-screen overflow-y-visible">
 
-        {{-- Judul Halaman --}}
-        <p class="text-sm text-gray-600">Tugas Saya</p>
+    <p class="text-sm text-gray-600 mb-5">Tugas Saya</p>
 
-        {{-- Kotak Pencarian --}}
-        <div class="py-4 px-4 mx-auto max-w-screen-xl lg:px-6">
-            <div class="mx-auto max-w-screen-md sm:text-center">
-
-                <form action="/home" method="GET">
-                    <div class="items-center mx-auto mb-3 space-y-4 max-w-screen-sm sm:flex sm:space-y-0">
-
+    <div class="border shadow-lg sm:rounded-t-lg">
+        <div class="relative bg-white dark:bg-gray-800 sm:rounded-t-lg">
+            <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
+                
+                <div class="w-full md:w-1/2">
+                    <form class="flex items-center" action="/home" method="GET">
+                        <label for="search" class="sr-only">Search</label>
                         <div class="relative w-full">
-                            <label for="search" class="hidden mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Search</label>
-
-                            <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-
-                            <input class="block p-3 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:rounded-none sm:rounded-l-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search for Task" type="search" id="search" name="search" autocomplete="off">
+                            <input type="text" id="search" name="search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" autocomplete="off">
                         </div>
-
-                        <div>
-                            <button type="submit" class="py-3 px-5 w-full text-sm font-medium text-center text-white rounded-lg border cursor-pointer bg-primary-700 border-primary-600 sm:rounded-none sm:rounded-r-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Search</button>
-                        </div>
-
-                    </div>
-                </form>
-                
-            </div>
-        </div>  
-
-        <div class="flex justify-end">
-
-            {{-- Tombol Mengurutkan --}}
-            <div class="mb-4 ">
-
-                <select id="filter" class="hover:cursor-pointer focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5">
-                    <option value="" {{ request('filter') == '' ? 'selected' : '' }}>Semua</option>
-                    <option value="terlambat" {{ request('filter') == 'terlambat' ? 'selected' : '' }}>Terlambat</option>
-                    <option value="progress_lambat" {{ request('filter') == 'progress_lambat' ? 'selected' : '' }}>Progress Lambat</option>
-                    <option value="progress_ontime" {{ request('filter') == 'progress_ontime' ? 'selected' : '' }}>Progress On Time</option>
-                    <option value="progress_cepat" {{ request('filter') == 'progress_cepat' ? 'selected' : '' }}>Progress Cepat</option>
-                </select>
-                
-                <script>
-                    document.getElementById('filter').addEventListener('change', function() {
-                        const urlParams = new URLSearchParams(window.location.search);
-                        urlParams.set('filter', this.value);
-                        urlParams.set('page', 1);
-                        window.location.href = window.location.pathname + '?' + urlParams.toString();
-                    });
-                </script>
-                
-                <select id="sort" class="hover:cursor-pointer focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5">
-                    <option value="priority" {{ request('sort') == 'priority' ? 'selected' : '' }}>Tingkat Prioritas</option>
-                    <option value="id" {{ request('sort') == 'id' ? 'selected' : '' }}>Tugas Diberikan</option>
-                    <option value="tenggat" {{ request('sort') == 'tenggat' ? 'selected' : '' }}>Tenggat Terdekat</option>
-                </select>
-                
-                <script>
-                    document.getElementById('sort').addEventListener('change', function() {
-                        const urlParams = new URLSearchParams(window.location.search);
-                        urlParams.set('sort', this.value);
-                        window.location.href = window.location.pathname + '?' + urlParams.toString();
-                    });
-                </script>
-                
-            </div>
-
-        </div>
-
-        {{-- Daftar Tugas --}}
-        <div x-data="{ openTask: null }">  
-
-            {{ $tasks->links() }}
-    
-            <div class="py-8">
-    
-                @forelse ($tasks as $task) 
-                <div @click="openTask = openTask === {{ $task->id }} ? null : {{ $task->id }}" class="m-1 transition-all duration-300 ease-in-out" :class="{'shadow-lg': openTask === {{ $task->id }}}">
-                
-                    <div tabindex="0" class="bg-white border-t border-collapse p-3 flex justify-between items-center hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:rounded-lg transition-all duration-300 ease-in-out" :class="{'border-x rounded-t-md': openTask === {{ $task->id }}}">
-            
-                        <div class="flex items-center">
-                            @php
-                                $color = $task->kemajuan['color'];
-                                $backgroundColor = in_array($color, ['red', 'yellow', 'green']) ? "bg-{$color}-500" : 'bg-black'; 
-                            @endphp
-        
-                            <p class="mr-5 p-2 {{ $backgroundColor }} text-white rounded-2xl w-36 text-center text-sm">{{ $task->kemajuan['status'] }}</p>
-                            <p>{{ $task->namakegiatan}}</p>
-                        </div>
-    
-                        <div class="flex items-center">
-                            <p class="text-sm text-gray-500">Tenggat: {{ $task->formattedd_m }}</p>
-                            <p class="text-center ml-3">
-                                <a href="/home/{{ $task->slug }}" @click.stop>
-                                    <img class="w-6 h-6 mx-auto" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
-                                </a>
-                            </p>
-                        </div>
-        
-                    </div>
-            
-                    <div x-show="openTask === {{ $task->id }}" 
-                        class="border p-8 rounded-b-md shadow-md mb-5 overflow-hidden origin-top"
-                        x-data x-effect="if (openTask === {{ $task->id }}) { console.log(
-                        ' Kode Kategori: {{ $task->kodekategori }}\n', 
-                        'Progress Tercapai: {{ $task->latestprogress }}\n', 
-                        'Volume: {{ $task->volume }}\n\n',
-
-                        'Hari Berlalu (PHP): {{ $task->kemajuan['hariberlalu'] }}\n', 
-                        'Hari Berlalu (MySQL): {{ $task->hariberlalu_MySQL }}\n\n',
-
-                        'Jumlah Hari Tugas (PHP): {{ $task->kemajuan['selangharitugas_PHP'] }}\n',
-                        'Jumlah Hari Tugas (MySQL): {{ $task->selangharitugas_MySQL }}\n\n',
-
-                        'Target Perhari (PHP): {{ $task->kemajuan['targetperhari_PHP'] }} \n',
-                        'Target Perhari (MySQL): {{ $task->targetperhari_MySQL }} \n\n', 
-
-                        'Target Harus Tercapai (PHP): {{ $task->kemajuan['tht'] }}\n',
-                        'Target Harus Tercapai (MySQL): {{ $task->targetharustercapai_MySQL }}',
-                        );}">
-                        
-                        <p class="text-sm text-gray-400 mb-3">Posted {{ $task->created_at->format('F d') }}</p>
-                        <p>Deskripsi Pekerjaan:</p>
-                        <p>{{ $task->deskripsi }}</p>
-                    </div>
-            
+                    </form>
                 </div>
-    
-                @empty
-                    <p class="bg-white">
-                        <td class="p-2" colspan="6">Tidak ada tugas</td>
-                    </p>
-                @endforelse    
-    
+
+                <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+                    <div class="flex items-center w-full space-x-3 md:w-auto">
+                        
+                        <select id="sort" class="flex items-center justify-center w-full px-4 py-2 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                            <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                            </svg>
+                            <option value="priority" {{ request('sort') == 'priority' ? 'selected' : '' }} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Tingkat Prioritas</option>
+                            <option value="id" {{ request('sort') == 'id' ? 'selected' : '' }} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Tugas Diberikan</option>
+                            <option value="tenggat" {{ request('sort') == 'tenggat' ? 'selected' : '' }} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Tenggat Terdekat</option>
+                        </select>
+                  
+                        <select id="filter" class="flex items-center justify-center w-full px-4 py-2 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
+                            <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                            </svg>
+                            <option value="" {{ request('filter') == '' ? 'selected' : '' }}>Semua</option>
+                            <option value="terlambat" {{ request('filter') == 'terlambat' ? 'selected' : '' }}>Terlambat</option>
+                            <option value="progress_lambat" {{ request('filter') == 'progress_lambat' ? 'selected' : '' }}>Progress Lambat</option>
+                            <option value="progress_ontime" {{ request('filter') == 'progress_ontime' ? 'selected' : '' }}>Progress On Time</option>
+                            <option value="progress_cepat" {{ request('filter') == 'progress_cepat' ? 'selected' : '' }}>Progress Cepat</option>
+                        </select>
+                  
+                    </div>
+                </div>
             </div>
-    
-            {{ $tasks->links() }}
-    
         </div>
-
-        <script type="text/javascript">
-            @if(session('success'))
-                toastr.success("{{ session('success') }}");
-            @endif
-            @if(session('error'))
-                toastr.error("{{ session('error') }}");
-            @endif
-            @if(session('deleted'))
-                toastr.info("{{ session('deleted') }}");
-            @endif
-        </script>
-
+        <div class="overflow-auto max-h-screen">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-0"> 
+                    <tr>
+                        <th scope="col" class="px-4 py-3">Status</th>
+                        <th scope="col" class="px-4 py-3">Nama Kegiatan</th>
+                        <th scope="col" class="px-4 py-3">Volume/Satuan</th>
+                        <th scope="col" class="px-4 py-3">Tenggat</th>
+                        <th scope="col" class="px-4 py-3">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white border">
+                    @foreach ($tasks as $task)
+                    <tr class="border-b dark:border-gray-700 dark:bg-gray-800">
+                        @php
+                            $color = $task->kemajuan['color'];
+                            $backgroundColor = in_array($color, ['red', 'yellow', 'green']) ? "bg-{$color}-500" : 'bg-black'; 
+                        @endphp
+                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->kemajuan['status'] }}</p>
+                        </th>
+                        <td class="px-4 py-3">{{ $task->namakegiatan }}</td>
+                        <td class="px-4 py-3">{{ $task->volume }} {{ $task->satuan }}</td>
+                        <td class="px-4 py-3">{{ $task->tenggat }}</td>
+                        <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
+                            <a href="/home/{{ $task->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                                <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="bg-white p-4 dark:bg-gray-800 sticky bottom-0 border-t"> <!-- Tambahkan sticky bottom-0 -->
+            {{ $tasks->links() }}
+        </div>
     </div>
     
+    <script type="text/javascript">
+        @if(session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+        @if(session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+        @if(session('deleted'))
+            toastr.info("{{ session('deleted') }}");
+        @endif
+    </script>
+
+    <script>
+        document.getElementById('sort').addEventListener('change', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('sort', this.value);
+            window.location.href = window.location.pathname + '?' + urlParams.toString();
+        });
+
+        document.getElementById('filter').addEventListener('change', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('filter', this.value);
+            urlParams.set('page', 1);
+            window.location.href = window.location.pathname + '?' + urlParams.toString();
+        });
+    </script>
+
 </x-layout> 
