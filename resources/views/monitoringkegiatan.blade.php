@@ -1,21 +1,19 @@
 <x-layout>
     <div class="min-h-screen">
 
-        {{-- Judul Halaman --}}
         <p class="text-sm text-gray-600">Monitoring Kegiatan</p>
 
-        {{-- Button Menambah Tugas --}}
+        {{-- button --}}
         <div class="flex justify-between py-4">
             @if (Auth::check() && Auth::user()->role == 'ketuatim')
                 <div class="flex mb-10">
-                    <button id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block text-white bg-[#37b5fd] hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
-                    + Tambah Kegiatan
-                    </button>
+                    <button type="button" id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">+ Tambah Kegiatan</button>
                 </div>  
             @endif
         </div>
     
-        <!-- Form Tambah Tugas -->
+        
+        
         @if (Auth::check() && Auth::user()->role == 'ketuatim')
         <div id="defaultModal" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-modal">
             <div class="relative w-full max-w-7xl h-[90vh] overflow-y-scroll p-4 bg-white shadow">
@@ -107,20 +105,23 @@
 
         {{ $groups->links() }}
 
-        {{-- Daftar Kegiatan --}}
         <div class="mt-5">
             @foreach ($groups as $group)
-                <div class="flex items-center border-y py-5 justify-between">
+                <div class=" items-center border-y py-5 justify-between">
                     <div class="w-full">
-                        <div class="flex justify-between">
-                            <p>{{ $group->namakegiatan }}</p>
-                            <p>{{ \Carbon\Carbon::parse($group->tenggat)->translatedFormat('d F Y') }}</p>
+
+                        {{-- progress --}}
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">{{ $group->namakegiatan }}</span>
+                            <span class="text-sm font-medium text-blue-700 dark:text-white">{{ \Carbon\Carbon::parse($group->tenggat)->translatedFormat('d F Y') }}</span>
+                          </div>
+                        <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
+                            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: {{ $group->percentage }}%">{{ $group->percentage }}%</div>
                         </div>
-                        <div class="bg-gray-400 rounded-full h-8 relative">
-                            <div class="bg-blue-700 h-8 rounded-full" style="width: {{ $group->percentage }}%;"></div>
-                            <p class="text-center absolute inset-0 flex items-center justify-center text-white font-semibold">{{ number_format($group->percentage, 2) }}%</p>
-                        </div>
-                    </div>
+  
+
+
+                    
                     <div>
                         <p class="text-center ml-10">
                             <a href="/monitoringkegiatan/{{ $group->grouptask_slug }}">

@@ -3,6 +3,7 @@
     <p class="text-sm text-gray-600 mb-5">Tugas Saya</p>
 
     <div class="border shadow-lg sm:rounded-t-lg">
+        {{-- table headers --}}
         <div class="relative bg-white dark:bg-gray-800 sm:rounded-t-lg">
             <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                 
@@ -47,9 +48,10 @@
                 </div>
             </div>
         </div>
+        {{-- advanced tables --}}
         <div class="overflow-auto max-h-screen">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-0"> 
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-t"> 
                     <tr>
                         <th scope="col" class="px-4 py-3">Status</th>
                         <th scope="col" class="px-4 py-3">Nama Kegiatan</th>
@@ -58,9 +60,9 @@
                         <th scope="col" class="px-4 py-3">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white border">
-                    @foreach ($tasks as $task)
-                    <tr class="border-b dark:border-gray-700 dark:bg-gray-800">
+                <tbody class="bg-white border-t dark:border-gray-700 dark:bg-gray-800">
+                    @forelse ($tasks as $task)
+                    <tr class="border-t">
                         @php
                             $color = $task->kemajuan['color'];
                             $backgroundColor = in_array($color, ['red', 'yellow', 'green']) ? "bg-{$color}-500" : 'bg-black'; 
@@ -77,7 +79,11 @@
                             </a>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr class="text-center">
+                        <td colspan="5" class="px-4 py-3">Tidak Ada Tugas Ditemukan</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
