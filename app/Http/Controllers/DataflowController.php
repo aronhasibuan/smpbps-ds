@@ -99,9 +99,15 @@ class DataflowController extends Controller
             return $group;
         });
 
+        return view('monitoringkegiatan', ['groups' => $groups]);
+    }
+
+    // data view ('createtask')
+    public function createtask()
+    {
         $anggotatim = User::where('role', 'anggotatim')->get();
 
-        return view('monitoringkegiatan', ['groups' => $groups, 'anggotatim' => $anggotatim]);
+        return view('createtask', ['anggotatim' => $anggotatim]);
     }
 
     // data view('kegiatan')

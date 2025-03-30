@@ -59,6 +59,9 @@ Route::middleware(['auth'])->group(function(){
         return view('monitoringpegawai');
     });
 
+    // tambahkegiatan
+    Route::get('/tambahkegiatan', [DataflowController::class, 'createtask']);
+
     // kegiatan
     Route::get('/monitoringkegiatan/{grouptask_slug}', [DataflowController::class, 'kegiatan']);
 

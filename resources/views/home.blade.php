@@ -87,7 +87,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="bg-white p-4 dark:bg-gray-800 sticky bottom-0 border-t"> <!-- Tambahkan sticky bottom-0 -->
+        <div class="bg-white p-4 dark:bg-gray-800 sticky bottom-0 border-t">
             {{ $tasks->links() }}
         </div>
     </div>
