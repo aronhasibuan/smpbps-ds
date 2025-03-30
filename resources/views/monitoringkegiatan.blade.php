@@ -4,36 +4,34 @@
         <p class="text-sm text-gray-600">Monitoring Kegiatan</p>
 
         {{-- button --}}
-        <div class="flex justify-between py-4">
-            @if (Auth::check() && Auth::user()->role == 'ketuatim')
-                <div class="flex mb-10">
-                    <button type="button" id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">+ Tambah Kegiatan</button>
-                </div>  
-            @endif
-        </div>
-    
-        
+        @if (Auth::check() && Auth::user()->role == 'ketuatim')
+            <div class="flex mt-7">
+                <button id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
+                    + Tambah Kegiatan
+                </button>
+            </div>
+        @endif
         
         @if (Auth::check() && Auth::user()->role == 'ketuatim')
-        <div id="defaultModal" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-modal">
-            <div class="relative w-full max-w-7xl h-[90vh] overflow-y-scroll p-4 bg-white shadow">
+        <div id="defaultModal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
+            <div class="relative w-full max-w-7xl h-[90vh] overflow-y-scroll p-4 bg-white shadow dark:bg-gray-800">
+                    
+                <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Tambah Kegiatan</h3>
 
-                <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b">
-                    <h3 class="text-lg font-semibold text-gray-900">Tambah Kegiatan</h3>
-
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="defaultModal">
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal">
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                        <span class="sr-only">Close modal</span>
+                        <span class="sr-only">Tutup Form</span>
                     </button>
                 </div>
 
                 <form action="{{ route('home') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                     <div class="mb-8">
-                        <div class="mb-4">
-                            <label for="namakegiatan" class="block text-sm font-medium text-gray-900 dark:text-white">Nama Kegiatan</label>
+                        <div class="mb-4 gap-4 sm:grid-cols-2">
+                            <label for="namakegiatan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Kegiatan</label>
                             <p class="text-xs text-gray-400">Contoh: Susenas Maret 2025</p>
-                            <input type="text" name="namakegiatan" id="namakegiatan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5" required="" autocomplete="off">
+                            <input type="text" name="namakegiatan" id="namakegiatan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                         </div>
 
                         <div class="flex mb-4">
@@ -54,7 +52,7 @@
                                     <div class="mr-4 flex-1">
                                         <label class="block text-sm font-medium text-gray-900">Deskripsi</label>
                                         <p class="text-xs text-gray-400">Contoh: Lakukan Pencacahan Pada Blok Sensus Terpilih</p>
-                                        <input name="deskripsi[]" class="deskripsi block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500" required="" autocomplete="off">
+                                        <textarea name="deskripsi[]" class="deskripsi block p-2.5 w-full h-11 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500" required="" autocomplete="off"></textarea>
                                     </div>
                                 
                                     <div>
@@ -105,30 +103,27 @@
 
         {{ $groups->links() }}
 
-        <div class="mt-5">
+        <div>
             @foreach ($groups as $group)
-                <div class=" items-center border-y py-5 justify-between">
-                    <div class="w-full">
+                <div class="items-center py-5 justify-between">
+                    <div class="w-full border-b">
 
                         {{-- progress --}}
-                        <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">{{ $group->namakegiatan }}</span>
-                            <span class="text-sm font-medium text-blue-700 dark:text-white">{{ \Carbon\Carbon::parse($group->tenggat)->translatedFormat('d F Y') }}</span>
-                          </div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-base font-bold text-gray-900 dark:text-white">{{ $group->namakegiatan }}</span>
+                            <span class="text-sm font-bold text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($group->tenggat)->translatedFormat('d F Y') }}</span>
+                        </div>
                         <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
                             <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: {{ $group->percentage }}%">{{ $group->percentage }}%</div>
                         </div>
-  
-
-
                     
-                    <div>
-                        <p class="text-center ml-10">
-                            <a href="/monitoringkegiatan/{{ $group->grouptask_slug }}">
-                                <img class="w-8 h-8 mx-auto" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
-                            </a>
-                        </p>
-                    </div>
+                        <div class="mb-5 mt-4">
+                            <p>
+                                <a href="/monitoringkegiatan/{{ $group->grouptask_slug }}" class="font-medium text-primary-600 hover:text-primary-800 dark:text-primary-500 dark:hover:text-primary-700">
+                                    Lihat Detail >
+                                </a>
+                            </p>
+                        </div>
                 </div>
             @endforeach
         </div>
