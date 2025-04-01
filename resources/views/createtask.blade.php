@@ -1,6 +1,6 @@
 <x-layout>
     <div class="bg-white dark:bg-gray-900">
-        <div class="py-8">
+        <div class="py-8 px-4 mx-auto lg:py-16">
 
             <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Tambah Kegiatan</h2>
     
@@ -13,18 +13,18 @@
                     <input type="text" name="namakegiatan" id="namakegiatan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                 </div>
 
-                <div class="mb-4">
+                <div class="md:mb-4 mb-10">
                     <label for="tenggat" class="block text-sm font-medium text-gray-900 dark:text-white">Tenggat Pekerjaan</label>
                     <p class="  text-xs text-gray-400">Contoh: 26/09/2025</p>
                     <input type="date" name="tenggat" id="tenggat" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                 </div>
 
                 <div id="taskContainer" class="w-full">
-                    <div class="task-item grid w-full grid-cols-5 gap-8 mb-2">
+                    <div class="task-item grid w-full md:grid-cols-5 gap-4 mb-2 md:border-none border md:p-0 p-5">
 
                         <div>
                             <label class="block text-sm font-medium text-gray-900 dark:text-white">Penerima Tugas</label>
-                            <p class="text-xs text-gray-400">Pilih anggota tim untuk ditugaskan</p>
+                            <p class="text-xs text-gray-400">Pilih Penerima Tugas</p>
                             <select name="penerimatugas_id[]" class="penerimatugas bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 <option selected disabled>Pilih Anggota Tim</option>
                                 @foreach ($anggotatim as $user)
@@ -35,7 +35,7 @@
                             
                         <div>
                             <label class="block text-sm font-medium text-gray-900 dark:text-white">Deskripsi</label>
-                            <p class="text-xs text-gray-400">Contoh: Listing, Pencacahan, Cleaning</p>
+                            <p class="text-xs text-gray-400">Deskripsi Pekerjaan</p>
                             <textarea name="deskripsi[]" class="deskripsi bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full h-11 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off"></textarea>
                         </div>
                             
@@ -46,8 +46,8 @@
                         </div>
 
                         <div>
-                            <label for="attachment" class="block text-sm font-medium text-gray-900 dark:text-white">Upload Dokumen</label>
-                            <p class="text-xs text-gray-400">Ukuran maksimal file 5mb</p>
+                            <label class="block text-sm font-medium text-gray-900 dark:text-white">Upload Dokumen</label>
+                            <p class="text-xs text-gray-400">Maximum size 5 mb</p>
                             <input type="file" name="attachment[]" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
                         </div>
 
@@ -64,7 +64,7 @@
             
                 <div>
                     <label for="satuan" class="block text-sm font-medium text-gray-900 dark:text-white">Satuan</label>
-                    <p class="text-xs text-gray-400">Contoh: Blok Sensus</p>
+                    <p class="text-xs text-gray-400">Contoh: Blok Sensus, Publikasi</p>
                     <input type="text" name="satuan" id="satuan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                 </div>
                    
@@ -85,15 +85,19 @@
             if (firstTask) {
                 let newTask = firstTask.cloneNode(true);
 
-                newTask.querySelectorAll("input").forEach(input => {
-                    input.value = "";
+                newTask.querySelectorAll("input, textarea").forEach(element => {
+                    element.value = "";
                 });
 
                 newTask.querySelectorAll("select").forEach(select => {
                     select.selectedIndex = 0; 
                 });
 
-                newTask.querySelectorAll("label, p").forEach(element => element.remove());
+                newTask.querySelectorAll("p").forEach(element => element.remove());
+
+                if (!window.matchMedia("(max-width: 639px)").matches) { 
+                    newTask.querySelectorAll("label").forEach(element => element.remove());
+                }
 
                 let removeButton = newTask.querySelector(".remove-task");
                 removeButton.classList.remove("invisible");
@@ -121,6 +125,14 @@
         @if(session('deleted'))
             toastr.info("{{ session('deleted') }}");
         @endif
+        if (window.location.pathname === "/tambahkegiatan") {
+            const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            if (isDarkMode) {
+                document.documentElement.style.backgroundColor = "#111827"; // bg-gray-900
+            } else {
+                document.documentElement.style.backgroundColor = "#f9fafb"; // bg-gray-50
+            }
+        }
     </script>
 
     <script>
