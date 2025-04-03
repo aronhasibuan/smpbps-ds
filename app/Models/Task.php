@@ -44,11 +44,16 @@ class Task extends Model{
 
     public function getFormattedTenggatAttribute()
     {
-        return Carbon::parse($this->tenggat)->translatedFormat('d F Y');
+        return Carbon::parse($this->tenggat)
+            ->locale('id') 
+            ->translatedFormat('d F'); 
     }
 
-    public function getFormatteddMAttribute(){
-        return Carbon::parse($this->tenggat)->translatedFormat('d M');
+    public function getFormattedCreatedatAttribute()
+    {
+        return Carbon::parse($this->tenggat)
+            ->locale('id') 
+            ->translatedFormat('d F');
     }
 
     public function getKemajuanAttribute(){

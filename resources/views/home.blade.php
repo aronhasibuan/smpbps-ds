@@ -9,14 +9,14 @@
                 
                 <div class="w-full md:w-1/2">
                     <form class="flex items-center" action="/home" method="GET">
-                        <label for="search" class="sr-only">Search</label>
+                        <label for="search" class="sr-only"></label>
                         <div class="relative w-full">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="text" id="search" name="search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" autocomplete="off">
+                            <input type="text" id="search" name="search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Cari Tugas..." autocomplete="off">
                         </div>
                     </form>
                 </div>
@@ -62,27 +62,34 @@
                 </thead>
                 <tbody class="bg-white border-t dark:border-gray-700 dark:bg-gray-800">
                     @forelse ($tasks as $task)
-                    <tr class="border-t">
-                        @php
-                            $color = $task->kemajuan['color'];
-                            $backgroundColor = in_array($color, ['red', 'yellow', 'green']) ? "bg-{$color}-500" : 'bg-black'; 
-                        @endphp
-                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->kemajuan['status'] }}</p>
-                        </th>
-                        <td class="px-4 py-3">{{ $task->namakegiatan }}</td>
-                        <td class="px-4 py-3">{{ $task->volume }} {{ $task->satuan }}</td>
-                        <td class="px-4 py-3">{{ $task->tenggat }}</td>
-                        <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                            <a href="/home/{{ $task->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
-                                <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
-                            </a>
-                        </td>
-                    </tr>
+                        <tr class="border-t">
+                            @php
+                                $color = $task->kemajuan['color'];
+                                $backgroundColor = in_array($color, ['red', 'yellow', 'green']) ? "bg-{$color}-500" : 'bg-black'; 
+                            @endphp
+                            <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->kemajuan['status'] }}</p>
+                            </th>
+                            <td class="px-4 py-3">{{ $task->namakegiatan }}</td>
+                            <td class="px-4 py-3">{{ $task->volume }} {{ $task->satuan }}</td>
+                            <td class="px-4 py-3">{{ $task->formatted_tenggat }}</td>
+                            <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
+                                <a href="/home/{{ $task->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                                    <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
+                                </a>
+                            </td>
+                        </tr>
                     @empty
-                    <tr class="text-center">
-                        <td colspan="5" class="px-4 py-3">Tidak Ada Tugas Ditemukan</td>
-                    </tr>
+                        <tr class="text-center">
+                            <td colspan="5" class="px-4 py-3">Tidak Ada Tugas Ditemukan</td>
+                        </tr>
+                        @if(request()->has('search'))
+                            <tr class="text-center">
+                                <td colspan="5">
+                                    <a href="{{ route('home') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                                </td>
+                            </tr>
+                        @endif
                     @endforelse
                 </tbody>
             </table>
@@ -95,12 +102,6 @@
     <script type="text/javascript">
         @if(session('success'))
             toastr.success("{{ session('success') }}");
-        @endif
-        @if(session('error'))
-            toastr.error("{{ session('error') }}");
-        @endif
-        @if(session('deleted'))
-            toastr.info("{{ session('deleted') }}");
         @endif
     </script>
 

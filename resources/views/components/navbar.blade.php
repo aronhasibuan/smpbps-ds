@@ -71,6 +71,9 @@
                         </li>
                         <li>
                             <x-nav-link href="/monitoringpegawai" :active="request()->is('monitoringpegawai')">Monitoring Pegawai</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/arsipkegiatan" :active="request()->is('arsipkegiatan')">Arsip Kegiatan</x-nav-link>
                         </li>              
                     @endif
 

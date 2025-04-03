@@ -137,7 +137,8 @@ class TaskController extends Controller
 
         $task->save();
 
-        return redirect('home')->with('success', 'Progress berhasil diperbarui!');
+        session()->flash('updated', 'Progress Berhasil Diperbarui');
+        return redirect()->back();
     }
 
     public function getActiveTasks()

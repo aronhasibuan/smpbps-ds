@@ -1,76 +1,53 @@
 <x-layout>
-    <div class="min-h-screen overflow-y-visible">
+    <div>
 
-        {{-- Judul Halaman --}}
-        <a href="javascript:history.back()" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+        <a href="/monitoringkegiatan" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+        <p class="font-bold mt-5 dark:text-white">{{ $tasks->first()->namakegiatan }}</p>
 
-        <p class="font-bold mt-5">{{ $tasks->first()->namakegiatan }}</p>
-
-        {{-- Daftar Tugas --}}
-    
-        <div class="py-8">
-
-            @forelse ($tasks as $task) 
-            <div class="m-1 border-t border-collapse p-3 hover:bg-gray-100">
-                <p class="mb-4 font-semibold">{{ $task->penerimatugas->name }}</p>
-
-                <div class="flex justify-between items-center mb-2">
-                    
-                    <div class="flex items-center">
+        {{-- advanced table --}}    
+        <div class="overflow-auto max-h-screen">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-t"> 
+                    <tr>
+                        <th scope="col" class="px-4 py-3">Status</th>
+                        <th scope="col" class="px-4 py-3">Nama Anggota Tim</th>
+                        <th scope="col" class="px-4 py-3">Tugas Selesai</th>
+                        <th scope="col" class="px-4 py-3">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white border-t dark:border-gray-700 dark:bg-gray-800">
+                    @foreach ($tasks as $task)
+                    <tr class="border-t">
                         @php
                             $color = $task->kemajuan['color'];
                             $backgroundColor = in_array($color, ['red', 'yellow', 'green']) ? "bg-{$color}-500" : 'bg-black'; 
                         @endphp
-    
-                        <p class="mr-5 p-2 {{ $backgroundColor }} text-white rounded-2xl w-36 text-center text-sm">{{ $task->kemajuan['status'] }}</p>
-                    </div>
-
-                    <div class="relative w-8/12 bg-gray-300 rounded-full h-8">
-                        <div class="bg-blue-600 h-8 rounded-full" style="width: {{ $task->percentage_progress }}%;"></div>
-                        <span class="absolute left-1/2 transform -translate-x-1/2 font-bold">{{ $task->percentage_progress }}%</span>
-                    </div>
-
-                    <div class="flex items-center">
-                        <p class="text-sm text-gray-500">Tenggat: {{ $task->formattedd_m }}</p>
-                        <p class="text-center ml-3">
-                            <a href="{{ route('dataflow.taskmonitoring', ['grouptask_slug' => $task->grouptask_slug, 'slug'=>$task->slug])}}" @click.stop>
-                                <img class="w-6 h-6 mx-auto" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
+                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->kemajuan['status'] }}</p>
+                        </th>
+                        <td class="px-4 py-3">{{ $task->penerimatugas->name }}</td>
+                        <td class="px-4 py-3">{{ $task->latestprogress }} dari {{ $task->volume }} {{ $task->satuan }}</td>
+                        <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
+                            <a href="{{ route('dataflow.taskmonitoring', ['grouptask_slug' => $task->grouptask_slug, 'slug'=>$task->slug])}}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                                <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                             </a>
-                        </p>
-                    </div>
-    
-                </div>
-                
-                <p class="text-gray-600">Tugas Selesai: {{$task->latestprogress}} dari {{ $task->volume }}</p>
-
-            </div>
-
-            @empty
-                <p class="bg-white">
-                    <td class="p-2" colspan="6">Tidak ada tugas</td>
-                </p>
-            @endforelse    
-
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
 
         <hr>
 
-        <div class="text-center p-5">
-            <p class="font-semibold mb-2">Total Progress:</p>
-            <div>
-                @php
-                    $totalProgress = $tasks->count() > 0 
-                        ? round($tasks->sum('percentage_progress') / $tasks->count(), 2) 
-                        : 0;
-                @endphp
-                <div class="relative w-full bg-gray-300 rounded-full h-6">
-                    <div class="bg-blue-600 h-6 rounded-full" style="width: {{ $totalProgress }}%;"></div>
-                    <span class="absolute left-1/2 transform -translate-x-1/2 font-bold">{{ $totalProgress }}%</span>
-                </div>
-            </div>
+        {{-- progress --}}
+        <div class="flex justify-between mb-2 mt-20">
+            <span class="md:text-base text-sm font-bold text-gray-900 dark:text-white">Total Progress</span>
+            <span class="md:text-base text-sm font-bold text-gray-900 dark:text-white">Deadline: {{ $tasks->first()->tenggat; }}</span>
         </div>
-        
+        <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
+            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: {{ $totalProgress }}%">{{ $totalProgress }}%</div>
+        </div>
 
     </div>
-    
 </x-layout> 

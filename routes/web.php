@@ -51,6 +51,9 @@ Route::middleware(['auth'])->group(function(){
     // arsip
     Route::get('/arsip', [DataflowController::class, 'arsip'])->name('arsip');
 
+    // arsipkegiatan
+    Route::get('/arsipkegiatan', [DataflowController::class, 'arsipkegiatan'])->name('arsipkegiatan');
+
     // monitoringkegiatan
     Route::get('/monitoringkegiatan', [DataflowController::class, 'monitoringkegiatan']);
 

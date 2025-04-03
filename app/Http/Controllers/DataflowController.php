@@ -83,19 +83,23 @@ class DataflowController extends Controller
         return view('arsip', ['tasks' => $tasks]);
     }
 
+    // data view('arsipkegiatan')
+    public function arsipkegiatan(){
+        return view('arsipkegiatan');
+    }
+
     // data view('monitoringkegiatan')
     public function monitoringkegiatan()
     {
         $user = Auth::user();
 
-        $groups = Task::selectRaw('tasks.grouptask_slug, tasks.namakegiatan, SUM(tasks.volume) as total_volume, MAX(tasks.tenggat) as tenggat, COALESCE(SUM(progress.progress), 0) as total_progress')
-            ->leftJoin('progress','tasks.id','=','progress.task_id')
+        $groups = Task::selectRaw('grouptask_slug, namakegiatan, SUM(volume) as total_volume, MAX(tasks.tenggat) as tenggat, SUM(latestprogress) as total_progress')
             ->where('pemberitugas_id', $user->id)
             ->groupBy('grouptask_slug', 'namakegiatan')
             ->paginate(5);
 
         $groups->getCollection()->transform(function($group){
-            $group->percentage = $group->total_volume > 0 ? ($group->total_progress/$group->total_volume)*100 : 0;
+            $group->percentage = ($group->total_progress/$group->total_volume)*100;
             return $group;
         });
 
@@ -117,8 +121,9 @@ class DataflowController extends Controller
         if ($tasks->isEmpty()) {
             abort(404, 'Data tidak ditemukan');
         }
+        $totalProgress = round($tasks->sum('percentage_progress') / $tasks->count(), 2);
 
-        return view('kegiatan', ['tasks' => $tasks]);
+        return view('kegiatan', ['tasks' => $tasks, 'totalProgress' => $totalProgress]);
     }
 
     // data view('task')

@@ -2,7 +2,9 @@
     <div class="bg-white dark:bg-gray-900">
         <div class="py-8 px-4 mx-auto lg:py-16">
 
-            <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Tambah Kegiatan</h2>
+            <a href="/monitoringkegiatan" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+
+            <h2 class="mb-4 mt-4 text-xl font-bold text-gray-900 dark:text-white">Tambah Kegiatan</h2>
     
             <form action="{{ route('home') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -113,6 +115,12 @@
                 taskContainer.appendChild(newTask);
             }
         });
+
+        flatpickr("#tenggat", {
+        dateFormat: "Y-m-d",  
+        minDate: "today",      
+        disableMobile: true 
+        });
     </script>
 
     <script type="text/javascript">
@@ -133,14 +141,6 @@
                 document.documentElement.style.backgroundColor = "#f9fafb"; // bg-gray-50
             }
         }
-    </script>
-
-    <script>
-        flatpickr("#tenggat", {
-        dateFormat: "Y-m-d",  
-        minDate: "today",      
-        disableMobile: true 
-        });
     </script>
 
 </x-layout> 
