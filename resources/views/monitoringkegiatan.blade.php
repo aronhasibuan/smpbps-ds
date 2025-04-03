@@ -12,31 +12,35 @@
             </div>
         @endif
 
-        {{ $groups->links() }}
+        {{ $kegiatan->links() }}
 
         <div>
-            @foreach ($groups as $group)
+            @forelse ($kegiatan as $giat)
                 <div class="items-center py-5 justify-between">
                     <div class="w-full border-b">
 
                         {{-- progress --}}
                         <div class="flex justify-between mb-2">
-                            <span class="text-base font-bold text-gray-900 dark:text-white">{{ $group->namakegiatan }}</span>
-                            <span class="text-sm font-bold text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($group->tenggat)->translatedFormat('d F Y') }}</span>
+                            <span class="text-base font-bold text-gray-900 dark:text-white">{{ $giat->namakegiatan }}</span>
+                            <span class="text-sm font-bold text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($giat->tenggat)->translatedFormat('d F Y') }}</span>
                         </div>
                         <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
-                            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: {{ $group->percentage }}%">{{ $group->percentage }}%</div>
+                            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: {{ $giat->progressPercentage }}%">{{ $giat->progressPercentage }}%</div>
                         </div>
                     
                         <div class="mb-5 mt-4">
                             <p>
-                                <a href="/monitoringkegiatan/{{ $group->grouptask_slug }}" class="font-medium text-primary-600 hover:text-primary-800 dark:text-primary-500 dark:hover:text-primary-700">
+                                <a href="/monitoringkegiatan/{{ $giat->slug }}" class="font-medium text-primary-600 hover:text-primary-800 dark:text-primary-500 dark:hover:text-primary-700">
                                     Lihat Detail >
                                 </a>
                             </p>
                         </div>
                 </div>
-            @endforeach
+            @empty
+                <div>
+                    <p class="text-center m-5">Tidak Kegiatan Ditemukan</p>
+                </div>
+            @endforelse
         </div>   
 
         <script type="text/javascript">

@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function(){
 
     // task
     Route::get('/home/{task:slug}', [DataflowController::class, 'task']);
-    Route::get('/monitoringkegiatan/{grouptask_slug}/{slug}', [DataflowController::class, 'taskmonitoring'])->name('dataflow.taskmonitoring');
+    Route::get('/monitoringkegiatan/{kegiatan_slug}/{slug}', [DataflowController::class, 'taskmonitoring'])->name('dataflow.taskmonitoring');
     Route::post('/tasks/{id}/complete', [TaskController::class, 'updateprogress'])->name('tasks.updateprogress');
     Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
@@ -66,7 +66,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/tambahkegiatan', [DataflowController::class, 'createtask']);
 
     // kegiatan
-    Route::get('/monitoringkegiatan/{grouptask_slug}', [DataflowController::class, 'kegiatan']);
+    Route::get('/monitoringkegiatan/{kegiatan:slug}', [DataflowController::class, 'kegiatan']);
 
     Route::get('/monitoring/active', [TaskController::class, 'getActiveTasks'])->name('tasks.active');
 });

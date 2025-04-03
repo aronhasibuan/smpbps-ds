@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use function Laravel\Prompts\table;
+
 return new class extends Migration
 {
     /**
@@ -27,12 +29,17 @@ return new class extends Migration
                 table: 'users',
                 indexName: 'tasks_penerimatugas_id'
             );
-            $table->integer('grouptask_id');
-            $table->string('grouptask_slug');
             $table->string('latestprogress')->default(0);
             $table->string('attachment')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
+        });
+
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->foreignId('kegiatan_id')->constrained(
+                table: 'kegiatan',
+                indexName: 'tasks_kegiatan_id'
+            );
         });
     }
 

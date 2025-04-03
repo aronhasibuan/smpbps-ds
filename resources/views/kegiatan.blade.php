@@ -28,7 +28,7 @@
                         <td class="px-4 py-3">{{ $task->penerimatugas->name }}</td>
                         <td class="px-4 py-3">{{ $task->latestprogress }} dari {{ $task->volume }} {{ $task->satuan }}</td>
                         <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                            <a href="{{ route('dataflow.taskmonitoring', ['grouptask_slug' => $task->grouptask_slug, 'slug'=>$task->slug])}}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                            <a href="{{ route('dataflow.taskmonitoring', ['kegiatan_slug' => $task->kegiatan->slug, 'slug'=>$task->slug])}}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                 <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                             </a>
                         </td>

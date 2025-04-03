@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Kegiatan;
 use App\Models\Progress;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\NotifyService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
@@ -28,44 +30,54 @@ class TaskController extends Controller
         try {
             $validatedData = $request->validate([
                 'namakegiatan' => 'required|string|max:255',
+                'tenggat' => 'required|date',
+                'penerimatugas_id' => 'required|array',
+                'penerimatugas_id.*' => 'exists:users,id',
                 'deskripsi' => 'required|array',
                 'deskripsi.*' => 'string|max:1000',
                 'volume' => 'required|array',
                 'volume.*' => 'numeric',
+                'attachment.*' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120',
+                'attachment' => 'file',
                 'satuan' => 'required|string|max:255',
-                'tenggat' => 'required|date',
-                'penerimatugas_id' => 'required|array',
-                'penerimatugas_id.*' => 'exists:users,id',
-                'attachment' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120',
             ]);
 
-            $attachmentPath = $request->hasFile('attachment') ? $request->file('attachment')->store('attachments', 'public') : null;
+            $kegiatanid = Kegiatan::latest('id')->first()->id ?? 0;
+            $newkegiatanid = $kegiatanid + 1;
+            $namakegiatan_slug = Str::slug($validatedData['namakegiatan']);
+            $tanggal_dibuat = Carbon::now()->format('d-m-Y');
+            $tanggal_tenggat = Carbon::parse($validatedData['tenggat'])->format('d-m-Y');
+            $kegiatan_slug = "{$newkegiatanid}_{$namakegiatan_slug}_{$tanggal_dibuat}_{$tanggal_tenggat}";
 
-            $lastGroupTaskId = Task::latest('grouptask_id')->first()->grouptask_id ?? 0;
-            $newGroupTaskId = $lastGroupTaskId + 1;
-            $judulSlug = Str::slug($validatedData['namakegiatan']);
-            $grouptask_slug = "{$newGroupTaskId}_{$judulSlug}";
+            Kegiatan::create([
+                'namakegiatan' => $validatedData['namakegiatan'],
+                'slug' => $kegiatan_slug,
+                'tenggat' => Carbon::parse($validatedData['tenggat'])->format('Y-m-d'),
+                'pemberitugas_id' => Auth::id(),
+            ]);
 
             foreach ($validatedData['penerimatugas_id'] as $index => $penerimaId) {
                 $lastTaskId = Task::latest('id')->first()->id ?? 0;
                 $newTaskId = $lastTaskId + 1;
-
                 $penerima = User::find($penerimaId);
                 $slug = "{$newTaskId}_{$penerima->username}";
-
-            
+                
+                if ($request->hasFile('attachment') && isset($request->file('attachment')[$index])) {
+                    $file = $request->file('attachment')[$index];
+                    $path = $file->store('attachments', 'public');
+                }
+                
                 Task::create([
                     'namakegiatan' => $validatedData['namakegiatan'],
                     'slug' => $slug,
+                    'kegiatan_id' => $newkegiatanid,
                     'deskripsi' => $validatedData['deskripsi'][$index],
                     'volume' => $validatedData['volume'][$index],
                     'satuan' => $validatedData['satuan'],
                     'tenggat' => Carbon::parse($validatedData['tenggat'])->format('Y-m-d'),
                     'pemberitugas_id' => Auth::id(),
                     'penerimatugas_id' => $penerimaId,
-                    'grouptask_id' => $newGroupTaskId,
-                    'grouptask_slug' => $grouptask_slug,
-                    'attachment' => $attachmentPath,
+                    'attachment' => Storage::url($path),
                 ]);
 
                 Progress::create([

@@ -39,12 +39,14 @@
                     <p class="dark:text-white">Banyak Pekerjaan: {{ $task->volume }} {{ $task->satuan }}</p>
                 </div>
 
-                <div class="mb-4">
-                    @if ($task->attachment)
-                        <div class="cursor-pointer mb-10">
-                            <a href="{{ url('/file/' . basename($task->attachment)) }}" target="_blank" class="no-underline bg-[#228be6] text-white text-md p-2 rounded-md">Lihat Lampiran</a>
-                        </div>
-                    @endif
+                <div>
+                    <div class="mt-8">
+                        @if ($task->attachment)
+                            <div class="cursor-pointer mb-10">
+                                <a href="{{ url('/file/' . basename($task->attachment)) }}" target="_blank" class="no-underline bg-[#228be6] text-white text-md p-2 rounded-md">Lihat Lampiran</a>
+                            </div>
+                        @endif
+                    </div>
 
                     <label class="text-gray-700 font-bold mb-2 block dark:text-white">Progress Pekerjaan:</label>
 
@@ -132,40 +134,22 @@
                             <form action="{{ route('tasks.update', $task->id) }}" method="POST">
                             @csrf
                             @method('PUT')
-                                <div class="mb-8 sm:grid-cols-2">
-                                    <div class="mb-4">
-                                        <label for="namakegiatan" class="block text-sm font-medium text-gray-900 dark:text-white">Nama Kegiatan</label>
-                                        <input type="text" name="namakegiatan" id="namakegiatan" value="{{ $task->namakegiatan }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
+                                <div>
+                                    <div class="mb-6">
+                                        <label for="volume" class="block text-sm font-medium text-gray-900 dark:text-white">Volume</label>
+                                        <input type="number" name="volume" id="volume" value="{{ $task->volume }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
+                                    </div>        
+                            
+                                    <div class="mb-6">
+                                        <label for="attachment" class="block text-sm font-medium text-gray-900 dark:text-white">Upload Dokumen</label>
+                                        <p class="  text-xs text-gray-400">Ukuran maksimal file 5mb</p>
+                                        <input type="file" name="attachment" id="attachment" class="">
                                     </div>
-                                    <div class="sm:col-span-2 mb-4">
-                                        <label for="deskripsi" class="block text-sm font-medium text-gray-900 dark:text-white">Deskripsi</label>
-                                        <textarea id="deskripsi" name="deskripsi" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">{{ $task->deskripsi }}</textarea>                    
-                                    </div>
-                                    <div class="flex mb-4">
-                                        <div class="mr-4">
-                                            <label for="volume" class="block text-sm font-medium text-gray-900 dark:text-white">Volume</label>
-                                            <input type="number" name="volume" id="volume" value="{{ $task->volume }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
-                                        </div>
-                                        <div class="">
-                                            <label for="satuan" class="block text-sm font-medium text-gray-900 dark:text-white">Satuan</label>
-                                            <input type="text" name="satuan" id="satuan" value="{{ $task->satuan }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
-                                        </div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="tenggat" class="block text-sm font-medium text-gray-900 dark:text-white">Tenggat</label>
-                                        <input type="date" name="tenggat" id="tenggat" value="{{ $task->tenggat }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
-                                    </div>
-                                </div>
-                        
-                                <div class="mb-4">
-                                    <label for="attachment" class="block text-sm font-medium text-gray-900 dark:text-white">Upload Dokumen</label>
-                                    <p class="  text-xs text-gray-400">Ukuran maksimal file 5mb</p>
-                                    <input type="file" name="attachment" id="attachment" class="">
-                                </div>
 
-                                <button type="submit" class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                    Perbarui Tugas
-                                </button>
+                                    <button type="submit" class="justify-center text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                        Perbarui Tugas
+                                    </button>
+                                </div>
                             </form>
 
                         </div>

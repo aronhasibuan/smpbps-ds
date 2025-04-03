@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Kegiatan;
 use App\Models\Progress;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -93,17 +94,29 @@ class DataflowController extends Controller
     {
         $user = Auth::user();
 
-        $groups = Task::selectRaw('grouptask_slug, namakegiatan, SUM(volume) as total_volume, MAX(tasks.tenggat) as tenggat, SUM(latestprogress) as total_progress')
-            ->where('pemberitugas_id', $user->id)
-            ->groupBy('grouptask_slug', 'namakegiatan')
+        $kegiatan = Kegiatan::where('pemberitugas_id', $user->id)
+            ->with(['tasks' => function($query) {
+                $query->select('kegiatan_id', 'latestprogress', 'volume');
+            }])
             ->paginate(5);
 
-        $groups->getCollection()->transform(function($group){
-            $group->percentage = ($group->total_progress/$group->total_volume)*100;
-            return $group;
+        // Hitung progress untuk setiap kegiatan
+        $kegiatan->each(function ($keg) {
+            if ($keg->tasks->isNotEmpty()) {
+                $totalVolume = $keg->tasks->sum('volume');
+                $totalProgress = $keg->tasks->sum(function ($task) {
+                    return ($task->latestprogress / 100) * $task->volume;
+                });
+                
+                $keg->progressPercentage = $totalVolume > 0 
+                    ? round(($totalProgress / $totalVolume) * 100, 2)
+                    : 0;
+            } else {
+                $keg->progressPercentage = 0;
+            }
         });
 
-        return view('monitoringkegiatan', ['groups' => $groups]);
+        return view('monitoringkegiatan', ['kegiatan' => $kegiatan]);
     }
 
     // data view ('createtask')
@@ -115,9 +128,9 @@ class DataflowController extends Controller
     }
 
     // data view('kegiatan')
-    public function kegiatan($grouptask_slug)
+    public function kegiatan(Kegiatan $kegiatan)
     {
-        $tasks = Task::where('grouptask_slug', $grouptask_slug)->paginate(5);
+        $tasks = Task::where('kegiatan_id', $kegiatan->id)->paginate(5);
         if ($tasks->isEmpty()) {
             abort(404, 'Data tidak ditemukan');
         }
