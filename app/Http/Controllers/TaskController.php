@@ -38,50 +38,49 @@ class TaskController extends Controller
                 'volume' => 'required|array',
                 'volume.*' => 'numeric',
                 'attachment.*' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120',
-                'attachment' => 'file',
                 'satuan' => 'required|string|max:255',
             ]);
 
-            $kegiatanid = Kegiatan::latest('id')->first()->id ?? 0;
-            $newkegiatanid = $kegiatanid + 1;
-            $namakegiatan_slug = Str::slug($validatedData['namakegiatan']);
-            $tanggal_dibuat = Carbon::now()->format('d-m-Y');
-            $tanggal_tenggat = Carbon::parse($validatedData['tenggat'])->format('d-m-Y');
-            $kegiatan_slug = "{$newkegiatanid}_{$namakegiatan_slug}_{$tanggal_dibuat}_{$tanggal_tenggat}";
-
-            Kegiatan::create([
+            $kegiatan = Kegiatan::create([
                 'namakegiatan' => $validatedData['namakegiatan'],
-                'slug' => $kegiatan_slug,
+                'slug' => '',
                 'tenggat' => Carbon::parse($validatedData['tenggat'])->format('Y-m-d'),
                 'pemberitugas_id' => Auth::id(),
             ]);
 
+            $namakegiatan_slug = Str::slug($validatedData['namakegiatan']);
+            $tanggal_dibuat = Carbon::now()->format('d-m-Y');
+            $tanggal_tenggat = Carbon::parse($validatedData['tenggat'])->format('d-m-Y');
+            $kegiatan->slug = "{$kegiatan->id}_{$namakegiatan_slug}_{$tanggal_dibuat}_{$tanggal_tenggat}";
+            $kegiatan->save();
+
             foreach ($validatedData['penerimatugas_id'] as $index => $penerimaId) {
-                $lastTaskId = Task::latest('id')->first()->id ?? 0;
-                $newTaskId = $lastTaskId + 1;
                 $penerima = User::find($penerimaId);
-                $slug = "{$newTaskId}_{$penerima->username}";
-                
+                $path = null;
+
                 if ($request->hasFile('attachment') && isset($request->file('attachment')[$index])) {
                     $file = $request->file('attachment')[$index];
                     $path = $file->store('attachments', 'public');
                 }
                 
-                Task::create([
+                $task = Task::create([
                     'namakegiatan' => $validatedData['namakegiatan'],
-                    'slug' => $slug,
-                    'kegiatan_id' => $newkegiatanid,
+                    'slug' => '',
+                    'kegiatan_id' => $kegiatan->id,
                     'deskripsi' => $validatedData['deskripsi'][$index],
                     'volume' => $validatedData['volume'][$index],
                     'satuan' => $validatedData['satuan'],
                     'tenggat' => Carbon::parse($validatedData['tenggat'])->format('Y-m-d'),
                     'pemberitugas_id' => Auth::id(),
                     'penerimatugas_id' => $penerimaId,
-                    'attachment' => Storage::url($path),
+                    'attachment' => $path ? Storage::url($path) : null,
                 ]);
 
+                $task->slug = "{$task->id}_{$penerima->username}";
+                $task->save();
+
                 Progress::create([
-                    'task_id' => $newTaskId,
+                    'task_id' => $task->id,
                     'tanggal' => Carbon::now()->format('Y-m-d'),
                     'progress' => 0,
                     'dokumentasi' => null,
@@ -93,6 +92,7 @@ class TaskController extends Controller
                 }
             }
             session()->flash('success', 'Kegiatan dan tugas berhasil ditambahkan.');
+            return redirect('monitoringkegiatan');
         } catch (\Exception $e) {
             session()->flash('error', 'Gagal menambahkan data: ' . $e->getMessage());
         }
@@ -101,23 +101,55 @@ class TaskController extends Controller
 
     // update task
     public function update(Request $request, Task $task){
-        $validatedData = $request->validate([
-            'namakegiatan' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'volume' => 'required|integer|min:1',
-            'tenggat' => 'required|date',
-        ]);
+        try{
+            $validatedData = $request->validate([
+                'deskripsi' => 'required|string',
+                'volume' => ['required','integer', function ($attribute, $value, $fail) use ($task) {
+                                    if ($value <= $task->progress) {
+                                        $fail('Volume harus lebih besar dari progress saat ini');
+                                    }
+                                }
+                            ],
+                'attachment.*' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120'
+            ]);
 
-        $task->update($validatedData);
+            $task->volume = $validatedData['volume'];
+            $task->deskripsi = $validatedData['deskripsi'];
 
-        session()->flash('updated', 'Tugas Berhasil Diperbarui');
-        return redirect()->back();
+            if ($request->hasFile('attachment')) {
+                if ($task->attachment) {
+                    Storage::delete($task->attachment);
+                }
+                
+                $path = $request->file('attachment')->store('public/task_attachments');
+                $task->attachment = $path;
+            }
+
+            $task->save();
+            session()->flash('updated', 'Tugas Berhasil Diperbarui');
+            return redirect()->back();
+        }catch (\Exception $e){
+            session()->flash('error', 'Gagal memperbarui task: ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
 
     // delete task
-    public function destroy(Task $task){
-        $task->delete();
-        return redirect('/monitoring')->with('deleted', 'Tugas berhasil dihapus');
+    public function destroy(Task $task)
+    {
+        $redirectUrl = route('kegiatan', $task->kegiatan);
+        try {
+
+            $task->progress()->delete();            
+            if ($task->attachment) {
+                Storage::delete($task->attachment);
+            }
+            $task->delete();
+            
+            return redirect($redirectUrl)->with('deleted', 'Tugas berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus task: '.$e->getMessage());
+        }
     }
 
     // update progress

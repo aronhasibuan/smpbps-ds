@@ -66,7 +66,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/tambahkegiatan', [DataflowController::class, 'createtask']);
 
     // kegiatan
-    Route::get('/monitoringkegiatan/{kegiatan:slug}', [DataflowController::class, 'kegiatan']);
+    Route::get('/monitoringkegiatan/{kegiatan:slug}', [DataflowController::class, 'kegiatan'])->name('kegiatan');
 
     Route::get('/monitoring/active', [TaskController::class, 'getActiveTasks'])->name('tasks.active');
 });

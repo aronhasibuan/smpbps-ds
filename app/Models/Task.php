@@ -71,6 +71,16 @@ class Task extends Model{
         $targetperhari = ceil($volume/$selangharitugas);
         $targetharustercapai_PHP = min($volume, ceil($hariberlalu * $targetperhari));
 
+        if($progress == $volume){
+            return[
+                'status' => 'Selesai',
+                'color' => 'blue',
+                'hariberlalu' => $hariberlalu,
+                'selangharitugas_PHP' => $selangharitugas,
+                'targetperhari_PHP' => $targetperhari,
+                'tht' => $targetharustercapai_PHP,
+            ];
+        }
         if ($tenggat < Carbon::today()){
             return[
                 'status' => 'Terlambat',

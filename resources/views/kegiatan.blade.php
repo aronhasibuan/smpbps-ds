@@ -19,8 +19,14 @@
                     @foreach ($tasks as $task)
                     <tr class="border-t">
                         @php
-                            $color = $task->kemajuan['color'];
-                            $backgroundColor = in_array($color, ['red', 'yellow', 'green']) ? "bg-{$color}-500" : 'bg-black'; 
+                            $colorMap = [
+                                'Selesai' => 'bg-blue-500',
+                                'Terlambat' => 'bg-black',
+                                'Progress Lambat' => 'bg-red-500',
+                                'Progress On Time' => 'bg-yellow-500',
+                                'Progress Cepat' => 'bg-green-500'
+                            ];
+                            $backgroundColor = $colorMap[$task->kemajuan['status']] ?? 'bg-gray-500';
                         @endphp
                         <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->kemajuan['status'] }}</p>
@@ -43,10 +49,10 @@
         {{-- progress --}}
         <div class="flex justify-between mb-2 mt-20">
             <span class="md:text-base text-sm font-bold text-gray-900 dark:text-white">Total Progress</span>
-            <span class="md:text-base text-sm font-bold text-gray-900 dark:text-white">Deadline: {{ $tasks->first()->tenggat; }}</span>
+            <span class="md:text-base text-sm font-bold text-gray-900 dark:text-white">Tenggat Pekerjaan: {{ $tasks->first()->formatted_tenggat; }}</span>
         </div>
         <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
-            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: {{ $totalProgress }}%">{{ $totalProgress }}%</div>
+            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: {{ $persentaseprogress }}%">{{ $persentaseprogress }}%</div>
         </div>
 
     </div>

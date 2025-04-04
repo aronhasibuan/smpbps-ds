@@ -100,13 +100,10 @@ class DataflowController extends Controller
             }])
             ->paginate(5);
 
-        // Hitung progress untuk setiap kegiatan
         $kegiatan->each(function ($keg) {
             if ($keg->tasks->isNotEmpty()) {
                 $totalVolume = $keg->tasks->sum('volume');
-                $totalProgress = $keg->tasks->sum(function ($task) {
-                    return ($task->latestprogress / 100) * $task->volume;
-                });
+                $totalProgress = $keg->tasks->sum('latestprogress');
                 
                 $keg->progressPercentage = $totalVolume > 0 
                     ? round(($totalProgress / $totalVolume) * 100, 2)
@@ -134,9 +131,10 @@ class DataflowController extends Controller
         if ($tasks->isEmpty()) {
             abort(404, 'Data tidak ditemukan');
         }
-        $totalProgress = round($tasks->sum('percentage_progress') / $tasks->count(), 2);
-
-        return view('kegiatan', ['tasks' => $tasks, 'totalProgress' => $totalProgress]);
+        $totalProgress = $tasks->sum('latestprogress');
+        $totalVolume = $tasks->sum('volume');
+        $persentaseProgress = $totalVolume > 0 ? round(($totalProgress / $totalVolume) * 100, 2) : 0;
+        return view('kegiatan', ['tasks' => $tasks, 'persentaseprogress' => $persentaseProgress]);
     }
 
     // data view('task')

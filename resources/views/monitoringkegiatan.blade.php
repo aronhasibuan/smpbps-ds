@@ -38,7 +38,7 @@
                 </div>
             @empty
                 <div>
-                    <p class="text-center m-5">Tidak Kegiatan Ditemukan</p>
+                    <p class="text-center m-5 dark:text-white">Tidak Kegiatan Ditemukan</p>
                 </div>
             @endforelse
         </div>   
