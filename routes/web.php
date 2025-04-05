@@ -52,10 +52,10 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/arsip', [DataflowController::class, 'arsip'])->name('arsip');
 
     // arsipkegiatan
-    Route::get('/arsipkegiatan', [DataflowController::class, 'arsipkegiatan'])->name('arsipkegiatan');
+    Route::get('/arsipkegiatan', [DataflowController::class, 'arsipkegiatan'])->name('arsipkegiatan')->name('arsipkegiatan');
 
     // monitoringkegiatan
-    Route::get('/monitoringkegiatan', [DataflowController::class, 'monitoringkegiatan']);
+    Route::get('/monitoringkegiatan', [DataflowController::class, 'monitoringkegiatan'])->name('monitoringkegiatan');
 
     // monitoringpegawai
     Route::get('/monitoringpegawai', function(){
@@ -67,6 +67,7 @@ Route::middleware(['auth'])->group(function(){
 
     // kegiatan
     Route::get('/monitoringkegiatan/{kegiatan:slug}', [DataflowController::class, 'kegiatan'])->name('kegiatan');
+    Route::post('/monitoringkegiatan/{kegiatan:slug}/{id}/complete', [TaskController::class, 'markKegiatanAsDone'])->name('kegiatan.markAsDone');
 
     Route::get('/monitoring/active', [TaskController::class, 'getActiveTasks'])->name('tasks.active');
 });

@@ -185,6 +185,30 @@ class TaskController extends Controller
         return redirect()->back();
     }
 
+    // mark kegiatan as done
+    public function markKegiatanAsDone($id)
+    {
+        try {
+            $kegiatan = Kegiatan::findOrFail($id);
+
+            if (!$kegiatan->active) {
+                return redirect()->back()->with('error', 'Kegiatan ini sudah ditandai selesai sebelumnya.');
+            }
+
+            $unfinishedTasks = $kegiatan->tasks()->where('active', true)->count();
+            if ($unfinishedTasks > 0) {
+                return redirect()->back()->with('error', 'Tidak dapat menandai kegiatan selesai karena masih ada tugas yang belum selesai.');
+            }
+
+            $kegiatan->active = false;
+            $kegiatan->save();
+
+            return redirect()->route('monitoringkegiatan')->with('success', 'Kegiatan berhasil ditandai selesai!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
     public function getActiveTasks()
     {
         $tasks = User::where('role', 'anggotatim')

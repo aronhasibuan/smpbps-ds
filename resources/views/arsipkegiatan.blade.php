@@ -33,20 +33,20 @@
                 </tr>
             </thead>
             <tbody class="bg-white border-t dark:border-gray-700 dark:bg-gray-800">
-                {{-- @forelse ($kegiatan as $giat)
+                @forelse ($kegiatan as $giat)
                     <tr class="border-t">
                         <td class="px-4 py-3">{{ $giat->namakegiatan }}</td>
                         <td class="px-4 py-3">{{ $giat->totalvolume }}</td>
                         <td class="px-4 py-3">{{ $giat->satuan }}</td>
-                        <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                            <a href="/home/{{ $giat->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                        <td class="px-4 py-3 flex items-center hover:cursor-pointer">
+                            <a href="/monitoringkegiatan/{{ $giat->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                 <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                             </a>
                         </td>
                     </tr>
-                @empty --}}
+                @empty
                     <tr class="text-center">
-                        <td colspan="5" class="px-4 py-3">Maintenance Bro...</td>
+                        <td colspan="5" class="px-4 py-3">Tidak ada kegiatan yang diselesaikan</td>
                     </tr>
                     @if(request()->has('search'))
                         <tr class="text-center">
@@ -55,7 +55,7 @@
                             </td>
                         </tr>
                     @endif
-                {{-- @endforelse --}}
+                @endforelse
             </tbody>
         </table>
     </div>

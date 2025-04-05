@@ -86,7 +86,21 @@ class DataflowController extends Controller
 
     // data view('arsipkegiatan')
     public function arsipkegiatan(){
-        return view('arsipkegiatan');
+        $user = Auth::user();
+        $kegiatan = Kegiatan::where('pemberitugas_id', $user->id)->where('active', false)->paginate(5);
+
+        $kegiatan->each(function ($keg) {
+            if ($keg->tasks->isNotEmpty()) {
+                $keg->totalvolume = $keg->tasks->sum('volume');
+                $keg->satuan = $keg->tasks->first()->satuan;
+            } else {
+                $keg->totalvolume = 0;
+                $keg->satuan = '';
+            }
+        });
+
+
+        return view('arsipkegiatan', ['kegiatan' => $kegiatan]);
     }
 
     // data view('monitoringkegiatan')
@@ -94,7 +108,7 @@ class DataflowController extends Controller
     {
         $user = Auth::user();
 
-        $kegiatan = Kegiatan::where('pemberitugas_id', $user->id)
+        $kegiatan = Kegiatan::where('pemberitugas_id', $user->id)->where('active', true)
             ->with(['tasks' => function($query) {
                 $query->select('kegiatan_id', 'latestprogress', 'volume');
             }])
@@ -134,7 +148,7 @@ class DataflowController extends Controller
         $totalProgress = $tasks->sum('latestprogress');
         $totalVolume = $tasks->sum('volume');
         $persentaseProgress = $totalVolume > 0 ? round(($totalProgress / $totalVolume) * 100, 2) : 0;
-        return view('kegiatan', ['tasks' => $tasks, 'persentaseprogress' => $persentaseProgress]);
+        return view('kegiatan', ['tasks' => $tasks, 'persentaseprogress' => $persentaseProgress, 'kegiatan' => $kegiatan]);
     }
 
     // data view('task')

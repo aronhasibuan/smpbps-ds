@@ -2,7 +2,7 @@
     <p class="text-sm text-gray-600 mb-4">Monitoring Pegawai</p>
     
     <div class="items-center">
-        <h3 class="text-center mb-5">Frekuensi Pekerjaan Aktif Masing-Masing Pegawai</h3>
+        <h3 class="text-center mb-5 text-black dark:text-white">Frekuensi Pekerjaan Aktif Masing-Masing Pegawai</h3>
 
         <div class="w-10/12">
             <canvas id="taskChart"></canvas>
