@@ -26,6 +26,9 @@ Route::middleware(['auth'])->group(function(){
     // logout
     Route::post('/logout', LogoutController::class)->name('logout');
 
+    // administrator
+    Route::get('/administrator', [DataflowController::class, 'administrator'])->name('administrator');
+
     // home
     Route::get('/home', [DataflowController::class, 'home'])->name('home');
     Route::post('/home', [TaskController::class, 'create']);

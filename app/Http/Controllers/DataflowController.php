@@ -16,6 +16,14 @@ use Illuminate\Support\Facades\Auth;
 class DataflowController extends Controller
 {
 
+    // data view('administrator')
+    public function administrator()
+    {
+        $users = User::paginate(7);
+
+        return view('administrator', ['users' => $users]);
+    }
+
     // data view('home')
     public function home(Request $request)
     {

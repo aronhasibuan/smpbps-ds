@@ -25,6 +25,8 @@ class LoginController extends Controller
                 return redirect('/home')->with('success', 'Login berhasil, selamat datang!');
             }elseif(Auth::user()->role == 'kepalakantor'){
                 return redirect('/monitoringkegiatan');
+            }elseif(Auth::user()->role == 'administrator'){
+                return redirect('/administrator');
             }
         }
  
