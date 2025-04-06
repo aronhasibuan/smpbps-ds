@@ -6,7 +6,7 @@
 
             <h2 class="mb-4 mt-4 text-xl font-bold text-gray-900 dark:text-white">Tambah Kegiatan</h2>
     
-            <form action="{{ route('home') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('task.create') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
                 <div class="mb-4">

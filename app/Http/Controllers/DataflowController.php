@@ -146,6 +146,12 @@ class DataflowController extends Controller
         return view('createtask', ['anggotatim' => $anggotatim]);
     }
 
+    // data view ('createuser')
+    public function createuser()
+    {
+        return view('createuser');
+    }
+
     // data view('kegiatan')
     public function kegiatan(Kegiatan $kegiatan)
     {

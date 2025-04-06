@@ -9,6 +9,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\DataflowController;
+use App\Http\Controllers\UserController;
 
 // GET, POST, PUT, PATCH, DELETE
 
@@ -31,7 +32,6 @@ Route::middleware(['auth'])->group(function(){
 
     // home
     Route::get('/home', [DataflowController::class, 'home'])->name('home');
-    Route::post('/home', [TaskController::class, 'create']);
 
     // task
     Route::get('/home/{task:slug}', [DataflowController::class, 'task']);
@@ -67,6 +67,11 @@ Route::middleware(['auth'])->group(function(){
 
     // tambahkegiatan
     Route::get('/tambahkegiatan', [DataflowController::class, 'createtask']);
+    Route::post('/home', [TaskController::class, 'create'])->name('task.create');
+
+    // tambahpengguna
+    Route::get('/tambahpengguna', [DataflowController::class, 'createuser']);
+    Route::post('/tambahpengguna', [UserController::class, 'create'])->name('user.create');
 
     // kegiatan
     Route::get('/monitoringkegiatan/{kegiatan:slug}', [DataflowController::class, 'kegiatan'])->name('kegiatan');
