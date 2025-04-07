@@ -162,9 +162,16 @@ class DataflowController extends Controller
     // data view ('createtask')
     public function createtask()
     {
-        $anggotatim = User::where('role', 'anggotatim')->get();
+        $anggotatim = User::where('role', 'anggotatim')
+            ->withCount(['menerimatugas' => function ($query) {
+                $query->where('active', true);
+            }])
+            ->get();
 
-        return view('createtask', ['anggotatim' => $anggotatim]);
+        $busiestUser = $anggotatim->sortByDesc('menerimatugas_count')->first();
+        $maxTasks = $busiestUser ? $busiestUser->menerimatugas_count : 0;
+
+        return view('createtask', ['anggotatim' => $anggotatim, 'busiestUser' => $busiestUser, 'maxTasks' => $maxTasks]);
     }
 
     // data view ('createuser')

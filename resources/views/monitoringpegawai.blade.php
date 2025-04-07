@@ -2,7 +2,7 @@
     <p class="text-sm text-gray-600 mb-4">Monitoring Pegawai</p>
 
     <div class="container mx-auto my-8">
-        <h1 class="text-2xl font-bold mb-4">Jumlah Tugas Aktif pada Setiap User</h1>
+        <h1 class="text-2xl font-bold mb-4">Jumlah Tugas Aktif pada Setiap Anggota Tim</h1>
         <canvas id="tasksChart" width="400" height="200"></canvas>
     </div>
 

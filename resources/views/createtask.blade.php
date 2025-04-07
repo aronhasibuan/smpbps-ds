@@ -21,6 +21,12 @@
                     <input type="date" name="tenggat" id="tenggat" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                 </div>
 
+                @if ($busiestUser)
+                    <div class="alert alert-warning bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4">
+                        <p><strong>Perhatian:</strong> {{ $busiestUser->name }} saat ini memiliki tugas aktif terbanyak ({{ $maxTasks }} tugas).</p>
+                    </div>
+                @endif
+
                 <div id="taskContainer" class="w-full">
                     <div class="task-item grid w-full md:grid-cols-5 gap-4 mb-2 md:border-none border md:p-0 p-5">
 
@@ -30,7 +36,9 @@
                             <select name="penerimatugas_id[]" class="penerimatugas bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 <option selected disabled>Pilih Anggota Tim</option>
                                 @foreach ($anggotatim as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    <option value="{{ $user->id }}">
+                                        {{ $user->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
