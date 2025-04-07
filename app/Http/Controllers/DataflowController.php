@@ -138,6 +138,27 @@ class DataflowController extends Controller
         return view('monitoringkegiatan', ['kegiatan' => $kegiatan]);
     }
 
+    // data view('monitoringpegawai')
+    public function monitoringpegawai()
+    {
+        $tasksPerUser = User::where('role','anggotatim')->withCount(['menerimatugas' => function ($query) {
+            $query->where('active', true);
+        }])->get();
+
+        $tasksDonePerUser = User::where('role', 'anggotatim')
+        ->withCount([
+            'menerimatugas as tugas_selesai' => function ($query) {
+                $query->where('active', false); 
+            },
+            'menerimatugas as tugas_terlambat' => function ($query) {
+                $query->where('active', false)->whereColumn('updated_at', '>', 'tenggat');
+            }
+        ])
+        ->get();
+    
+        return view('monitoringpegawai', ['tasksPerUser' => $tasksPerUser, 'tasksDonePerUser' => $tasksDonePerUser]);
+    }
+
     // data view ('createtask')
     public function createtask()
     {

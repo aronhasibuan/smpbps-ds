@@ -21,7 +21,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'unit',
             'tenggat' => now()->addDays(6)->format('Y-m-d'),
             'pemberitugas_id' => 2, //3
-            'penerimatugas_id' => 12,
+            'penerimatugas_id' => 13,
             'latestprogress' => 20,
             'attachment' => null,
             'active' => 1,
@@ -36,7 +36,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'unit',
             'tenggat' => now()->addDays(6)->format('Y-m-d'),
             'pemberitugas_id' => 2, //3
-            'penerimatugas_id' => 7,
+            'penerimatugas_id' => 8,
             'latestprogress' => 10,
             'attachment' => null,
             'active' => 1,
@@ -51,7 +51,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'unit',
             'tenggat' => now()->addDays(6)->format('Y-m-d'),
             'pemberitugas_id' => 2,
-            'penerimatugas_id' => 12,
+            'penerimatugas_id' => 13,
             'latestprogress' => 10,
             'attachment' => null,
             'active' => 1,
@@ -66,7 +66,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'unit',
             'tenggat' => now()->addDays(6)->format('Y-m-d'),
             'pemberitugas_id' => 2,
-            'penerimatugas_id' => 6,
+            'penerimatugas_id' => 7,
             'latestprogress' => 10,
             'attachment' => null,
             'active' => 1,
@@ -82,7 +82,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'unit',
             'tenggat' => now()->addDays(13)->format('Y-m-d'),
             'pemberitugas_id' => 2, //3
-            'penerimatugas_id' => 12,
+            'penerimatugas_id' => 13,
             'latestprogress' => 10,
             'attachment' => null,
             'active' => 1,
@@ -97,7 +97,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'unit',
             'tenggat' => now()->addDays(13)->format('Y-m-d'),
             'pemberitugas_id' => 2, //3
-            'penerimatugas_id' => 11,
+            'penerimatugas_id' => 12,
             'latestprogress' => 10,
             'attachment' => null,
             'active' => 1,
@@ -112,7 +112,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'unit',
             'tenggat' => now()->addDays(13)->format('Y-m-d'),
             'pemberitugas_id' => 2, //3
-            'penerimatugas_id' => 12,
+            'penerimatugas_id' => 13,
             'latestprogress' => 10,
             'attachment' => null,
             'active' => 1,
@@ -127,7 +127,7 @@ class TaskSeeder extends Seeder
             'satuan' => 'unit',
             'tenggat' => now()->addDays(13)->format('Y-m-d'),
             'pemberitugas_id' => 2, //3
-            'penerimatugas_id' => 6,
+            'penerimatugas_id' => 8,
             'latestprogress' => 10,
             'attachment' => null,
             'active' => 1,

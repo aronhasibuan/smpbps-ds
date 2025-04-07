@@ -208,19 +208,4 @@ class TaskController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-
-    public function getActiveTasks()
-    {
-        $tasks = User::where('role', 'anggotatim')
-            ->leftJoin('tasks', 'users.id', '=', 'tasks.penerimatugas_id')
-            ->select('users.name as nama', DB::raw('COUNT(tasks.id) as jumlah_tugas'))
-            ->where(function ($query) {
-                $query->where('tasks.active', 1)
-                      ->orWhereNull('tasks.active');
-            })
-            ->groupBy('users.id', 'users.name')
-            ->get();
-
-        return response()->json($tasks);
-    }
 }
