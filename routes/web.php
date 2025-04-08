@@ -9,6 +9,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\DataflowController;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\UserController;
 
 // GET, POST, PUT, PATCH, DELETE
@@ -74,4 +75,5 @@ Route::middleware(['auth'])->group(function(){
     // kegiatan
     Route::get('/monitoringkegiatan/{kegiatan:slug}', [DataflowController::class, 'kegiatan'])->name('kegiatan');
     Route::post('/monitoringkegiatan/{kegiatan:slug}/{id}/complete', [TaskController::class, 'markKegiatanAsDone'])->name('kegiatan.markAsDone');
+    Route::put('/monitoringkegiatan/{kegiatan}', [KegiatanController::class, 'update'])->name('kegiatan.update');
 });
