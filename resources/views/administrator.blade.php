@@ -40,7 +40,7 @@
                         <th scope="col" class="px-4 py-3">Email </th>
                         <th scope="col" class="px-4 py-3">Role/Peran</th>
                         <th scope="col" class="px-4 py-3">Nomor Whatsapp</th>
-                        <th scope="col" class="px-4 py-3">Aksi</th>
+                        <th scope="col" class="px-4 py-3 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white border-t dark:border-gray-700 dark:bg-gray-800">
@@ -50,10 +50,11 @@
                             <td class="px-4 py-3">{{ $user->email }}</td>
                             <td class="px-4 py-3">{{ $user->role }}</td>
                             <td class="px-4 py-3">{{ $user->no_hp }}</td>
-                            <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                                <a href="/administrator/{{ $user->username }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
-                                    <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
-                                </a>
+                            <td class="px-4 py-3 flex items-center justify-between hover:cursor-pointer">
+                                @if ($user->role !== 'kepalakantor' && $user->role !== 'administrator')
+                                <img class="w-5 h-5" src="{{ asset('img/user-update.svg') }}" alt="Update Pengguna" onclick="openUpdateModal('{{ route('users.update', $user->id) }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->role }}', '{{ $user->no_hp }}')">                                    
+                                <img class="w-5 h-5" src="{{ asset('img/user-delete.svg') }}" alt="Hapus Pengguna" onclick="openDeleteModal('{{ route('users.destroy', $user->id) }}')">
+                                @endif
                             </td>
                         </tr>
                     @empty
@@ -74,12 +75,94 @@
         <div class="bg-white p-4 dark:bg-gray-800 sticky bottom-0 border">
             {{ $users->links() }}
         </div>
+
+        {{-- Modal Update User --}}
+        <div id="updateUserModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+                <h2 class="text-lg font-bold mb-4">Update Pengguna</h2>
+                <form id="updateUserForm" method="POST" action="">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                        <input type="text" id="name" name="name" class="block w-full p-2 border rounded-lg" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="email" name="email" class="block w-full p-2 border rounded-lg" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                        <select id="role" name="role" class="block w-full p-2 border rounded-lg">
+                            <option value="ketuatim">Ketua Tim</option>
+                            <option value="anggotatim">Anggota Tim</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="no_hp" class="block text-sm font-medium text-gray-700">Nomor WhatsApp</label>
+                        <input type="text" id="no_hp" name="no_hp" class="block w-full p-2 border rounded-lg" required>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2" onclick="closeUpdateModal()">Batal</button>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     
+    <div id="deleteUserModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+            <h2 class="text-lg font-bold mb-4">Hapus Pengguna</h2>
+            <p>Apakah Anda yakin ingin menghapus pengguna ini?</p>
+            <form id="deleteUserForm" method="POST" action="">
+                @csrf
+                @method('DELETE')
+                <div class="flex justify-end mt-4">
+                    <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2" onclick="closeDeleteModal()">Batal</button>
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg">Hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script type="text/javascript">
         @if(session('success'))
             toastr.success("{{ session('success') }}");
         @endif
+    </script>
+
+    <script>
+        function openUpdateModal(actionUrl, name, email, role, no_hp) {
+            const modal = document.getElementById('updateUserModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            const form = document.getElementById('updateUserForm');
+            form.action = actionUrl;
+            form.querySelector('#name').value = name;
+            form.querySelector('#email').value = email;
+            form.querySelector('#role').value = role;
+            form.querySelector('#no_hp').value = no_hp;
+        }
+
+        function closeUpdateModal() {
+            const modal = document.getElementById('updateUserModal');
+            modal.classList.add('hidden');
+        }
+
+        function openDeleteModal(actionUrl) {
+            const modal = document.getElementById('deleteUserModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            const form = document.getElementById('deleteUserForm');
+            form.action = actionUrl;
+            modal.classList.remove('hidden');
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteUserModal');
+            modal.classList.add('hidden');
+        }
     </script>
 
 </x-layout> 

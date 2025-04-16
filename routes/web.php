@@ -30,6 +30,8 @@ Route::middleware(['auth'])->group(function(){
 
     // administrator
     Route::get('/administrator', [DataflowController::class, 'administrator'])->name('administrator');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
     // home
     Route::get('/home', [DataflowController::class, 'home'])->name('home');

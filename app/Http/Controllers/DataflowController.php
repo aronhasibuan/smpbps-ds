@@ -94,12 +94,21 @@ class DataflowController extends Controller
     }
 
     // data view('arsip')
-    public function arsip()
+    public function arsip(Request $request)
     {
+        $search = $request->input('search');
         $user = Auth::user();
-        $tasks = Task::where('penerimatugas_id', $user->id)
-            ->where('active', false)
-            ->get();
+        $tasksQuery = Task::where('penerimatugas_id', $user->id)->where('active', false);
+
+        if ($search) {
+            $tasksQuery->where(function ($query) use ($search) {
+                $query->where('namakegiatan', 'like', '%' . $search . '%') 
+                    ->orWhere('deskripsi', 'like', '%' . $search . '%')
+                    ->orWhere('satuan', 'like', '%' . $search . '%');
+            });
+        }
+
+        $tasks = $tasksQuery->paginate(5)->withQueryString();
 
         return view('arsip', ['tasks' => $tasks]);
     }
