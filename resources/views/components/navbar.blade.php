@@ -65,7 +65,7 @@
                                                                     
                     @endif
 
-                    @if (Auth::check() && Auth::user()->role == 'ketuatim')
+                    @if (Auth::check() && (Auth::user()->role == 'ketuatim' || Auth::user()->role == 'kepalakantor'))
                         <li>
                             <x-nav-link href="/monitoringkegiatan" :active="request()->is('monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
                         </li>

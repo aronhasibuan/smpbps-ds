@@ -17,9 +17,21 @@ class DataflowController extends Controller
 {
 
     // data view('administrator')
-    public function administrator()
+    public function administrator(Request $request)
     {
-        $users = User::paginate(7);
+        $search = $request->input('search');
+
+        $usersQuery = User::query();
+
+        if ($search) {
+            $usersQuery->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%') // Filter berdasarkan nama
+                    ->orWhere('email', 'like', '%' . $search . '%') // Filter berdasarkan email
+                    ->orWhere('role', 'like', '%' . $search . '%'); // Filter berdasarkan role
+            });
+        }
+
+        $users = $usersQuery->paginate(7)->appends($request->query());
 
         return view('administrator', ['users' => $users]);
     }
@@ -116,11 +128,22 @@ class DataflowController extends Controller
     {
         $user = Auth::user();
 
-        $kegiatan = Kegiatan::where('pemberitugas_id', $user->id)->where('active', true)
-            ->with(['tasks' => function($query) {
-                $query->select('kegiatan_id', 'latestprogress', 'volume');
-            }])
-            ->paginate(5);
+        if ($user->role === 'kepalakantor') {
+            $kegiatan = Kegiatan::where('active', true)
+                ->with(['tasks' => function ($query) {
+                    $query->select('kegiatan_id', 'latestprogress', 'volume');
+                }])
+                ->paginate(3);
+        } elseif ($user->role === 'ketuatim') {
+            $kegiatan = Kegiatan::where('pemberitugas_id', $user->id)
+                ->where('active', true)
+                ->with(['tasks' => function ($query) {
+                    $query->select('kegiatan_id', 'latestprogress', 'volume');
+                }])
+                ->paginate(3);
+        } else {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        }
 
         $kegiatan->each(function ($keg) {
             if ($keg->tasks->isNotEmpty()) {
