@@ -17,6 +17,7 @@ return new class extends Migration
                 table:'tasks',
                 indexName:'progress_task_id'
             );
+            $table->text('catatan')->nullable();
             $table->date('tanggal');
             $table->string('progress')->default(0);
             $table->string('dokumentasi')->nullable();

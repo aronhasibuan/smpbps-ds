@@ -6,7 +6,7 @@
 
             <h2 class="mb-4 mt-4 text-xl font-bold text-gray-900 dark:text-white">Tambah Kegiatan</h2>
     
-            <form action="{{ route('task.create') }}" method="POST" enctype="multipart/form-data">
+            <form id="createTaskForm" action="{{ route('task.create') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
                 <div class="mb-4">
@@ -20,12 +20,6 @@
                     <p class="  text-xs text-gray-400">Contoh: 26/09/2025</p>
                     <input type="date" name="tenggat" id="tenggat" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                 </div>
-
-                @if ($busiestUser)
-                    <div class="alert alert-warning bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4">
-                        <p><strong>Perhatian:</strong> {{ $busiestUser->name }} saat ini memiliki tugas aktif terbanyak ({{ $maxTasks }} tugas).</p>
-                    </div>
-                @endif
 
                 <div id="taskContainer" class="w-full">
                     <div class="task-item grid w-full md:grid-cols-5 gap-4 mb-2 md:border-none border md:p-0 p-5">
@@ -78,11 +72,21 @@
                     <input type="text" name="satuan" id="satuan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                 </div>
                    
-                <button type="submit" class="mt-4 text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                <button type="submit" id="submitForm" class="mt-4 text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                     <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                     Simpan
                 </button>
             </form>
+
+            <div id="confirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 justify-center items-center z-50">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md text-center">
+                    <p class="mb-4 text-gray-800 dark:text-gray-100">Penerima tugas {{ $busiestUser->name }} memiliki jumlah tugas aktif terbanyak ( {{ $maxTasks }} tugas ). Apakah Anda ingin melanjutkan?</p>
+                    <div class="flex justify-center gap-4">
+                        <button id="confirmSubmit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Lanjut</button>
+                        <button id="cancelSubmit" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -129,6 +133,29 @@
         minDate: "today",      
         disableMobile: true 
         });
+
+        const busiestUserId = "{{ $busiestUser->id ?? '' }}";
+
+        document.getElementById("submitForm").addEventListener("click", function () {
+            event.preventDefault();
+
+            const selectedUsers = Array.from(document.querySelectorAll('.penerimatugas')).map(select => select.value);
+
+            if (selectedUsers.includes(busiestUserId)) {
+                document.getElementById('confirmationModal').classList.remove('hidden');
+                document.getElementById('confirmationModal').classList.add('flex');
+            } else {
+                document.getElementById('createTaskForm').submit();
+            }
+        });
+
+        document.getElementById('confirmSubmit').addEventListener('click', function () {
+            document.getElementById('createTaskForm').submit();
+        });
+
+        document.getElementById('cancelSubmit').addEventListener('click', function () {
+            document.getElementById('confirmationModal').classList.add('hidden');
+        });
     </script>
 
     <script type="text/javascript">
@@ -146,7 +173,7 @@
             if (isDarkMode) {
                 document.documentElement.style.backgroundColor = "#111827"; // bg-gray-900
             } else {
-                document.documentElement.style.backgroundColor = "#f9fafb"; // bg-gray-50
+                document.documentElement.style.backgroundColor = "#FFFFFF"; // bg-gray-50
             }
         }
     </script>

@@ -89,19 +89,35 @@
                 <div id="popupModal" class="fixed inset-0 items-center justify-center bg-opacity-50 hidden">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96 border">
                         <h2 class="text-lg font-semibold mb-4 text-black dark:text-white">Masukkan Progress Terbaru</h2>
-                        <form action="{{ route('tasks.updateprogress', $task->id) }}" method="POST">
+                        <form action="{{ route('tasks.updateprogress', $task->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                            <label for="quantity">Jumlah Progress Terbaru <span class="text-red-500">*</span></label>
                             <input type="number" id="quantity" name="quantity" min="{{ $task->latestprogress + 1}}" value="{{ $task->latestprogress + 1 }}" max="{{ $task->volume }}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-2 rounded-md w-full">
-                                <div class="flex justify-end mt-4">
-                                    <button id="closeModal" type="button" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition">Batal</button>
-                                    <button id="submitData" class="bg-blue-600 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-700 transition">Kirim</button>
-                                </div>
+
+                            <label for="note" class="mt-4 block">Catatan/Kendala Perkerjaan</label>
+                            <input type="text" id="note" name="note" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-2 rounded-md w-full">
+                                                        
+                            <label class="inline-flex items-center cursor-pointer mt-4">
+                                <input type="checkbox" id="uploadCheckbox" class="sr-only peer">
+                                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Upload Dokumentasi?</span>
+                            </label>
+                            
+                            <div id="uploadInputContainer" class="hidden mt-4">
+                                <label for="dokumentasi" class="block text-sm font-medium text-gray-900 dark:text-white">Images (.jpg atau .png)</label>
+                                <input type="file" id="dokumentasi" name="dokumentasi" accept="image/*" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-2 rounded-md w-full">
+                            </div>
+
+                            <div class="flex justify-end mt-4">
+                                <button id="closeModal" type="button" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition">Batal</button>
+                                <button id="submitData" class="bg-blue-600 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-700 transition">Kirim</button>
+                            </div>
+
                         </form>
                     </div>
                 </div>
             @endif
         
-            {{-- update and delete task --}}
             @if (Auth::check() && Auth::user()->role == 'ketuatim')
             <div>
                 <div class="flex justify-center gap-4 mt-20">
@@ -120,7 +136,6 @@
                 {{-- delete task modal --}}
                 <div id="deleteModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
                     <div class="relative p-4 w-full max-w-md h-full md:h-auto">
-                        <!-- Modal content -->
                         <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                             <button type="button" class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="deleteModal">
                                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -176,7 +191,7 @@
                             
                                     <div class="mb-6">
                                         <label for="attachment" class="block text-sm font-medium text-gray-900 dark:text-white">Upload Dokumen</label>
-                                        <p class="  text-xs text-gray-400">Ukuran maksimal file 5mb</p>
+                                        <p class="text-xs text-gray-400">Ukuran maksimal file 5mb</p>
                                         <input type="file" name="attachment" id="attachment" class="">
                                     </div>
 
@@ -213,6 +228,19 @@
                         modal.classList.add('hidden');
                         modal.classList.remove('flex');
                     });
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const uploadCheckbox = document.getElementById("uploadCheckbox");
+                        const uploadInputContainer = document.getElementById("uploadInputContainer");
+
+                        uploadCheckbox.addEventListener("change", function () {
+                            if (this.checked) {
+                                uploadInputContainer.classList.remove("hidden");
+                            } else {
+                                uploadInputContainer.classList.add("hidden");
+                            }
+                        });
+                    });
                 </script>
             @endif
 
@@ -223,6 +251,8 @@
                 @if(session('error'))
                     toastr.error("{{ session('error') }}");
                 @endif
+
+                document.documentElement.style.backgroundColor = "#FFFFFF";            
             </script>
         </div>
     </main>

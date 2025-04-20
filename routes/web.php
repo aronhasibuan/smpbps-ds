@@ -68,7 +68,7 @@ Route::middleware(['auth'])->group(function(){
 
     // tambahkegiatan
     Route::get('/tambahkegiatan', [DataflowController::class, 'createtask']);
-    Route::post('/home', [TaskController::class, 'create'])->name('task.create');
+    Route::post('/monitoringkegiatan', [TaskController::class, 'create'])->name('task.create');
 
     // tambahpengguna
     Route::get('/tambahpengguna', [DataflowController::class, 'createuser']);

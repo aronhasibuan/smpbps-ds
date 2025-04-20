@@ -159,15 +159,18 @@ class TaskController extends Controller
 
         $request->validate([
             'quantity' => 'required|integer|min:' . ($task->latestprogress + 1) . '|max:' . $task->volume,
-            'dokumentasi' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120'
+            'catatan' => 'nullable|string|max:1000',
+            'dokumentasi' => 'nullable|file|mimes:jpg,png|max:5120'
         ]);
 
-        $attachmentPath = $request->hasFile('attachment') ? $request->file('attachment')->store('attachments', 'public') : null;
+        $catatan = $request->catatan ?? 'Tidak ada catatan pada progress ini';
+        $attachmentPath = $request->hasFile('dokumentasi') ? $request->file('dokumentasi')->store('attachments', 'public') : null;
 
         Progress::create([
             'task_id' => $id,
             'tanggal' => Carbon::now()->format('Y-m-d'),
             'progress' => $request->quantity,
+            'catatan' => $catatan,
             'dokumentasi' => $attachmentPath,
         ]);
 
