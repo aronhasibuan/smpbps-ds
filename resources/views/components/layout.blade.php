@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-50 dark:bg-gray-900">
+<html lang="en" class="h-full bg-white dark:bg-gray-900">
     <head>
         <meta charset="UTF-8">
         @vite(['resources/css/app.css','resources/js/app.js'])

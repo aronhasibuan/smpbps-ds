@@ -36,17 +36,31 @@ class DailyNotification extends Command
             $user = User::find($penerimatugas_id);
             
             if (!$user || !$user->no_hp) {
-                Log::error("User dengan ID $penerimatugas_id tidak memiliki nomor HP.");
                 continue;
             }
 
-            $message = "Semangat Pagi! Daftar tugas aktif milik Anda:\n";
+            $prioritasUtama = $taskList->sortBy('tenggat')->first();
+
+            $pesan = "Halo {$user->name} 👋\n";
+            $pesan .= "Berikut adalah *pengingat harian* Anda terkait tugas yang masih perlu diselesaikan hari ini. 📅\n\n";
+
+            $pesan .= "🔥 *Prioritas Utama (Deadline Terdekat):*\n";
+            $pesan .= "1️⃣ *{$prioritasUtama->namakegiatan}*\n";
+            $pesan .= "🗓️ Tenggat: {$prioritasUtama->tenggat}\n";
+            $pesan .= "📝 Deskripsi: {$prioritasUtama->tenggat}\n\n";
+
+            $pesan .= "📋 *Tugas Lainnya:*\n";
+            $i = 2;
             foreach ($taskList as $task) {
-                $message .= "- {$task->namakegiatan}\n";
+                $pesan .= "{$i}️⃣ *{$task->namakegiatan}* – Tenggat: {$task->tenggat}\n";
+                $i++;
             }
 
-            Log::info("Mengirim pesan ke {$user->no_hp} dengan isi:\n$message");
-            $this->notifyService->sendFonnteNotification($user->no_hp, $message);
+            $pesan .= "\n🌐 Silakan cek dan kelola semua tugas Anda di sistem:\n";
+            $pesan .= "http://smpbps-ds.test/login\n\n";
+            $pesan .= "Tetap semangat dan jangan lupa tandai tugas yang sudah selesai ya! ✅";
+
+            $this->notifyService->sendFonnteNotification($user->no_hp, $pesan);
         }
     }
 

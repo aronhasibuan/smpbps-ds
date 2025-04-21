@@ -47,8 +47,17 @@ class DeadlineNotification extends Command
             }
 
             // Format pesan pengingat
-            $message = "🔔 Pengingat! Tugas '{$task->namakegiatan}' harus diselesaikan sebelum besok ({$task->tenggat}). Segera selesaikan ya! 💪";
-            $this->notifyService->sendFonnteNotification($user->no_hp, $message);
+            $pesan = "Halo {$user->name} 👋\n";
+            $pesan .= "Pengingat! ⏰ Anda memiliki tugas yang akan segera *mencapai tenggat waktu*.\n\n";
+            $pesan .= "📌 *Nama Kegiatan*: {$task->namakegiatan}";
+            $pesan .= "📆 *Tenggat Waktu*: {$task->tenggat}";
+            $pesan .= "📝 *Deskripsi*: {$task->deskripsi}";
+            $pesan .= "Mohon segera ditindaklanjuti agar tidak melewati batas waktu yang ditentukan.\n";
+            $pesan .= "🌐 Cek tugas di: http://smpbps-ds.test/login\n\n";
+            $pesan .= "Jika sudah diselesaikan, harap update statusnya di sistem.\n";
+            $pesan .= "Terima kasih dan semangat terus! 💪";
+            
+            $this->notifyService->sendFonnteNotification($user->no_hp, $pesan);
         }
     }
 

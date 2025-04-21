@@ -53,6 +53,7 @@ class TaskController extends Controller
             $tanggal_tenggat = Carbon::parse($validatedData['tenggat'])->format('d-m-Y');
             $kegiatan->slug = "{$kegiatan->id}_{$namakegiatan_slug}_{$tanggal_dibuat}_{$tanggal_tenggat}";
             $kegiatan->save();
+            $ketuatim = User::find(Auth::id());
 
             foreach ($validatedData['penerimatugas_id'] as $index => $penerimaId) {
                 $penerima = User::find($penerimaId);
@@ -87,8 +88,17 @@ class TaskController extends Controller
                 ]);
 
                 if ($penerima && $penerima->no_hp) {
-                    $pesanNotifikasi = "Halo {$penerima->name}. Anda telah menerima tugas baru dalam kegiatan {$validatedData['namakegiatan']}. Silakan cek http://smpbps-ds.test/login untuk info lebih lanjut.";
-                    $this->notifyService->sendFonnteNotification($penerima->no_hp, $pesanNotifikasi);
+                    $pesan = "Halo {$penerima->name} 👋\n";
+                    $pesan .= "Anda telah menerima *tugas baru* dari {$ketuatim->name}.\n\n";
+                    $pesan .= "📌 *Nama Kegiatan*: {$validatedData['namakegiatan']}\n";
+                    $pesan .= "📝 *Deskripsi Pekerjaan*: {$validatedData['deskripsi'][$index]}\n";
+                    $pesan .= "📆 *Tenggat Waktu*: {$validatedData['tenggat']}\n";
+                    $pesan .= "📦 *Jumlah Pekerjaan*: {$validatedData['volume'][$index]} {$validatedData['satuan']}\n\n";
+                    $pesan .= "Silakan cek detail tugas dan mulai pengerjaan melalui sistem:\n";
+                    $pesan .= "🌐 http://smpbps-ds.test/login\n\n";
+                    $pesan .= "Jika ada pertanyaan, silakan hubungi pemberi tugas.\n";
+                    $pesan .= "Semangat menjalankan tugas! 💪";
+                    $this->notifyService->sendFonnteNotification($penerima->no_hp, $pesan);
                 }
             }
             session()->flash('success', 'Kegiatan dan tugas berhasil ditambahkan.');

@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Services\NotifyService;
 
 class UserController extends Controller
 {
+
+    protected $notifyService;
+
+    // construct notifyservice
+    public function __construct(NotifyService $notifyService)
+    {
+        $this->notifyService = $notifyService;
+    }
 
     // create user
     public function create(Request $request)
@@ -29,6 +38,18 @@ class UserController extends Controller
                 'password' => bcrypt($validatedData['password']),
                 'no_hp' => $validatedData['no_hp'],
             ]);
+
+            $pesan = "Halo {$validatedData['name']} 👋\n";
+            $pesan .= "Selamat! Anda telah berhasil terdaftar dalam sistem kami. 🎉\n\n";
+            $pesan .= "Berikut detail akun Anda:\n";
+            $pesan .= "📧 Email: {$validatedData['email']}\n";
+            $pesan .= "🔑 Silakan login menggunakan email dan password yang telah Anda daftarkan.\n\n";
+            $pesan .= "Untuk mulai menggunakan sistem, silakan kunjungi:\n";
+            $pesan .= "🌐 http://smpbps-ds.test/login\n\n";
+            $pesan .= "Jika Anda memiliki pertanyaan, jangan ragu untuk menghubungi kami.\n";
+            $pesan .= "Terima kasih! 😊";
+
+            $this->notifyService->sendFonnteNotification($validatedData['no_hp'], $pesan);
             return redirect('administrator')->with('success', 'Berhasil Menambahkan Pengguna.');
 
         }catch (\Exception $e) {

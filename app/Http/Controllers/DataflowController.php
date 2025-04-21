@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\Kegiatan;
@@ -25,9 +24,9 @@ class DataflowController extends Controller
 
         if ($search) {
             $usersQuery->where(function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%') // Filter berdasarkan nama
-                    ->orWhere('email', 'like', '%' . $search . '%') // Filter berdasarkan email
-                    ->orWhere('role', 'like', '%' . $search . '%'); // Filter berdasarkan role
+                $query->where('name', 'like', '%' . $search . '%') 
+                    ->orWhere('email', 'like', '%' . $search . '%') 
+                    ->orWhere('role', 'like', '%' . $search . '%');
             });
         }
 
