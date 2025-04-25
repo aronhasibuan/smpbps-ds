@@ -237,4 +237,18 @@ class DataflowController extends Controller
         $progress = Progress::where('task_id', $task->id)->get();
         return view('task', ['task' => $task, 'progresses'=>$progress]);
     }
+
+    // data view('profile-general')
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('profile-general', ['user' => $user]);
+    }
+
+    // data view('profile-password')
+    public function profilepassword()
+    {
+        $user = Auth::user();
+        return view('profile-password', ['user' => $user]);
+    }
 }

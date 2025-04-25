@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\NotifyService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -77,5 +79,37 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('administrator')->with('success', 'Pengguna berhasil dihapus.');
+    }
+
+    public function updategeneral(Request $request, User $user)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . Auth::id(),
+        ]);
+
+        $user->name  = $request->input('name');
+        $user->email = $request->input('email');
+        $user->save();
+
+        return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui.');
+    }
+
+    public function updatepassword(Request $request, User $user)
+    {
+        $request->validate([
+            'currentpassword'       => 'required',
+            'newpassword'           => 'required|string|min:8',
+            'confirmnewpassword'    => 'required|same:newpassword',
+        ]);
+
+        if (!Hash::check($request->currentpassword, $user->password)) {
+            return redirect()->route('profilepassword')->with('error', 'Password saat ini salah.');
+        }
+
+        $user->password = Hash::make($request->newpassword);
+        $user->save();
+
+        return redirect()->route('profilepassword')->with('success', 'Password berhasil diperbarui.');
     }
 }

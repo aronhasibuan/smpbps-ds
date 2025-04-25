@@ -43,18 +43,6 @@
             @endforelse
         </div>   
 
-        <script type="text/javascript">
-            @if(session('success'))
-                toastr.success("{{ session('success') }}");
-            @endif
-            @if(session('error'))
-                toastr.error("{{ session('error') }}");
-            @endif
-            @if(session('deleted'))
-                toastr.info("{{ session('deleted') }}");
-            @endif
-        </script>
-
         <script>
             flatpickr("#tenggat", {
             dateFormat: "Y-m-d",  

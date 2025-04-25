@@ -78,4 +78,12 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/monitoringkegiatan/{kegiatan:slug}', [DataflowController::class, 'kegiatan'])->name('kegiatan');
     Route::post('/monitoringkegiatan/{kegiatan:slug}/{id}/complete', [TaskController::class, 'markKegiatanAsDone'])->name('kegiatan.markAsDone');
     Route::put('/monitoringkegiatan/{kegiatan}', [KegiatanController::class, 'update'])->name('kegiatan.update');
+
+    // profile General
+    Route::get('/profile', [DataflowController::class, 'profile'])->name('profile');
+    Route::put('/updategeneral/{user}', [UserController::class, 'updategeneral'])->name('updategeneral');
+
+    // profile password
+    Route::get('/profile/password', [DataflowController::class, 'profilepassword'])->name('profilepassword');
+    Route::put('/updatepassword/{user}', [UserController::class, 'updatepassword'])->name('updatepassword');
 });

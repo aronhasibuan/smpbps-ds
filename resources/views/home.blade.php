@@ -98,12 +98,6 @@
             {{ $tasks->links() }}
         </div>
     </div>
-    
-    <script type="text/javascript">
-        @if(session('success'))
-            toastr.success("{{ session('success') }}");
-        @endif
-    </script>
 
     <script>
         document.getElementById('sort').addEventListener('change', function() {

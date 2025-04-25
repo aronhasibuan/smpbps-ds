@@ -96,15 +96,15 @@
                 </div>
         
                 <div id="popupModal" class="fixed inset-0 items-center justify-center bg-opacity-50 hidden">
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96 border">
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl border">
                         <h2 class="text-lg font-semibold mb-4 text-black dark:text-white">Masukkan Progress Terbaru</h2>
                         <form action="{{ route('tasks.updateprogress', $task->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                             <label for="quantity">Jumlah Progress Terbaru <span class="text-red-500">*</span></label>
-                            <input type="number" id="quantity" name="quantity" min="{{ $task->latestprogress + 1}}" value="{{ $task->latestprogress + 1 }}" max="{{ $task->volume }}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-2 rounded-md w-full">
+                            <input type="number" id="quantity" name="quantity" min="{{ $task->latestprogress + 1}}" value="{{ $task->latestprogress + 1 }}" max="{{ $task->volume }}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full">
 
                             <label for="note" class="mt-4 block">Catatan/Kendala Perkerjaan</label>
-                            <input type="text" id="note" name="note" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-2 rounded-md w-full">
+                            <input type="text" id="note" name="note" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full">
                                                         
                             <label class="inline-flex items-center cursor-pointer mt-4">
                                 <input type="checkbox" id="uploadCheckbox" class="sr-only peer">
@@ -114,8 +114,7 @@
                             
                             <div id="uploadInputContainer" class="hidden mt-4">
                                 <label for="dokumentasi" class="block text-sm font-medium text-gray-900 dark:text-white">Images (.jpg atau .png)</label>
-                                <input type="file" id="dokumentasi" name="dokumentasi" accept="image/*" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-2 rounded-md w-full">
-                            </div>
+                                <input type="file" id="dokumentasi" name="dokumentasi" accept="image/*" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-gray-400 dark:border-gray-600 dark:placeholder-gray-400 dark:bg-gray-700 dark:focus:ring-blue-500 dark:focus:border-blue-500">                            </div>
 
                             <div class="flex justify-end mt-4">
                                 <button id="closeModal" type="button" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition">Batal</button>
