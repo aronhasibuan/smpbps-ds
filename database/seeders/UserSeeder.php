@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Administrator',
             'username' => 'admin',
-            'email' => 'administratorsmpbpsds@bps.go.id',
+            'email' => 'administratorsmpbpsds@gmail.com',
             'role' => 'administrator',
             'password' => Hash::make('password'),
             'no_hp'=> '08887654811',
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Kepala BPS Deli Serdang',
             'username' => 'Kepala_bps',
-            'email' => 'KepalaBPS@bps.go.id',
+            'email' => 'KepalaBPS@gmail.com',
             'role' => 'kepalakantor',
             'password' => Hash::make('password'),
             'no_hp'=> '08887654811',
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Ketua Tim',
             'username' => 'ketuatim',
-            'email' => 'KetuaTim@bps.go.id',
+            'email' => 'KetuaTim@gmail.com',
             'role' => 'ketuatim',
             'no_hp'=> '08887654811',
             'password' => Hash::make('password'),
@@ -53,9 +53,9 @@ class UserSeeder extends Seeder
         // Anggota Tim
         // #4
         User::create([
-            'name' => 'Aron Zyode Kaxanca Hasibuan',
-            'username' => 'aronhsb16',
-            'email' => 'AronHasibuan@bps.go.id',
+            'name' => 'Anggota Tim 1',
+            'username' => 'anggota1',
+            'email' => 'anggotatim1@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
             'password' => Hash::make('password'),
@@ -64,9 +64,9 @@ class UserSeeder extends Seeder
 
         // #5
         User::create([
-            'name' => 'Arsyka Laila Oktalia Siregar',
-            'username' => 'arsyka_laila',
-            'email' => 'ArsykaLaila@bps.go.id',
+            'name' => 'Anggota Tim 2',
+            'username' => 'anggota2',
+            'email' => 'anggotatim2@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
             'password' => Hash::make('password'),
@@ -75,9 +75,9 @@ class UserSeeder extends Seeder
 
         // #6
         User::create([
-            'name' => 'Kristian Ernala Wicaksono',
-            'username' => 'ignya.kristian',
-            'email' => 'KristianErnala@bps.go.id',
+            'name' => 'Anggota Tim 3',
+            'username' => 'anggota3',
+            'email' => 'anggotatim3@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
             'password' => Hash::make('password'),
@@ -86,9 +86,9 @@ class UserSeeder extends Seeder
 
         // #7
         User::create([
-            'name' => 'Pratiwi',
-            'username' => 'pratiwi',
-            'email' => 'Pratiwi@bps.go.id',
+            'name' => 'Anggota Tim 4',
+            'username' => 'anggota4',
+            'email' => 'anggotatim4@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
             'password' => Hash::make('password'),
@@ -97,9 +97,9 @@ class UserSeeder extends Seeder
 
         // #8
         User::create([
-            'name' => 'Mita Febrianti',
-            'username' => 'mita_febrianti',
-            'email' => 'MitaFebrianti@bps.go.id',
+            'name' => 'Anggota Tim 5',
+            'username' => 'anggota5',
+            'email' => 'anggotatim5@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
             'password' => Hash::make('password'),
