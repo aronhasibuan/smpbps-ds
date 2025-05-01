@@ -1,13 +1,34 @@
 <x-layout>
-
-    <div class="flex flex-col lg:flex-row justify-between">
-        {{-- Nama dan Sidebar --}}
-        <div class="mr-0 lg:mr-20 mb-5 lg:mb-0">
-            <h2 class="mb-5 text-lg lg:text-xl">{{ $user->username }}</h2>    
-            <x-sidebar></x-sidebar>
-        </div>
-
+    <div>
+        <h2 class="mb-5 text-lg lg:text-xl">{{ $user->username }}</h2>    
+         
+        {{-- Konten --}}
         <div class="w-full p-4">
+            {{-- Tab General --}}
+            <div id="generalTab">
+                <div class="border rounded-lg p-4 bg-gray-50">
+                    <p class="text-base lg:text-lg">Umum</p>
+                    <p class="text-sm text-gray-500">Pengaturan umum yang terkait dengan profil anda.</p>
+
+                    <div class="bg-white border rounded-t-lg p-4 mt-2">
+                        <div class="flex flex-col lg:flex-row mb-4 justify-between">
+                            <div class="mb-2 lg:mb-0">
+                                <p class="text-base lg:text-lg">Nama</p>
+                                <p class="text-sm text-gray-500">Nama lengkap anda.</p>
+                            </div>
+                            <input type="text" id="name" name="name" value="{{ $user->name }}" class="text-sm text-gray-900 border border-gray-300 rounded-md p-2 w-full lg:w-auto" autocomplete="off" readonly>                
+                        </div>
+                        <div class="flex flex-col lg:flex-row justify-between">
+                            <div class="mb-2 lg:mb-0">
+                                <p class="text-base lg:text-lg">Email</p>
+                                <p class="text-sm text-gray-500">Alamat email yang digunakan untuk otentikasi.</p>
+                            </div>
+                            <input type="text" id="email" name="email" value="{{ $user->email }}" class="text-sm text-gray-900 border border-gray-300 rounded-md p-2 w-full lg:w-auto" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {{-- Tab Password --}}
             <div id="passwordTab">
                 <div class="border rounded-lg p-4 bg-gray-50">
@@ -164,5 +185,5 @@
             });
         });
     </script>
-
+    
 </x-layout>

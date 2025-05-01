@@ -23,7 +23,7 @@
                             <span class="sr-only">Close modal</span>
                         </button>
                     </div>
-                    <form action="{{ route('kegiatan.update', $kegiatan->id) }}" method="POST">
+                    <form action="{{ route('updatekegiatan', $kegiatan->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="grid gap-4 mb-4 sm:grid-cols-2">
@@ -76,7 +76,7 @@
                         <td class="px-4 py-3">{{ $task->penerimatugas->name }}</td>
                         <td class="px-4 py-3">{{ $task->latestprogress }} dari {{ $task->volume }} {{ $task->satuan }}</td>
                         <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                            <a href="{{ route('dataflow.taskmonitoring', ['kegiatan_slug' => $kegiatan->slug, 'slug'=>$task->slug])}}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                            <a href="{{ route('taskmonitoring', ['kegiatan_slug' => $kegiatan->slug, 'slug'=>$task->slug])}}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                 <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                             </a>
                         </td>
@@ -114,7 +114,7 @@
                     <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 dark:text-black px-4 py-2 rounded hover:bg-gray-400 transition duration-200">
                         Batal
                     </button>
-                    <form action="{{ route('kegiatan.markAsDone', ['kegiatan' => $kegiatan->slug, 'id' => $kegiatan->id]) }}" method="POST">
+                    <form action="{{ route('markkegiatanasdone', ['kegiatan' => $kegiatan->slug, 'id' => $kegiatan->id]) }}" method="POST">
                         @csrf
                         @method('POST')
                         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200">

@@ -6,7 +6,7 @@
 
             <h2 class="mb-4 mt-4 text-xl font-bold text-gray-900 dark:text-white">Tambah Pengguna</h2>
     
-            <form action="{{ route('user.create') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('createuser') }}" method="POST" enctype="multipart/form-data">
             @csrf
                 <div class="mb-3">
                     <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Nama Lengkap</label>

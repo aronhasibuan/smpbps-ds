@@ -1,5 +1,5 @@
 <x-layout>
-    <main class="pt-4 pb-16 bg-white dark:bg-gray-800">
+    <main class="pb-16 bg-white dark:bg-gray-800">
         <div class=" justify-between px-4 mx-auto max-w-screen-xl">
             <div class="mx-auto w-full max-w-4xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
                 <div class="not-format">
@@ -34,7 +34,7 @@
                         <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
                             <p class="text-sm md:text-base text-gray-500 dark:text-white">{{ $task->pemberitugas->name }} - {{ $task->formatted_createdat }}</p>
                         </div>
-                        <p class="text-sm md:text-base text-black dark:text-white">Tenggat Pekerjaan: {{ $task->formatted_tenggat }}</p>
+                        <p class="text-sm md:text-base text-black font-bold dark:text-white">Tenggat Pekerjaan: {{ $task->formatted_tenggat }}</p>
                     </div>
 
                 </div>
@@ -98,7 +98,7 @@
                 <div id="popupModal" class="fixed inset-0 items-center justify-center bg-opacity-50 hidden">
                     <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl border">
                         <h2 class="text-lg font-semibold mb-4 text-black dark:text-white">Masukkan Progress Terbaru</h2>
-                        <form action="{{ route('tasks.updateprogress', $task->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('updateprogress', [$task->slug, $task->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                             <label for="quantity">Jumlah Progress Terbaru <span class="text-red-500">*</span></label>
                             <input type="number" id="quantity" name="quantity" min="{{ $task->latestprogress + 1}}" value="{{ $task->latestprogress + 1 }}" max="{{ $task->volume }}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full">
@@ -155,7 +155,7 @@
                                 <button data-modal-toggle="deleteModal" type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                     Tidak, Batalkan
                                 </button>
-                                <form action="/tasks/{{ $task->id }}" method="POST">
+                                <form action="{{ route('deletetask', $task->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
@@ -183,7 +183,7 @@
                                 </button>
                             </div>
 
-                            <form action="{{ route('tasks.update', $task->id) }}" method="POST">
+                            <form action="{{ route('updatetask', $task->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                                 <div>

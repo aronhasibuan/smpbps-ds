@@ -14,76 +14,79 @@ use App\Http\Controllers\UserController;
 
 // GET, POST, PUT, PATCH, DELETE
 
-Route::get('/', function () {
-    return redirect('/login');
-});
-
 Route::middleware(['guest'])->group(function(){
     // login
+    Route::get('/', function () {return redirect('/login');});
     Route::get('/login', [LoginController::class, 'loginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'authenticate']);
 });
 
 Route::middleware(['auth'])->group(function(){
-    // logout
-    Route::post('/logout', LogoutController::class)->name('logout');
+
+    // all role
+        // logout
+        Route::post('/logout', LogoutController::class)->name('logout');
+
+        // attachment
+        Route::get('/file/{filename}', function ($filename) {
+            $path = "attachments/{$filename}";
+        
+            if (!Storage::disk('public')->exists($path)) {
+                abort(404);
+            } else{
+                return response()->file(storage_path("app/public/{$path}"));
+            }
+
+        })->where('filename', '.*');
+
+        // view profile
+        Route::get('/profile', [DataflowController::class, 'profile'])->name('profile');
+        Route::put('/profile/updatepassword/{user}', [UserController::class, 'updatepassword'])->name('updatepassword');
 
     // administrator
-    Route::get('/administrator', [DataflowController::class, 'administrator'])->name('administrator');
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        // view administrator
+        Route::get('/administrator', [DataflowController::class, 'administrator'])->name('administrator');
+        Route::put('/administrator/updateuser/{user}', [UserController::class, 'update'])->name('updateuser');
+        Route::delete('/administrator/deleteuser/{user}', [UserController::class, 'delete'])->name('deleteuser');
 
-    // home
-    Route::get('/home', [DataflowController::class, 'home'])->name('home');
+        // view createuser
+        Route::get('/administrator/createuser', [DataflowController::class, 'createuser']);
+        Route::post('/administrator/createuser', [UserController::class, 'create'])->name('createuser');
 
-    // task
-    Route::get('/home/{task:slug}', [DataflowController::class, 'task']);
-    Route::get('/monitoringkegiatan/{kegiatan_slug}/{slug}', [DataflowController::class, 'taskmonitoring'])->name('dataflow.taskmonitoring');
-    Route::post('/tasks/{id}/complete', [TaskController::class, 'updateprogress'])->name('tasks.updateprogress');
-    Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
-    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
-    
-    // task (attachment)
-    Route::get('/file/{filename}', function ($filename) {
-        $path = "attachments/{$filename}";
-    
-        if (!Storage::disk('public')->exists($path)) {
-            abort(404);
-        }
-    
-        return response()->file(storage_path("app/public/{$path}"));
-    })->where('filename', '.*');
 
-    // arsip
-    Route::get('/arsip', [DataflowController::class, 'arsip'])->name('arsip');
+    // anggota tim
+        // view home
+        Route::get('/home', [DataflowController::class, 'home'])->name('home');
 
-    // arsipkegiatan
-    Route::get('/arsipkegiatan', [DataflowController::class, 'arsipkegiatan'])->name('arsipkegiatan')->name('arsipkegiatan');
+        // view task
+        Route::get('/home/{task:slug}', [DataflowController::class, 'task']);
+        Route::post('/home/{task:slug}/{id}', [TaskController::class, 'updateprogress'])->name('updateprogress');
+        
+        // view arsip
+        Route::get('/arsip', [DataflowController::class, 'arsip'])->name('arsip');
 
-    // monitoringkegiatan
-    Route::get('/monitoringkegiatan', [DataflowController::class, 'monitoringkegiatan'])->name('monitoringkegiatan');
+    // ketua tim
 
-    // monitoringpegawai
-    Route::get('/monitoringpegawai', [DataflowController::class, 'monitoringpegawai'])->name('tasks.active');
+        // view monitoringkegiatan
+        Route::get('/monitoringkegiatan', [DataflowController::class, 'monitoringkegiatan'])->name('monitoringkegiatan');
+        
+        // view kegiatan
+        Route::get('/monitoringkegiatan/{kegiatan:slug}', [DataflowController::class, 'kegiatan'])->name('kegiatan');
+        Route::post('/monitoringkegiatan/{kegiatan:slug}/{id}', [TaskController::class, 'markkegiatanasdone'])->name('markkegiatanasdone');
+        Route::put('/monitoringkegiatan/{kegiatan}', [KegiatanController::class, 'update'])->name('updatekegiatan');
 
-    // tambahkegiatan
-    Route::get('/tambahkegiatan', [DataflowController::class, 'createtask']);
-    Route::post('/monitoringkegiatan', [TaskController::class, 'create'])->name('task.create');
+        // view task
+        Route::get('/monitoringkegiatan/{kegiatan_slug}/{slug}', [DataflowController::class, 'taskmonitoring'])->name('taskmonitoring');
+        Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('updatetask');
+        Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('deletetask');
 
-    // tambahpengguna
-    Route::get('/tambahpengguna', [DataflowController::class, 'createuser']);
-    Route::post('/tambahpengguna', [UserController::class, 'create'])->name('user.create');
+        // view monitoringpegawai
+        Route::get('/monitoringpegawai', [DataflowController::class, 'monitoringpegawai'])->name('tasks.active');
 
-    // kegiatan
-    Route::get('/monitoringkegiatan/{kegiatan:slug}', [DataflowController::class, 'kegiatan'])->name('kegiatan');
-    Route::post('/monitoringkegiatan/{kegiatan:slug}/{id}/complete', [TaskController::class, 'markKegiatanAsDone'])->name('kegiatan.markAsDone');
-    Route::put('/monitoringkegiatan/{kegiatan}', [KegiatanController::class, 'update'])->name('kegiatan.update');
+        // view arsipkegiatan
+        Route::get('/arsipkegiatan', [DataflowController::class, 'arsipkegiatan'])->name('arsipkegiatan')->name('arsipkegiatan');
 
-    // profile General
-    Route::get('/profile', [DataflowController::class, 'profile'])->name('profile');
-    Route::put('/updategeneral/{user}', [UserController::class, 'updategeneral'])->name('updategeneral');
-
-    // profile password
-    Route::get('/profile/password', [DataflowController::class, 'profilepassword'])->name('profilepassword');
-    Route::put('/updatepassword/{user}', [UserController::class, 'updatepassword'])->name('updatepassword');
+        // view tambahkegiatan
+        Route::get('/tambahkegiatan', [DataflowController::class, 'createtask']);
+        Route::post('/monitoringkegiatan', [TaskController::class, 'create'])->name('task.create');
 });

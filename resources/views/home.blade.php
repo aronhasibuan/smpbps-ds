@@ -1,6 +1,6 @@
 <x-layout>
 
-    <p class="text-sm text-gray-600 mb-5">Tugas Saya</p>
+    <p class="text-sm text-gray-600 mb-5">Daftar Tugas Aktif</p>
 
     <div class="border shadow-lg sm:rounded-t-lg">
         {{-- table headers --}}
@@ -94,8 +94,16 @@
                 </tbody>
             </table>
         </div>
-        <div class="bg-white p-4 dark:bg-gray-800 sticky bottom-0 border-t">
+        <div class="bg-white p-4 dark:bg-gray-800 bottom-0 border-t">
             {{ $tasks->links() }}
+            <div class="flex items-center w-full space-x-3 md:w-auto">
+                <p class="text-sm text-gray-500">Data per halaman</p>
+                <select id="perPage" class="flex items-center justify-center w-full px-4 py-2 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                    <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                    <option value="15" {{ request('perPage') == 15 ? 'selected' : '' }}>15</option>
+                    <option value="20" {{ request('perPage') == 20 ? 'selected' : '' }}>20</option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -110,6 +118,13 @@
             const urlParams = new URLSearchParams(window.location.search);
             urlParams.set('filter', this.value);
             urlParams.set('page', 1);
+            window.location.href = window.location.pathname + '?' + urlParams.toString();
+        });
+
+        document.getElementById('perPage').addEventListener('change', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('perPage', this.value);
+            urlParams.set('page', 1); 
             window.location.href = window.location.pathname + '?' + urlParams.toString();
         });
     </script>

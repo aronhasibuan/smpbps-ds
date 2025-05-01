@@ -20,17 +20,18 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             if(Auth::user()->role == 'ketuatim'){
-                return redirect('/monitoringkegiatan');
+                return redirect('/monitoringkegiatan')->with('success', 'Login berhasil, selamat datang!');
             }elseif(Auth::user()->role == 'anggotatim'){
                 return redirect('/home')->with('success', 'Login berhasil, selamat datang!');
             }elseif(Auth::user()->role == 'kepalakantor'){
-                return redirect('/monitoringkegiatan');
+                return redirect('/monitoringkegiatan')->with('success', 'Login berhasil, selamat datang!');
             }elseif(Auth::user()->role == 'administrator'){
-                return redirect('/administrator');
+                return redirect('/administrator')->with('success', 'Login berhasil, selamat datang!');
+            }else{
+                return redirect('/login')->with('error', 'Role akun tidak dikenali, silakan hubungi administrator');
             }
+        } else {
+            return redirect('/login')->with('error', 'Email atau Password yang dimasukkan tidak sesuai, silakan coba lagi');
         }
- 
-        session()->flash('error', 'Email atau Password yang dimasukkan tidak sesuai, silakan coba lagi');
-        return back();
     }
 }

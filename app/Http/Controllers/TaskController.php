@@ -26,7 +26,8 @@ class TaskController extends Controller
     }
 
     // create task
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         try {
             $validatedData = $request->validate([
                 'namakegiatan' => 'required|string|max:255',
@@ -110,7 +111,8 @@ class TaskController extends Controller
     }
 
     // update task
-    public function update(Request $request, Task $task){
+    public function update(Request $request, Task $task)
+    {
         try{
             $validatedData = $request->validate([
                 'deskripsi' => 'required|string',
@@ -163,7 +165,7 @@ class TaskController extends Controller
     }
 
     // update progress
-    public function updateprogress(Request $request, $id)
+    public function updateprogress(Request $request, $slug, $id)
     {
         $task = Task::findOrFail($id);
 
@@ -185,21 +187,18 @@ class TaskController extends Controller
         ]);
 
         $task->latestprogress = $request->quantity;
+        $task->save();
     
         if ($task->volume == $request->quantity) {
             $task->active = false;
-            $task->save();
             return redirect('home')->with('success', 'Tugas berhasil ditandai selesai!'); 
+        } else{
+            return redirect()->back()->with('updated', 'Progress Berhasil Diperbarui');
         }
-
-        $task->save();
-
-        session()->flash('updated', 'Progress Berhasil Diperbarui');
-        return redirect()->back();
     }
 
     // mark kegiatan as done
-    public function markKegiatanAsDone($id)
+    public function markkegiatanasdone($id)
     {
         try {
             $kegiatan = Kegiatan::findOrFail($id);

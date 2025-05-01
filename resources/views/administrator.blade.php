@@ -3,7 +3,7 @@
     {{-- button --}}
     @if (Auth::check() && Auth::user()->role == 'administrator')
         <div class="flex mt-2">
-            <a href="/tambahpengguna" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+            <a href="/administrator/createuser" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                 + Tambah Pengguna
             </a>
         </div>
@@ -52,8 +52,8 @@
                             <td class="px-4 py-3">{{ $user->no_hp }}</td>
                             <td class="px-4 py-3 flex items-center justify-between hover:cursor-pointer">
                                 @if ($user->role !== 'kepalakantor' && $user->role !== 'administrator')
-                                <img class="w-5 h-5" src="{{ asset('img/user-update.svg') }}" alt="Update Pengguna" onclick="openUpdateModal('{{ route('users.update', $user->id) }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->role }}', '{{ $user->no_hp }}')">                                    
-                                <img class="w-5 h-5" src="{{ asset('img/user-delete.svg') }}" alt="Hapus Pengguna" onclick="openDeleteModal('{{ route('users.destroy', $user->id) }}')">
+                                <img class="w-5 h-5" src="{{ asset('img/user-update.svg') }}" alt="Update Pengguna" onclick="openUpdateModal('{{ route('updateuser', $user->id) }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->role }}', '{{ $user->no_hp }}')">                                    
+                                <img class="w-5 h-5" src="{{ asset('img/user-delete.svg') }}" alt="Hapus Pengguna" onclick="openDeleteModal('{{ route('deleteuser', $user->id) }}')">
                                 @endif
                             </td>
                         </tr>
@@ -72,8 +72,16 @@
                 </tbody>
             </table>
         </div>
-        <div class="bg-white p-4 dark:bg-gray-800 sticky bottom-0 border">
+        <div class="bg-white p-4 dark:bg-gray-800 bottom-0 border">
             {{ $users->links() }}
+            <div class="flex items-center w-full space-x-3 md:w-auto">
+                <p class="text-sm text-gray-500">Data per halaman</p>
+                <select id="perPage" class="flex items-center justify-center w-full px-4 py-2 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                    <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                    <option value="15" {{ request('perPage') == 15 ? 'selected' : '' }}>15</option>
+                    <option value="20" {{ request('perPage') == 20 ? 'selected' : '' }}>20</option>
+                </select>
+            </div>
         </div>
 
         {{-- Modal Update User --}}
@@ -126,12 +134,6 @@
         </div>
     </div>
 
-    <script type="text/javascript">
-        @if(session('success'))
-            toastr.success("{{ session('success') }}");
-        @endif
-    </script>
-
     <script>
         function openUpdateModal(actionUrl, name, email, role, no_hp) {
             const modal = document.getElementById('updateUserModal');
@@ -163,6 +165,13 @@
             const modal = document.getElementById('deleteUserModal');
             modal.classList.add('hidden');
         }
+
+        document.getElementById('perPage').addEventListener('change', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('perPage', this.value);
+            urlParams.set('page', 1); 
+            window.location.href = window.location.pathname + '?' + urlParams.toString();
+        });
     </script>
 
 </x-layout> 

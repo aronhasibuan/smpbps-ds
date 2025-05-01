@@ -17,11 +17,10 @@ class DataflowController extends Controller
 
     // data view('administrator')
     public function administrator(Request $request)
-    {
-        $search = $request->input('search');
-
+    {        
         $usersQuery = User::query();
-
+        
+        $search = $request->input('search');
         if ($search) {
             $usersQuery->where(function ($query) use ($search) {
                 $query->where('name', 'like', '%' . $search . '%') 
@@ -30,7 +29,8 @@ class DataflowController extends Controller
             });
         }
 
-        $users = $usersQuery->paginate(7)->appends($request->query());
+        $perPage = $request->get('perPage', 10);
+        $users = $usersQuery->paginate($perPage)->appends($request->query());
 
         return view('administrator', ['users' => $users]);
     }
@@ -87,7 +87,8 @@ class DataflowController extends Controller
             $tasksQuery->orderBy('kodekategori')->orderBy('tenggat', 'ASC')->orderBy('percentage_progress', 'ASC');
         }
 
-        $tasks = $tasksQuery->paginate(5)->withQueryString();
+        $perPage = $request->get('perPage', 10);
+        $tasks = $tasksQuery->paginate($perPage)->withQueryString();
 
         return view('home', ['tasks' => $tasks]);
     }
@@ -107,13 +108,15 @@ class DataflowController extends Controller
             });
         }
 
-        $tasks = $tasksQuery->paginate(5)->withQueryString();
+        $perPage = $request->get('perPage', 10);
+        $tasks = $tasksQuery->paginate($perPage)->withQueryString();
 
         return view('arsip', ['tasks' => $tasks]);
     }
 
     // data view('arsipkegiatan')
-    public function arsipkegiatan(){
+    public function arsipkegiatan()
+    {
         $user = Auth::user();
         $kegiatan = Kegiatan::where('pemberitugas_id', $user->id)->where('active', false)->paginate(5);
 
@@ -132,23 +135,24 @@ class DataflowController extends Controller
     }
 
     // data view('monitoringkegiatan')
-    public function monitoringkegiatan()
+    public function monitoringkegiatan(Request $request)
     {
         $user = Auth::user();
+        $perPage = $request->get('perPage', 10);
 
         if ($user->role === 'kepalakantor') {
             $kegiatan = Kegiatan::where('active', true)
                 ->with(['tasks' => function ($query) {
                     $query->select('kegiatan_id', 'latestprogress', 'volume');
                 }])
-                ->paginate(3);
+                ->paginate($perPage)->withQueryString();
         } elseif ($user->role === 'ketuatim') {
             $kegiatan = Kegiatan::where('pemberitugas_id', $user->id)
                 ->where('active', true)
                 ->with(['tasks' => function ($query) {
                     $query->select('kegiatan_id', 'latestprogress', 'volume');
                 }])
-                ->paginate(3);
+                ->paginate($perPage)->withQueryString();
         } else {
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
@@ -238,17 +242,10 @@ class DataflowController extends Controller
         return view('task', ['task' => $task, 'progresses'=>$progress]);
     }
 
-    // data view('profile-general')
+    // data view('profile')
     public function profile()
     {
         $user = Auth::user();
-        return view('profile-general', ['user' => $user]);
-    }
-
-    // data view('profile-password')
-    public function profilepassword()
-    {
-        $user = Auth::user();
-        return view('profile-password', ['user' => $user]);
+        return view('profile', ['user' => $user]);
     }
 }
