@@ -9,7 +9,7 @@
                 <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                     
                     <div class="w-full md:w-1/2">
-                        <form class="flex items-center" action="/home" method="GET">
+                        <form class="flex items-center" action="/monitoringkegiatan" method="GET">
                             <label for="search" class="sr-only"></label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

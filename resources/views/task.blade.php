@@ -1,7 +1,7 @@
 <x-layout>
     <main class="pb-16 bg-white dark:bg-gray-800">
         <div class=" justify-between px-4 mx-auto max-w-screen-xl">
-            <div class="mx-auto w-full max-w-4xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
+            <div class="mx-auto w-full">
                 <div class="not-format">
 
                     @if (Auth::check() && Auth::user()->role == 'ketuatim')
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="border-t border-b border-gray-300 text-black">
-                    <p class="dark:text-white">Deskripsi Pekerjaan: <br> {{ $task->deskripsi }}</p>
+                    <p class="dark:text-white mb-4">Deskripsi Pekerjaan: {{ $task->deskripsi }}</p>
                     <p class="dark:text-white">Banyak Pekerjaan: {{ $task->volume }} {{ $task->satuan }}</p>
                 </div>
 
@@ -104,7 +104,7 @@
                             <input type="number" id="quantity" name="quantity" min="{{ $task->latestprogress + 1}}" value="{{ $task->latestprogress + 1 }}" max="{{ $task->volume }}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full">
 
                             <label for="note" class="mt-4 block">Catatan/Kendala Perkerjaan</label>
-                            <input type="text" id="note" name="note" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full">
+                            <input type="text" id="catatan" name="catatan" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full" autocomplete="off">
                                                         
                             <label class="inline-flex items-center cursor-pointer mt-4">
                                 <input type="checkbox" id="uploadCheckbox" class="sr-only peer">

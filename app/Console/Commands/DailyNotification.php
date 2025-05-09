@@ -47,7 +47,7 @@ class DailyNotification extends Command
             $pesan .= "🔥 *Prioritas Utama (Deadline Terdekat):*\n";
             $pesan .= "1️⃣ *{$prioritasUtama->namakegiatan}*\n";
             $pesan .= "🗓️ Tenggat: {$prioritasUtama->tenggat}\n";
-            $pesan .= "📝 Deskripsi: {$prioritasUtama->tenggat}\n\n";
+            $pesan .= "📝 Deskripsi: {$prioritasUtama->deskripsi}\n\n";
 
             $pesan .= "📋 *Tugas Lainnya:*\n";
             $i = 2;

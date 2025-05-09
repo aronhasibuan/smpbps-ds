@@ -84,7 +84,7 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/monitoringpegawai', [DataflowController::class, 'monitoringpegawai'])->name('tasks.active');
 
         // view arsipkegiatan
-        Route::get('/arsipkegiatan', [DataflowController::class, 'arsipkegiatan'])->name('arsipkegiatan')->name('arsipkegiatan');
+        Route::get('/arsipkegiatan', [DataflowController::class, 'arsipkegiatan'])->name('arsipkegiatan');
 
         // view tambahkegiatan
         Route::get('/tambahkegiatan', [DataflowController::class, 'createtask']);

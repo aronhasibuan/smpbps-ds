@@ -187,12 +187,13 @@ class TaskController extends Controller
         ]);
 
         $task->latestprogress = $request->quantity;
-        $task->save();
     
         if ($task->volume == $request->quantity) {
             $task->active = false;
+            $task->save();
             return redirect('home')->with('success', 'Tugas berhasil ditandai selesai!'); 
         } else{
+            $task->save();
             return redirect()->back()->with('updated', 'Progress Berhasil Diperbarui');
         }
     }

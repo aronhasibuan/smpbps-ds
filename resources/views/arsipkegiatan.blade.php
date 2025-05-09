@@ -3,11 +3,11 @@
     {{-- judul halaman --}}
     <p class="text-sm text-gray-600 mb-4">Arsip Kegiatan</p>
 
-    <div class="relative bg-white dark:bg-gray-800 sm:rounded-t-lg">
+    <div class="relative bg-white dark:bg-gray-800 sm:rounded-t-lg border">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
             
             <div class="w-full md:w-1/2">
-                <form class="flex items-center" action="#" method="GET">
+                <form class="flex items-center" action="/arsipkegiatan" method="GET">
                     <label for="search" class="sr-only"></label>
                     <div class="relative w-full">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -24,7 +24,7 @@
     {{-- tabel daftar kegiatan selesai --}}
     <div class="overflow-auto max-h-screen">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-t"> 
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-l border-r border-b"> 
                 <tr>
                     <th scope="col" class="px-4 py-3">Nama Kegiatan</th>
                     <th scope="col" class="px-4 py-3">Total Volume</th>
@@ -34,7 +34,7 @@
             </thead>
             <tbody class="bg-white border-t dark:border-gray-700 dark:bg-gray-800">
                 @forelse ($kegiatan as $giat)
-                    <tr class="border-t">
+                    <tr class="border">
                         <td class="px-4 py-3">{{ $giat->namakegiatan }}</td>
                         <td class="px-4 py-3">{{ $giat->totalvolume }}</td>
                         <td class="px-4 py-3">{{ $giat->satuan }}</td>
@@ -58,6 +58,26 @@
                 @endforelse
             </tbody>
         </table>
+        <div class="bg-white p-4 dark:bg-gray-800 bottom-0 border-t">
+            {{ $kegiatan->links() }}
+            <div class="flex items-center w-full space-x-3 md:w-auto">
+                <p class="text-sm text-gray-500">Data per halaman</p>
+                <select id="perPage" class="flex items-center justify-center w-full px-4 py-2 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                    <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                    <option value="15" {{ request('perPage') == 15 ? 'selected' : '' }}>15</option>
+                    <option value="20" {{ request('perPage') == 20 ? 'selected' : '' }}>20</option>
+                </select>
+            </div>
+        </div>
     </div>
+
+    <script>
+        document.getElementById('perPage').addEventListener('change', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('perPage', this.value);
+            urlParams.set('page', 1); 
+            window.location.href = window.location.pathname + '?' + urlParams.toString();
+        });
+    </script>
 
 </x-layout>

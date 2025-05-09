@@ -52,6 +52,13 @@
                     <tr class="text-center">
                         <td colspan="5" class="px-4 py-3">Tidak Ada Tugas Yang Diselesaikan</td>
                     </tr>
+                    @if(request()->has('search'))
+                        <tr class="text-center">
+                            <td colspan="5">
+                                <a href="{{ route('arsip') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                            </td>
+                        </tr>
+                    @endif
                     @endforelse
                 </tbody>
             </table>

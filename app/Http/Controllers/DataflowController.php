@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DataflowController extends Controller
 {
-
     // data view('administrator')
     public function administrator(Request $request)
     {        
@@ -115,10 +114,22 @@ class DataflowController extends Controller
     }
 
     // data view('arsipkegiatan')
-    public function arsipkegiatan()
+    public function arsipkegiatan(Request $request)
     {
         $user = Auth::user();
-        $kegiatan = Kegiatan::where('pemberitugas_id', $user->id)->where('active', false)->paginate(5);
+
+        $search = $request->input('search');
+        $perPage = $request->get('perPage', 10); 
+
+        $kegiatanQuery = Kegiatan::where('pemberitugas_id', $user->id)->where('active', false);
+
+        if ($search) {
+            $kegiatanQuery->where(function ($query) use ($search) {
+                $query->where('namakegiatan', 'like', '%' . $search . '%');
+            });
+        }
+
+        $kegiatan = $kegiatanQuery->paginate($perPage)->withQueryString();
 
         $kegiatan->each(function ($keg) {
             if ($keg->tasks->isNotEmpty()) {
@@ -129,7 +140,6 @@ class DataflowController extends Controller
                 $keg->satuan = '';
             }
         });
-
 
         return view('arsipkegiatan', ['kegiatan' => $kegiatan]);
     }
@@ -144,18 +154,25 @@ class DataflowController extends Controller
             $kegiatan = Kegiatan::where('active', true)
                 ->with(['tasks' => function ($query) {
                     $query->select('kegiatan_id', 'latestprogress', 'volume');
-                }])
-                ->paginate($perPage)->withQueryString();
+                }]);
         } elseif ($user->role === 'ketuatim') {
             $kegiatan = Kegiatan::where('pemberitugas_id', $user->id)
                 ->where('active', true)
                 ->with(['tasks' => function ($query) {
                     $query->select('kegiatan_id', 'latestprogress', 'volume');
-                }])
-                ->paginate($perPage)->withQueryString();
+                }]);
         } else {
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
+
+        $search = $request->input('search');
+        if ($search) {
+            $kegiatan->where(function ($query) use ($search) {
+                $query->where('namakegiatan', 'like', '%' . $search . '%');
+            });
+        }
+
+        $kegiatan = $kegiatan->paginate($perPage)->withQueryString();
 
         $kegiatan->each(function ($keg) {
             if ($keg->tasks->isNotEmpty()) {

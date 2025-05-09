@@ -582,22 +582,6 @@ class ProgressSeeder extends Seeder
         ]);
 
         Progress::create([
-            'task_id' => 20,
-            'tanggal' => now()->format('Y-m-d'),
-            'progress' => 0,
-            'catatan' => 'Tidak ada catatan untuk progress ini',
-            'dokumentasi' => null,
-        ]);
-
-        Progress::create([
-            'task_id' => 21,
-            'tanggal' => now()->format('Y-m-d'),
-            'progress' => 0,
-            'catatan' => 'Tidak ada catatan untuk progress ini',
-            'dokumentasi' => null,
-        ]);
-
-        Progress::create([
             'task_id' => 22,
             'tanggal' => now()->format('Y-m-d'),
             'progress' => 2,
@@ -713,14 +697,6 @@ class ProgressSeeder extends Seeder
             'task_id' => 36,
             'tanggal' => now()->format('Y-m-d'),
             'progress' => 4,
-            'catatan' => 'Tidak ada catatan untuk progress ini',
-            'dokumentasi' => null,
-        ]);
-
-        Progress::create([
-            'task_id' => 37,
-            'tanggal' => now()->format('Y-m-d'),
-            'progress' => 0,
             'catatan' => 'Tidak ada catatan untuk progress ini',
             'dokumentasi' => null,
         ]);
