@@ -34,8 +34,14 @@ class DataflowController extends Controller
         return view('administrator', ['users' => $users]);
     }
 
-    // data view('home')
+    // data view ('home')
     public function home(Request $request)
+    {
+        return view('home');
+    }
+
+    // data view('daftarkegiatan')
+    public function daftarkegiatan(Request $request)
     {
         $user = Auth::user();
 
@@ -89,7 +95,7 @@ class DataflowController extends Controller
         $perPage = $request->get('perPage', 10);
         $tasks = $tasksQuery->paginate($perPage)->withQueryString();
 
-        return view('home', ['tasks' => $tasks]);
+        return view('daftarkegiatan', ['tasks' => $tasks]);
     }
 
     // data view('arsip')
@@ -121,7 +127,13 @@ class DataflowController extends Controller
         $search = $request->input('search');
         $perPage = $request->get('perPage', 10); 
 
-        $kegiatanQuery = Kegiatan::where('pemberitugas_id', $user->id)->where('active', false);
+        if ($user->role === 'kepalakantor'){
+            $kegiatanQuery = Kegiatan::where('active', false);
+        } elseif ($user->role === 'ketuatim'){
+            $kegiatanQuery = Kegiatan::where('pemberitugas_id', $user->id)->where('active', false);
+        }else {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        };
 
         if ($search) {
             $kegiatanQuery->where(function ($query) use ($search) {

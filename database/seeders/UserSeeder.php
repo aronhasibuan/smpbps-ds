@@ -14,20 +14,9 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Administrator
-        // #1
-        User::create([
-            'name' => 'Administrator',
-            'username' => 'admin',
-            'email' => 'administratorsmpbpsds@gmail.com',
-            'role' => 'administrator',
-            'password' => Hash::make('password'),
-            'no_hp'=> '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
 
         // Kepala BPS
-        // #2
+        // #1
         User::create([
             'name' => 'Kepala BPS Deli Serdang',
             'username' => 'Kepala_bps',
@@ -39,7 +28,7 @@ class UserSeeder extends Seeder
         ]);
 
         // Ketua Tim
-        // #3
+        // #2
         User::create([
             'name' => 'Ketua Tim',
             'username' => 'ketuatim',
@@ -51,7 +40,7 @@ class UserSeeder extends Seeder
         ]);
 
         // Anggota Tim
-        // #4
+        // #3
         User::create([
             'name' => 'Aron Zyode Kaxanca Hasibuan',
             'username' => 'aronhsb16',
@@ -62,7 +51,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #5
+        // #4
         User::create([
             'name' => 'Arsyka Laila Oktalia Siregar',
             'username' => 'arsyka_laila',
@@ -73,7 +62,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #6
+        // #5
         User::create([
             'name' => 'Kristian Ernala Wicaksono',
             'username' => 'ignya_kristian',
@@ -84,7 +73,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #7
+        // #6
         User::create([
             'name' => 'Pratiwi',
             'username' => 'pratiwi',
@@ -95,7 +84,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #8
+        // #7
         User::create([
             'name' => 'Mita Febrianti',
             'username' => 'mita_febrianti',

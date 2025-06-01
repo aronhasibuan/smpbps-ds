@@ -55,12 +55,16 @@ Route::middleware(['auth'])->group(function(){
 
 
     // anggota tim
+
         // view home
         Route::get('/home', [DataflowController::class, 'home'])->name('home');
 
+        // view daftarkegiatan
+        Route::get('/daftarkegiatan', [DataflowController::class, 'daftarkegiatan'])->name('daftarkegiatan');
+
         // view task
-        Route::get('/home/{task:slug}', [DataflowController::class, 'task']);
-        Route::post('/home/{task:slug}/{id}', [TaskController::class, 'updateprogress'])->name('updateprogress');
+        Route::get('/daftarkegiatan/{task:slug}', [DataflowController::class, 'task']);
+        Route::post('/daftarkegiatan/{task:slug}/{id}', [TaskController::class, 'updateprogress'])->name('updateprogress');
         
         // view arsip
         Route::get('/arsip', [DataflowController::class, 'arsip'])->name('arsip');

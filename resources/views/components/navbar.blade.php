@@ -57,7 +57,10 @@
 
                     @if (Auth::check() && Auth::user()->role == 'anggotatim')
                         <li>
-                            <x-nav-link href="/home" :active="request()->is('home')">Daftar Tugas</x-nav-link>
+                            <x-nav-link href="/home" :active="request()->is('home')">Home</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/daftarkegiatan" :active="request()->is('daftarkegiatan')">Daftar Tugas</x-nav-link>
                         </li>
                         <li>
                             <x-nav-link href="/arsip" :active="request()->is('arsip')">Arsip Tugas</x-nav-link>
@@ -66,6 +69,11 @@
                     @endif
 
                     @if (Auth::check() && (Auth::user()->role == 'ketuatim' || Auth::user()->role == 'kepalakantor'))
+                        @if (Auth::check() && (Auth::user()->role == 'kepalakantor'))
+                            <li>
+                                <x-nav-link href="/administrator" :active="request()->is('administrator')">Daftar Pegawai</x-nav-link>
+                            </li>                            
+                        @endif
                         <li>
                             <x-nav-link href="/monitoringkegiatan" :active="request()->is('monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
                         </li>

@@ -1,14 +1,5 @@
 <x-layout>
 
-    {{-- button --}}
-    @if (Auth::check() && Auth::user()->role == 'administrator')
-        <div class="flex mt-2">
-            <a href="/administrator/createuser" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                + Tambah Pengguna
-            </a>
-        </div>
-    @endif
-
     <p class="text-sm text-gray-600 mt-3 mb-5">Pengguna Terdaftar Pada SMPBPS-DS</p>
 
     <div class="border shadow-lg sm:rounded-t-lg">
@@ -29,6 +20,16 @@
                         </div>
                     </form>
                 </div>
+
+                {{-- button --}}
+                @if (Auth::check() && Auth::user()->role == 'kepalakantor')
+                    <div class="flex mt-2">
+                        <a href="/administrator/createuser" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                            + Tambah Pengguna
+                        </a>
+                    </div>
+                @endif
+                
             </div>
         </div>
         {{-- advanced tables --}}
