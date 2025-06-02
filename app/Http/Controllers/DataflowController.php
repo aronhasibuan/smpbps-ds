@@ -44,15 +44,15 @@ class DataflowController extends Controller
         foreach ($tasks as $task) {
             $today = Carbon::now()->startOfDay();
             $tenggat = Carbon::parse($task->tenggat)->startOfDay();
-            $task->hari_tersisa = $today->diffInDays($tenggat, false);
+            $task->hari_tersisa = $today->diffInDays($tenggat, false) + 1;
             $task->progress_tersisa = ceil($task->volume - $task->latestprogress);
             $task->sarantugas = ceil($task->progress_tersisa/$task->hari_tersisa);
     }
         return view('home', ['user' => $user, 'tasks' => $tasks]);
     }
 
-    // data view('daftarkegiatan')
-    public function daftarkegiatan(Request $request)
+    // data view('daftartugas')
+    public function daftartugas(Request $request)
     {
         $user = Auth::user();
 
@@ -106,7 +106,7 @@ class DataflowController extends Controller
         $perPage = $request->get('perPage', 10);
         $tasks = $tasksQuery->paginate($perPage)->withQueryString();
 
-        return view('daftarkegiatan', ['tasks' => $tasks]);
+        return view('daftartugas', ['tasks' => $tasks]);
     }
 
     // data view('arsip')

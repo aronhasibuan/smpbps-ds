@@ -8,7 +8,7 @@
             <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                 
                 <div class="w-full md:w-1/2">
-                    <form class="flex items-center" action="/daftarkegiatan" method="GET">
+                    <form class="flex items-center" action="/daftartugas" method="GET">
                         <label for="search" class="sr-only"></label>
                         <div class="relative w-full">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -74,7 +74,7 @@
                             <td class="px-4 py-3">{{ $task->volume }} {{ $task->satuan }}</td>
                             <td class="px-4 py-3">{{ $task->formatted_tenggat }}</td>
                             <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                                <a href="/daftarkegiatan/{{ $task->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                                <a href="/daftartugas/{{ $task->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                     <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                                 </a>
                             </td>
@@ -86,7 +86,7 @@
                         @if(request()->has('search'))
                             <tr class="text-center">
                                 <td colspan="5">
-                                    <a href="{{ route('daftarkegiatan') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                                    <a href="{{ route('daftartugas') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
                                 </td>
                             </tr>
                         @endif

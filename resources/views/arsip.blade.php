@@ -43,7 +43,7 @@
                         <td class="px-4 py-3">{{ $task->volume }}</td>
                         <td class="px-4 py-3">{{ $task->satuan }}</td>
                         <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                            <a href="/daftarkegiatan/{{ $task->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                            <a href="/daftartugas/{{ $task->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                 <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                             </a>
                         </td>

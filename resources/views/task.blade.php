@@ -9,7 +9,7 @@
                     @endif
 
                     @if (Auth::check() && Auth::user()->role == 'anggotatim')
-                    <a href="/daftarkegiatan" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                    <a href="/daftartugas" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
                     @endif
 
                     <div class="flex justify-between items-center mb-5 text-gray-500 mt-2">

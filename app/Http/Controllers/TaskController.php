@@ -191,7 +191,7 @@ class TaskController extends Controller
         if ($task->volume == $request->quantity) {
             $task->active = false;
             $task->save();
-            return redirect('daftarkegiatan')->with('success', 'Tugas berhasil ditandai selesai!'); 
+            return redirect('daftartugas')->with('success', 'Tugas berhasil ditandai selesai!'); 
         } else{
             $task->save();
             return redirect()->back()->with('updated', 'Progress Berhasil Diperbarui');

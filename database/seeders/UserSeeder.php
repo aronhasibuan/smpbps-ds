@@ -39,23 +39,23 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // Anggota Tim
         // #3
         User::create([
-            'name' => 'Aron Zyode Kaxanca Hasibuan',
-            'username' => 'aronhsb16',
-            'email' => 'AronHasibuan@gmail.com',
-            'role' => 'anggotatim',
-            'no_hp' => '08887654811',
+            'name' => 'Ketua Tim 2',
+            'username' => 'ketuatim2',
+            'email' => 'KetuaTim2@gmail.com',
+            'role' => 'ketuatim',
+            'no_hp'=> '08887654811',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
 
+        // Anggota Tim
         // #4
         User::create([
-            'name' => 'Arsyka Laila Oktalia Siregar',
-            'username' => 'arsyka_laila',
-            'email' => 'ArsykaSiregar@gmail.com',
+            'name' => 'Anggota Tim 1',
+            'username' => 'anggotatim1',
+            'email' => 'anggotatim1@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
             'password' => Hash::make('password'),
@@ -64,9 +64,9 @@ class UserSeeder extends Seeder
 
         // #5
         User::create([
-            'name' => 'Kristian Ernala Wicaksono',
-            'username' => 'ignya_kristian',
-            'email' => 'Kristian@gmail.com',
+            'name' => 'Anggota Tim 2',
+            'username' => 'anggotatim2',
+            'email' => 'anggotatim2@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
             'password' => Hash::make('password'),
@@ -75,9 +75,9 @@ class UserSeeder extends Seeder
 
         // #6
         User::create([
-            'name' => 'Pratiwi',
-            'username' => 'pratiwi',
-            'email' => 'Pratiwi@gmail.com',
+            'name' => 'Anggota Tim 3',
+            'username' => 'anggotatim3',
+            'email' => 'anggotatim3@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
             'password' => Hash::make('password'),
@@ -86,9 +86,20 @@ class UserSeeder extends Seeder
 
         // #7
         User::create([
-            'name' => 'Mita Febrianti',
-            'username' => 'mita_febrianti',
-            'email' => 'MitaFebrianti@gmail.com',
+            'name' => 'Anggota Tim 4',
+            'username' => 'anggotatim4',
+            'email' => 'anggotatim4@gmail.com',
+            'role' => 'anggotatim',
+            'no_hp' => '08887654811',
+            'password' => Hash::make('password'),
+            'remember_token' => Str::random(10)
+        ]);
+
+        // #8
+        User::create([
+            'name' => 'Anggota Tim 5',
+            'username' => 'anggotatim5',
+            'email' => 'anggotatim5@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
             'password' => Hash::make('password'),

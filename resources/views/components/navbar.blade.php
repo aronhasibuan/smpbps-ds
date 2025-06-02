@@ -60,7 +60,7 @@
                             <x-nav-link href="/home" :active="request()->is('home')">Home</x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link href="/daftarkegiatan" :active="request()->is('daftarkegiatan')">Daftar Tugas</x-nav-link>
+                            <x-nav-link href="/daftartugas" :active="request()->is('daftartugas')">Daftar Tugas</x-nav-link>
                         </li>
                         <li>
                             <x-nav-link href="/arsip" :active="request()->is('arsip')">Arsip Tugas</x-nav-link>

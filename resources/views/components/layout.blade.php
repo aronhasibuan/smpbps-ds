@@ -16,6 +16,8 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+        @viteReactRefresh
+        @vite('resources/js/app.jsx')
         {{-- <style type="text/css">
             * {
                     outline: 1px solid red;

@@ -43,6 +43,16 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/profile', [DataflowController::class, 'profile'])->name('profile');
         Route::put('/profile/updatepassword/{user}', [UserController::class, 'updatepassword'])->name('updatepassword');
 
+        // Kalender
+        Route::get('/api/tasks/calendar', function () {
+            $user = Auth::user();
+            return Task::where('penerimatugas_id', $user->id)->select([
+                'namakegiatan as title',
+                'created_at as start',
+                'tenggat as end'
+            ])->get();
+        })->middleware('auth');
+
     // administrator
         // view administrator
         Route::get('/administrator', [DataflowController::class, 'administrator'])->name('administrator');
@@ -59,12 +69,12 @@ Route::middleware(['auth'])->group(function(){
         // view home
         Route::get('/home', [DataflowController::class, 'home'])->name('home');
 
-        // view daftarkegiatan
-        Route::get('/daftarkegiatan', [DataflowController::class, 'daftarkegiatan'])->name('daftarkegiatan');
+        // view daftartugas
+        Route::get('/daftartugas', [DataflowController::class, 'daftartugas'])->name('daftartugas');
 
         // view task
-        Route::get('/daftarkegiatan/{task:slug}', [DataflowController::class, 'task']);
-        Route::post('/daftarkegiatan/{task:slug}/{id}', [TaskController::class, 'updateprogress'])->name('updateprogress');
+        Route::get('/daftartugas/{task:slug}', [DataflowController::class, 'task']);
+        Route::post('/daftartugas/{task:slug}/{id}', [TaskController::class, 'updateprogress'])->name('updateprogress');
         
         // view arsip
         Route::get('/arsip', [DataflowController::class, 'arsip'])->name('arsip');
