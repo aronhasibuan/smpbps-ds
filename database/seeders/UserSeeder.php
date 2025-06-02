@@ -22,8 +22,9 @@ class UserSeeder extends Seeder
             'username' => 'Kepala_bps',
             'email' => 'KepalaBPS@gmail.com',
             'role' => 'kepalakantor',
-            'password' => Hash::make('password'),
             'no_hp'=> '08887654811',
+            'team_id' => 1,
+            'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
 
@@ -35,6 +36,7 @@ class UserSeeder extends Seeder
             'email' => 'KetuaTim@gmail.com',
             'role' => 'ketuatim',
             'no_hp'=> '08887654811',
+            'team_id' => 2,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
@@ -46,6 +48,7 @@ class UserSeeder extends Seeder
             'email' => 'KetuaTim2@gmail.com',
             'role' => 'ketuatim',
             'no_hp'=> '08887654811',
+            'team_id' => 3,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
@@ -58,6 +61,7 @@ class UserSeeder extends Seeder
             'email' => 'anggotatim1@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
+            'team_id' => 2,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
@@ -69,6 +73,7 @@ class UserSeeder extends Seeder
             'email' => 'anggotatim2@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
+            'team_id' => 3,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
@@ -80,6 +85,7 @@ class UserSeeder extends Seeder
             'email' => 'anggotatim3@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
+            'team_id' => 2,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
@@ -91,6 +97,7 @@ class UserSeeder extends Seeder
             'email' => 'anggotatim4@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
+            'team_id' => 3,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
@@ -102,6 +109,7 @@ class UserSeeder extends Seeder
             'email' => 'anggotatim5@gmail.com',
             'role' => 'anggotatim',
             'no_hp' => '08887654811',
+            'team_id' => 2,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);

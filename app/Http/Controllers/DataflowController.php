@@ -130,6 +130,12 @@ class DataflowController extends Controller
         return view('arsip', ['tasks' => $tasks]);
     }
 
+    // data view('kalender')
+    public function kalender()
+    {
+        return view('kalender');
+    }
+
     // data view('arsipkegiatan')
     public function arsipkegiatan(Request $request)
     {

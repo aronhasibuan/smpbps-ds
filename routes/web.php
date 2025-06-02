@@ -53,6 +53,8 @@ Route::middleware(['auth'])->group(function(){
             ])->get();
         })->middleware('auth');
 
+        Route::get('/kalender', [DataflowController::class, 'kalender'])->name('kalender');
+
     // administrator
         // view administrator
         Route::get('/administrator', [DataflowController::class, 'administrator'])->name('administrator');

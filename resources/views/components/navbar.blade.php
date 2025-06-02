@@ -68,12 +68,13 @@
                                                                     
                     @endif
 
+                    @if (Auth::check() && (Auth::user()->role == 'kepalakantor'))
+                        <li>
+                            <x-nav-link href="/administrator" :active="request()->is('administrator')">Daftar Pegawai</x-nav-link>
+                        </li>                            
+                    @endif
+
                     @if (Auth::check() && (Auth::user()->role == 'ketuatim' || Auth::user()->role == 'kepalakantor'))
-                        @if (Auth::check() && (Auth::user()->role == 'kepalakantor'))
-                            <li>
-                                <x-nav-link href="/administrator" :active="request()->is('administrator')">Daftar Pegawai</x-nav-link>
-                            </li>                            
-                        @endif
                         <li>
                             <x-nav-link href="/monitoringkegiatan" :active="request()->is('monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
                         </li>
@@ -85,6 +86,9 @@
                         </li>              
                     @endif
 
+                    <li>
+                        <x-nav-link href="/kalender">Kalender</x-nav-link>
+                    </li>
                 </ul>
             </div>
                   

@@ -17,8 +17,12 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->enum('role',['ketuatim', 'anggotatim', 'kepalakantor', 'administrator'])->default('anggotatim');
-            $table->string('password');
             $table->string('no_hp');
+            $table->foreignId('team_id')->constrained(
+                table:'users',
+                indexName:'team_user_id'
+            );
+            $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });
