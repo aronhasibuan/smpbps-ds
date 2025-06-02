@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\Kegiatan;
@@ -37,7 +38,17 @@ class DataflowController extends Controller
     // data view ('home')
     public function home(Request $request)
     {
-        return view('home');
+        $user = Auth::user();
+        $tasks = Task::where('penerimatugas_id', $user->id)->where('active', true)->get();
+
+        foreach ($tasks as $task) {
+            $today = Carbon::now()->startOfDay();
+            $tenggat = Carbon::parse($task->tenggat)->startOfDay();
+            $task->hari_tersisa = $today->diffInDays($tenggat, false);
+            $task->progress_tersisa = ceil($task->volume - $task->latestprogress);
+            $task->sarantugas = ceil($task->progress_tersisa/$task->hari_tersisa);
+    }
+        return view('home', ['user' => $user, 'tasks' => $tasks]);
     }
 
     // data view('daftarkegiatan')
