@@ -29,9 +29,10 @@
                 <thead class="text-xs text-gray-700 uppercase dark:text-gray-400"> 
                     <tr>
                         <th scope="col" class="px-4 py-3">Nama Kegiatan</th>
-                        <th scope="col" class="px-4 py-3">Deskripsi</th>
-                        <th scope="col" class="px-4 py-3">Volume</th>
-                        <th scope="col" class="px-4 py-3">Satuan</th>
+                        <th scope="col" class="px-4 py-3">Volume/Satuan</th>
+                        <th scope="col" class="px-4 py-3">Tenggat</th>
+                        <th scope="col" class="px-4 py-3">Tanggal Selesai</th>
+                        <th scope="col" class="px-4 py-3">Lihat Nilai</th>
                         <th scope="col" class="px-4 py-3">Aksi</th>
                     </tr>
                 </thead>
@@ -39,9 +40,14 @@
                     @forelse ($tasks as $task)
                     <tr>
                         <td class="px-4 py-3">{{ $task->namakegiatan }}</td>
-                        <td class="px-4 py-3">{{ $task->deskripsi }}</td>
-                        <td class="px-4 py-3">{{ $task->volume }}</td>
-                        <td class="px-4 py-3">{{ $task->satuan }}</td>
+                        <td class="px-4 py-3">{{ $task->volume }} {{ $task->satuan }}</td>
+                        <td class="px-4 py-3">{{ $task->formatted_tenggat }}</td>
+                        <td class="px-4 py-3">{{ $task->updated_at->format('d M') }}</td>
+                        <td class="px-4 py-3 items-center justify-center hover:cursor-pointer">
+                            <a href="/arsip/penilaian/{{ $task->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                                <img class="w-6 h-6" src="{{ asset('img/star.svg') }}" alt="Nilai">
+                            </a>
+                        </td>
                         <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
                             <a href="/daftartugas/{{ $task->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                 <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">

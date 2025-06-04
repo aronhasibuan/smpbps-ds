@@ -44,7 +44,7 @@ class DataflowController extends Controller
         foreach ($tasks as $task) {
             $today = Carbon::now()->startOfDay();
             $tenggat = Carbon::parse($task->tenggat)->startOfDay();
-            $task->hari_tersisa = $today->diffInDays($tenggat, false) + 1;
+            $task->hari_tersisa = $today->diffInDays($tenggat, true) + 1;
             $task->progress_tersisa = ceil($task->volume - $task->latestprogress);
             $task->sarantugas = ceil($task->progress_tersisa/$task->hari_tersisa);
     }
@@ -128,6 +128,15 @@ class DataflowController extends Controller
         $tasks = $tasksQuery->paginate($perPage)->withQueryString();
 
         return view('arsip', ['tasks' => $tasks]);
+    }
+
+    // data view ('penilaian')
+    public function penilaian(Task $task)
+    {
+        $start = Carbon::parse($task->created_at)->startOfDay();
+        $end = Carbon::parse($task->updated_at)->startOfDay();
+        $progress = Progress::where('task_id', $task->id)->get();
+        return view('penilaian', ['task' => $task, 'start' => $start, 'end' => $end]);
     }
 
     // data view('kalender')

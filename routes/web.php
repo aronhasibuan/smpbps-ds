@@ -81,6 +81,9 @@ Route::middleware(['auth'])->group(function(){
         // view arsip
         Route::get('/arsip', [DataflowController::class, 'arsip'])->name('arsip');
 
+        // view nilai
+        Route::get('/arsip/penilaian/{task:slug}', [DataflowController::class, 'penilaian'])->name('penilaian');
+
     // ketua tim
 
         // view monitoringkegiatan
