@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class kegiatan extends Model
+class Activity extends Model
 {
     use HasFactory;
 
-    protected $table = 'kegiatan';
-    protected $fillable = ['namakegiatan','slug','tenggat','pemberitugas_id','active'];
+    protected $table = 'activities';
+    protected $fillable = ['user_leader_id', 'activity_name', 'activity_slug','activity_unit','activity_start', 'activity_end', 'activity_active_status'];
 
     public function tasks(): HasMany{
-        return $this->hasMany(Task::class, 'kegiatan_id');
+        return $this->hasMany(Task::class, 'activity_id');
     }
 
     public function getFormattedTenggatAttribute()

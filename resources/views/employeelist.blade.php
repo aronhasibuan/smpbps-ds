@@ -8,7 +8,7 @@
             <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                 
                 <div class="w-full md:w-1/2">
-                    <form class="flex items-center" action="/administrator" method="GET">
+                    <form class="flex items-center" action="/kepalabps/daftarpegawai" method="GET">
                         <label for="search" class="sr-only"></label>
                         <div class="relative w-full">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -22,7 +22,7 @@
                 </div>
 
                 {{-- button --}}
-                @if (Auth::check() && Auth::user()->role == 'kepalakantor')
+                @if (Auth::check() && Auth::user()->role == 'kepalabps')
                     <div class="flex mt-2">
                         <a href="/administrator/createuser" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                             + Tambah Pengguna
@@ -38,7 +38,7 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-t"> 
                     <tr>
                         <th scope="col" class="px-4 py-3">Nama Lengkap</th>
-                        <th scope="col" class="px-4 py-3">Email </th>
+                        <th scope="col" class="px-4 py-3">Tim </th>
                         <th scope="col" class="px-4 py-3">Role/Peran</th>
                         <th scope="col" class="px-4 py-3">Nomor Whatsapp</th>
                         <th scope="col" class="px-4 py-3 text-center">Aksi</th>
@@ -47,12 +47,12 @@
                 <tbody class="bg-white border-t dark:border-gray-700 dark:bg-gray-800">
                     @forelse ($users as $user)
                         <tr class="border-t">
-                            <td class="px-4 py-3">{{ $user->name }}</td>
-                            <td class="px-4 py-3">{{ $user->email }}</td>
-                            <td class="px-4 py-3">{{ $user->role }}</td>
-                            <td class="px-4 py-3">{{ $user->no_hp }}</td>
+                            <td class="px-4 py-3">{{ $user->user_full_name }}</td>
+                            <td class="px-4 py-3">{{ $user->team->team_name }}</td>
+                            <td class="px-4 py-3">{{ $user->user_role }}</td>
+                            <td class="px-4 py-3">{{ $user->user_whatsapp_number }}</td>
                             <td class="px-4 py-3 flex items-center justify-between hover:cursor-pointer">
-                                @if ($user->role !== 'kepalakantor' && $user->role !== 'administrator')
+                                @if ($user->user_role !== 'kepalabps')
                                 <img class="w-5 h-5" src="{{ asset('img/user-update.svg') }}" alt="Update Pengguna" onclick="openUpdateModal('{{ route('updateuser', $user->id) }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->role }}', '{{ $user->no_hp }}')">                                    
                                 <img class="w-5 h-5" src="{{ asset('img/user-delete.svg') }}" alt="Hapus Pengguna" onclick="openDeleteModal('{{ route('deleteuser', $user->id) }}')">
                                 @endif
@@ -65,7 +65,7 @@
                         @if(request()->has('search'))
                             <tr class="text-center">
                                 <td colspan="5">
-                                    <a href="{{ route('administrator') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                                    <a href="{{ route('employeelist') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
                                 </td>
                             </tr>
                         @endif

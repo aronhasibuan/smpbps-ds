@@ -10,7 +10,7 @@ class Team extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nama_tim'];
+    protected $fillable = ['team_name', 'team_description'];
 
     public function personel(): HasMany{
         return $this->hasMany(User::class, 'team_id');

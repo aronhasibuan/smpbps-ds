@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->enum('role',['ketuatim', 'anggotatim', 'kepalakantor', 'administrator'])->default('anggotatim');
-            $table->string('no_hp');
             $table->foreignId('team_id')->constrained(
                 table:'users',
                 indexName:'team_user_id'
             );
+            $table->string('user_full_name');
+            $table->string('user_nickname')->unique();
+            $table->enum('user_role',[ 'kepalabps', 'ketuatim', 'anggotatim'])->default('anggotatim');
+            $table->string('email')->unique();
             $table->string('password');
+            $table->string('user_whatsapp_number');
             $table->rememberToken();
             $table->timestamps();
         });

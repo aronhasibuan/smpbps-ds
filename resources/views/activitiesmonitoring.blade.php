@@ -9,7 +9,7 @@
                 <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                     
                     <div class="w-full md:w-1/2">
-                        <form class="flex items-center" action="/monitoringkegiatan" method="GET">
+                        <form class="flex items-center" action="/kepalabps/monitoringkegiatan" method="GET">
                             <label for="search" class="sr-only"></label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -51,13 +51,13 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white border-t dark:border-gray-700 dark:bg-gray-800">
-                        @forelse ($kegiatan as $giat)
+                        @forelse ($activities as $activity)
                             <tr class="border-t">
-                                <td class="px-4 py-3">{{ $giat->namakegiatan }}</td>
-                                <td class="px-4 py-3">{{ $giat->formatted_tenggat }}</td>
-                                <td class="px-4 py-3">{{ $giat->progressPercentage }}%</td>
+                                <td class="px-4 py-3">{{ $activity->activity_name }}</td>
+                                <td class="px-4 py-3">{{ $activity->activity_end }}</td>
+                                <td class="px-4 py-3">100%</td>
                                 <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                                    <a href="/monitoringkegiatan/{{ $giat->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                                    <a href="/monitoringkegiatan/{{ $activity->activity_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                         <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                                     </a>
                                 </td>
@@ -69,7 +69,7 @@
                             @if(request()->has('search'))
                                 <tr class="text-center">
                                     <td colspan="5">
-                                        <a href="{{ route('monitoringkegiatan') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                                        <a href="{{ route('kepalabps/monitoringkegiatan') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
                                     </td>
                                 </tr>
                             @endif
@@ -78,7 +78,7 @@
                 </table>
             </div>
             <div class="bg-white p-4 dark:bg-gray-800 bottom-0 border-t">
-                {{ $kegiatan->links() }}
+                {{ $activities->links() }}
                 <div class="flex items-center w-full space-x-3 md:w-auto">
                     <p class="text-sm text-gray-500">Data per halaman</p>
                     <select id="perPage" class="flex items-center justify-center w-full px-4 py-2 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">

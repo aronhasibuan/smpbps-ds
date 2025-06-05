@@ -13,21 +13,24 @@ class TeamSeeder extends Seeder
      */
     public function run(): void
     {
-        // Atasan
+        // Kepala BPS
         #1
         Team::create([
-            'nama_tim' => 'Atasan'
+            'team_name' => 'Kepala BPS',
+            'team_description' => 'Kepala BPS adalah seseorang yang memiliki wewenang tertinggi dalam kantor BPS.'
         ]);
         // Tim Statistik Distribusi
         #2
         Team::create([
-            'nama_tim' => 'Statistik Distribusi'
+            'team_name' => 'Statistik Distribusi',
+            'team_description' => 'Tim Statistik Distribusi adalah tim yang bertugas mengumpulkan, mengolah, dan menganalisis data terkait distribusi barang dan jasa di wilayah kerja BPS.'
         ]);
 
         // Tim Statistik Sosial
         #3
         Team::create([
-            'nama_tim' => 'Statistik Sosial'
+            'team_name' => 'Statistik Sosial',
+            'team_description' => 'Tim Statistik Sosial adalah tim yang bertugas mengumpulkan, mengolah, dan menganalisis data terkait kondisi sosial masyarakat di wilayah kerja BPS.'
         ]);
     }
 }

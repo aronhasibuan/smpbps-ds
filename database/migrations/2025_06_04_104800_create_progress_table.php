@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('task_id')->constrained(
                 table:'tasks',
-                indexName:'progress_task_id'
+                indexName:'progress_tasks_id'
             );
-            $table->text('catatan')->nullable();
-            $table->date('tanggal');
-            $table->string('progress')->default(0);
-            $table->string('dokumentasi')->nullable();
+            $table->date('progress_date');
+            $table->string('progress_amount')->default(0);
+            $table->text('progress_notes')->nullable();
+            $table->string('progress_documentation')->nullable();
             $table->timestamps();
         });
     }

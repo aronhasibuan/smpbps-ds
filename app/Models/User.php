@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,14 +19,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'username',
+        'team_id',
+        'user_full_name',
+        'user_nickname',
+        'user_role',
         'email',
         'password',
-        'role',
-        'team_id',
-        'no_hp'
+        'user_whatsapp_number',
     ];
+
+    protected $with = ['team'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -52,12 +53,12 @@ class User extends Authenticatable
         ];
     }
 
-    public function memberitugas(): HasMany{
-        return $this->hasMany(Task::class, 'pemberitugas_id');
+    public function activities(): HasMany{
+        return $this->hasMany(Activity::class, 'user_leader_id');
     }
 
-    public function menerimatugas(): HasMany{
-        return $this->hasMany(Task::class, 'penerimatugas_id');
+    public function tasks(): HasMany{
+        return $this->hasMany(Task::class, 'user_member_id');
     }
 
     public function team(): BelongsTo{

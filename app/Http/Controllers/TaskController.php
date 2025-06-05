@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\User;
-use App\Models\Kegiatan;
 use App\Models\Progress;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -42,7 +42,7 @@ class TaskController extends Controller
                 'satuan' => 'required|string|max:255',
             ]);
 
-            $kegiatan = Kegiatan::create([
+            $kegiatan = Activity::create([
                 'namakegiatan' => $validatedData['namakegiatan'],
                 'slug' => '',
                 'tenggat' => Carbon::parse($validatedData['tenggat'])->format('Y-m-d'),
@@ -202,7 +202,7 @@ class TaskController extends Controller
     public function markkegiatanasdone($id)
     {
         try {
-            $kegiatan = Kegiatan::findOrFail($id);
+            $kegiatan = Activity::findOrFail($id);
 
             if (!$kegiatan->active) {
                 return redirect()->back()->with('error', 'Kegiatan ini sudah ditandai selesai sebelumnya.');

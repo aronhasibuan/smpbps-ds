@@ -11,16 +11,17 @@ class progress extends Model
 {
     use HasFactory;
 
-    protected $fillable=['task_id','tanggal','progress', 'catatan','dokumentasi'];
+    protected $fillable=['task_id','progress_date','progress_amount', 'progress_notes','progress_documentation'];
 
     public function task(): BelongsTo{
         return $this->belongsTo(Task::class);
     }
 
-    public function getFormattedTanggalAttribute()
-    {
-        return Carbon::parse($this->tanggal)
-            ->locale('id') // Set bahasa Indonesia
-            ->translatedFormat('d F'); // Format tanpa tahun
-    }
+    // FUNGSI UNTUK MENDAPATKAN TANGGAL PROGRESS (FORMAT INDONESIA)
+    // public function getFormattedTanggalAttribute()
+    // {
+    //     return Carbon::parse($this->tanggal)
+    //         ->locale('id') 
+    //         ->translatedFormat('d F'); 
+    // }
 }

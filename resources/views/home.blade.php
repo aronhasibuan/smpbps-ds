@@ -1,17 +1,6 @@
 <x-layout>
     <div class="text-center">
-        <h1>Hello {{ $user->name }}</h1>
-        <p>Saran tugas untuk dikerjakan hari ini:</p>
-        <table class="mx-auto text-left">
-            <tbody>
-                @foreach ($tasks as $task)
-                    <tr class="border">
-                        <td class="p-3">{{ $task->namakegiatan }}</td>
-                        <td class="p-3"> - </td>
-                        <td class="p-3">{{ $task->sarantugas }} {{ $task->satuan }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <p class="text-blue-800 font-bold text-3xl mb-3">Selamat datang, {{ $user->user_full_name }}!</p>
+        <p class="text-xl">Saran tugas untuk dikerjakan hari ini:</p>
     </div>
 </x-layout>

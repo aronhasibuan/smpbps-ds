@@ -1,7 +1,7 @@
 <x-layout>
     <div>
 
-        <a href="/monitoringkegiatan" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+        <a href="/kepalabps/monitoringkegiatan" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
         
         <div class="flex items-center mt-5 mb-2">
             <p class="font-bold dark:text-white">{{ $kegiatan->namakegiatan }}</p>

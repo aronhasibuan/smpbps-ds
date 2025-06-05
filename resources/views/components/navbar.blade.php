@@ -55,26 +55,37 @@
             <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
 
-                    @if (Auth::check() && Auth::user()->role == 'anggotatim')
+                    @if (Auth::check() && Auth::user()->user_role == 'anggotatim')
                         <li>
-                            <x-nav-link href="/home" :active="request()->is('home')">Home</x-nav-link>
+                            <x-nav-link href="/anggotatim/beranda" :active="request()->is('anggotatim/beranda')">Beranda</x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link href="/daftartugas" :active="request()->is('daftartugas')">Daftar Tugas</x-nav-link>
+                            <x-nav-link href="/anggotatim/daftartugas" :active="request()->is('anggotatim/daftartugas')">Daftar Tugas</x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link href="/arsip" :active="request()->is('arsip')">Arsip Tugas</x-nav-link>
+                            <x-nav-link href="/anggotatim/arsiptugas" :active="request()->is('anggotatim/arsiptugas')">Arsip Tugas</x-nav-link>
                         </li>
-                                                                    
+                        <li>
+                            <x-nav-link href="/anggotatim/kalender" :active="request()->is('anggotatim/kalender')">Kalender</x-nav-link>
+                        </li>                                          
                     @endif
 
-                    @if (Auth::check() && (Auth::user()->role == 'kepalakantor'))
+                    @if (Auth::check() && (Auth::user()->user_role == 'kepalabps'))
                         <li>
-                            <x-nav-link href="/administrator" :active="request()->is('administrator')">Daftar Pegawai</x-nav-link>
+                            <x-nav-link href="/kepalabps/daftarpegawai" :active="request()->is('kepalabps/daftarpegawai')">Daftar Pegawai</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/kepalabps/monitoringkegiatan" :active="request()->is('kepalabps/monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/kepalabps/monitoringpegawai" :active="request()->is('kepalabps/monitoringpegawai')">Monitoring Pegawai</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/kepalabps/arsipkegiatan" :active="request()->is('kepalabps/arsipkegiatan')">Arsip Kegiatan</x-nav-link>
                         </li>                            
                     @endif
 
-                    @if (Auth::check() && (Auth::user()->role == 'ketuatim' || Auth::user()->role == 'kepalakantor'))
+                    @if (Auth::check() && (Auth::user()->user_role == 'ketuatim' ))
                         <li>
                             <x-nav-link href="/monitoringkegiatan" :active="request()->is('monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
                         </li>
@@ -86,9 +97,6 @@
                         </li>              
                     @endif
 
-                    <li>
-                        <x-nav-link href="/kalender">Kalender</x-nav-link>
-                    </li>
                 </ul>
             </div>
                   

@@ -13,15 +13,15 @@ class Task extends Model{
 
     use HasFactory;
     
-    protected $fillable = ['namakegiatan','slug','kegiatan_id','deskripsi','volume','satuan','tenggat','pemberitugas_id','penerimatugas_id', 'latestprogress','attachment','active'];
+    protected $fillable = ['activity_id', 'user_member_id', 'task_slug', 'task_description', 'task_volume', 'task_latest_progress', 'task_attachment', 'task_active_status'];
 
-    protected $with = ['pemberitugas','penerimatugas','progress', 'kegiatan'];
+    protected $with = ['activity', 'user', 'progress'];
 
-    public function pemberitugas(): BelongsTo{
-        return $this->belongsTo(User::class);
+    public function activity(): BelongsTo{
+        return $this->belongsTo(Activity::class);
     }
 
-    public function penerimatugas(): BelongsTo{
+    public function user(): BelongsTo{
         return $this->belongsTo(User::class);
     }
 
@@ -29,102 +29,104 @@ class Task extends Model{
         return $this->hasMany(Progress::class, 'task_id');
     }
 
-    public function kegiatan(): BelongsTo{
-        return $this->belongsTo(Kegiatan::class);
-    }
+    // FUNGSI UNTUK SEARCH
+    // public function scopeFilter(Builder $query, array $filters): void{
+    //     if($filters['search'] ?? false){
+    //         $query -> where('activity_name', 'like', '%'.request('search').'%');
+    //     }
+    // } 
 
-    public function scopeFilter(Builder $query, array $filters): void{
-        if($filters['search'] ?? false){
-            $query -> where('namakegiatan', 'like', '%'.request('search').'%');
-        }
-    } 
+    // FUNGSI UNTUK MENDAPATKAN WAKTU TERSISA
+    // public function getWaktuTersisaAttribute(){
+    //     Carbon::setlocale('id');
+    //     $tenggat = Carbon::parse($this->tenggat);
+    //     $createdAt = Carbon::parse($this->create_at);
+    //     return $tenggat->diffForHumans($createdAt,true);
+    // }
 
-    public function getWaktuTersisaAttribute(){
-        Carbon::setlocale('id');
-        $tenggat = Carbon::parse($this->tenggat);
-        $createdAt = Carbon::parse($this->create_at);
-        return $tenggat->diffForHumans($createdAt,true);
-    }
+    // FUNGSI UNTUK MENDAPATKAN TANGGAL BERAKHIR (FORMAT INDONESIA)
+    // public function getFormattedTenggatAttribute()
+    // {
+    //     return Carbon::parse($this->tenggat)
+    //         ->locale('id') 
+    //         ->translatedFormat('d F'); 
+    // }
 
-    public function getFormattedTenggatAttribute()
-    {
-        return Carbon::parse($this->tenggat)
-            ->locale('id') 
-            ->translatedFormat('d F'); 
-    }
+    // FUNGSI UNTUK MENDAPATKAN TANGGAL DIBUAT (FORMAT INDONESIA)
+    // public function getFormattedCreatedatAttribute()
+    // {
+    //     return Carbon::parse($this->tenggat)
+    //         ->locale('id') 
+    //         ->translatedFormat('d F');
+    // }
 
-    public function getFormattedCreatedatAttribute()
-    {
-        return Carbon::parse($this->tenggat)
-            ->locale('id') 
-            ->translatedFormat('d F');
-    }
-
-    public function getKemajuanAttribute(){
+    // FUNGSI UNTUK MENDAPATKAN STATUS KEMAJUAN
+    // public function getKemajuanAttribute(){
         
-        $volume = $this->volume;
-        $progress = $this->latestprogress;
-        $tenggat = Carbon::parse($this->tenggat)->endOfDay();
-        $createdAt = Carbon::parse($this->created_at)->startOfDay();
-        $hariberlalu = ceil($createdAt->diffInDays(Carbon::now()->endOfDay()));
-        $selangharitugas = ceil($tenggat->diffInDays($createdAt,true));
-        $targetperhari = ceil($volume/$selangharitugas);
-        $targetharustercapai_PHP = min($volume, ceil($hariberlalu * $targetperhari));
+    //     $volume = $this->volume;
+    //     $progress = $this->latestprogress;
+    //     $tenggat = Carbon::parse($this->tenggat)->endOfDay();
+    //     $createdAt = Carbon::parse($this->created_at)->startOfDay();
+    //     $hariberlalu = ceil($createdAt->diffInDays(Carbon::now()->endOfDay()));
+    //     $selangharitugas = ceil($tenggat->diffInDays($createdAt,true));
+    //     $targetperhari = ceil($volume/$selangharitugas);
+    //     $targetharustercapai_PHP = min($volume, ceil($hariberlalu * $targetperhari));
 
-        if($progress == $volume){
-            return[
-                'status' => 'Selesai',
-                'color' => 'blue',
-                'hariberlalu' => $hariberlalu,
-                'selangharitugas_PHP' => $selangharitugas,
-                'targetperhari_PHP' => $targetperhari,
-                'tht' => $targetharustercapai_PHP,
-            ];
-        }
-        if ($tenggat < Carbon::today()){
-            return[
-                'status' => 'Terlambat',
-                'color' => 'black',
-                'hariberlalu' => $hariberlalu,
-                'selangharitugas_PHP' => $selangharitugas,
-                'targetperhari_PHP' => $targetperhari,
-                'tht' => $targetharustercapai_PHP,
-            ];
-        }
-        if ($progress < $targetharustercapai_PHP){
-            return [
-                'status' => 'Progress Lambat',
-                'color' => 'red',
-                'hariberlalu' => $hariberlalu,
-                'selangharitugas_PHP' => $selangharitugas,
-                'targetperhari_PHP' => $targetperhari,
-                'tht' => $targetharustercapai_PHP,
-            ];
-        } elseif ($progress == $targetharustercapai_PHP){
-            return [
-                'status' => 'Progress On Time',
-                'color' => 'yellow',
-                'hariberlalu' => $hariberlalu,
-                'selangharitugas_PHP' => $selangharitugas,
-                'targetperhari_PHP' => $targetperhari,
-                'tht' => $targetharustercapai_PHP,
-            ];
-        } else {
-            return [
-                'status' => 'Progress Cepat',
-                'color' => 'green',
-                'hariberlalu' => $hariberlalu,
-                'selangharitugas_PHP' => $selangharitugas,
-                'targetperhari_PHP' => $targetperhari,
-                'tht' => $targetharustercapai_PHP,
-            ];;
-        }
-    }
+    //     if($progress == $volume){
+    //         return[
+    //             'status' => 'Selesai',
+    //             'color' => 'blue',
+    //             'hariberlalu' => $hariberlalu,
+    //             'selangharitugas_PHP' => $selangharitugas,
+    //             'targetperhari_PHP' => $targetperhari,
+    //             'tht' => $targetharustercapai_PHP,
+    //         ];
+    //     }
+    //     if ($tenggat < Carbon::today()){
+    //         return[
+    //             'status' => 'Terlambat',
+    //             'color' => 'black',
+    //             'hariberlalu' => $hariberlalu,
+    //             'selangharitugas_PHP' => $selangharitugas,
+    //             'targetperhari_PHP' => $targetperhari,
+    //             'tht' => $targetharustercapai_PHP,
+    //         ];
+    //     }
+    //     if ($progress < $targetharustercapai_PHP){
+    //         return [
+    //             'status' => 'Progress Lambat',
+    //             'color' => 'red',
+    //             'hariberlalu' => $hariberlalu,
+    //             'selangharitugas_PHP' => $selangharitugas,
+    //             'targetperhari_PHP' => $targetperhari,
+    //             'tht' => $targetharustercapai_PHP,
+    //         ];
+    //     } elseif ($progress == $targetharustercapai_PHP){
+    //         return [
+    //             'status' => 'Progress On Time',
+    //             'color' => 'yellow',
+    //             'hariberlalu' => $hariberlalu,
+    //             'selangharitugas_PHP' => $selangharitugas,
+    //             'targetperhari_PHP' => $targetperhari,
+    //             'tht' => $targetharustercapai_PHP,
+    //         ];
+    //     } else {
+    //         return [
+    //             'status' => 'Progress Cepat',
+    //             'color' => 'green',
+    //             'hariberlalu' => $hariberlalu,
+    //             'selangharitugas_PHP' => $selangharitugas,
+    //             'targetperhari_PHP' => $targetperhari,
+    //             'tht' => $targetharustercapai_PHP,
+    //         ];;
+    //     }
+    // }
     
-    public function getPercentageProgressAttribute(){
-        $volume = $this->volume;
-        $progress = $this->latestprogress;
-        $percentageprogress = floor($progress/$volume*100);
-        return $percentageprogress;
-    }
+    // FUNGSI UNTUK MENDAPATKAN PERSENTASE KEMAJUAN
+    // public function getPercentageProgressAttribute(){
+    //     $volume = $this->volume;
+    //     $progress = $this->latestprogress;
+    //     $percentageprogress = floor($progress/$volume*100);
+    //     return $percentageprogress;
+    // }
 }
