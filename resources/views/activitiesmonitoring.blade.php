@@ -9,7 +9,7 @@
                 <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                     
                     <div class="w-full md:w-1/2">
-                        <form class="flex items-center" action="/kepalabps/monitoringkegiatan" method="GET">
+                        <form class="flex items-center" action="{{ $actionUrl }}" method="GET">
                             <label for="search" class="sr-only"></label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -26,9 +26,9 @@
                         <div class="flex items-center w-full space-x-3 md:w-auto">
                             
                             {{-- button --}}
-                            @if (Auth::check() && Auth::user()->role == 'ketuatim')
+                            @if (Auth::check() && Auth::user()->user_role == 'ketuatim')
                                 <div class="flex">
-                                    <a href="/tambahkegiatan" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                    <a href="/ketuatim/tambahkegiatan" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                         + Tambah Kegiatan
                                     </a>
                                 </div>
@@ -57,7 +57,7 @@
                                 <td class="px-4 py-3">{{ $activity->activity_end }}</td>
                                 <td class="px-4 py-3">100%</td>
                                 <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                                    <a href="/monitoringkegiatan/{{ $activity->activity_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                                    <a href="/ketuatim/monitoringkegiatan/{{ $activity->activity_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                         <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                                     </a>
                                 </td>
@@ -69,7 +69,7 @@
                             @if(request()->has('search'))
                                 <tr class="text-center">
                                     <td colspan="5">
-                                        <a href="{{ route('kepalabps/monitoringkegiatan') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                                        <a href="{{ $actionUrl }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
                                     </td>
                                 </tr>
                             @endif

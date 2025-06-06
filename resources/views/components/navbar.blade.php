@@ -55,6 +55,39 @@
             <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
 
+                    @if (Auth::check() && (Auth::user()->user_role == 'kepalabps'))
+                        <li>
+                            <x-nav-link href="/kepalabps/daftarpegawai" :active="request()->is('kepalabps/daftarpegawai')">Daftar Pegawai</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/kepalabps/monitoringkegiatan" :active="request()->is('kepalabps/monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/kepalabps/monitoringpegawai" :active="request()->is('kepalabps/monitoringpegawai')">Monitoring Pegawai</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/kepalabps/arsipkegiatan" :active="request()->is('kepalabps/arsipkegiatan')">Arsip Kegiatan</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/kepalabps/kalender" :active="request()->is('kepalabps/kalender')">Kalender</x-nav-link>
+                        </li>                            
+                    @endif
+
+                    @if (Auth::check() && (Auth::user()->user_role == 'ketuatim' ))
+                        <li>
+                            <x-nav-link href="/ketuatim/monitoringkegiatan" :active="request()->is('monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/ketuatim/monitoringpegawai" :active="request()->is('monitoringpegawai')">Monitoring Pegawai</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/ketuatim/arsipkegiatan" :active="request()->is('arsipkegiatan')">Arsip Kegiatan</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/anggotatim/kalender" :active="request()->is('anggotatim/kalender')">Kalender</x-nav-link>
+                        </li>              
+                    @endif
+
                     @if (Auth::check() && Auth::user()->user_role == 'anggotatim')
                         <li>
                             <x-nav-link href="/anggotatim/beranda" :active="request()->is('anggotatim/beranda')">Beranda</x-nav-link>
@@ -68,33 +101,6 @@
                         <li>
                             <x-nav-link href="/anggotatim/kalender" :active="request()->is('anggotatim/kalender')">Kalender</x-nav-link>
                         </li>                                          
-                    @endif
-
-                    @if (Auth::check() && (Auth::user()->user_role == 'kepalabps'))
-                        <li>
-                            <x-nav-link href="/kepalabps/daftarpegawai" :active="request()->is('kepalabps/daftarpegawai')">Daftar Pegawai</x-nav-link>
-                        </li>
-                        <li>
-                            <x-nav-link href="/kepalabps/monitoringkegiatan" :active="request()->is('kepalabps/monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
-                        </li>
-                        <li>
-                            <x-nav-link href="/kepalabps/monitoringpegawai" :active="request()->is('kepalabps/monitoringpegawai')">Monitoring Pegawai</x-nav-link>
-                        </li>
-                        <li>
-                            <x-nav-link href="/kepalabps/arsipkegiatan" :active="request()->is('kepalabps/arsipkegiatan')">Arsip Kegiatan</x-nav-link>
-                        </li>                            
-                    @endif
-
-                    @if (Auth::check() && (Auth::user()->user_role == 'ketuatim' ))
-                        <li>
-                            <x-nav-link href="/monitoringkegiatan" :active="request()->is('monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
-                        </li>
-                        <li>
-                            <x-nav-link href="/monitoringpegawai" :active="request()->is('monitoringpegawai')">Monitoring Pegawai</x-nav-link>
-                        </li>
-                        <li>
-                            <x-nav-link href="/arsipkegiatan" :active="request()->is('arsipkegiatan')">Arsip Kegiatan</x-nav-link>
-                        </li>              
                     @endif
 
                 </ul>

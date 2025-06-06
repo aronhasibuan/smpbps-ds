@@ -22,7 +22,7 @@ class Task extends Model{
     }
 
     public function user(): BelongsTo{
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_member_id');
     }
 
     public function progress(): HasMany{
@@ -45,82 +45,93 @@ class Task extends Model{
     // }
 
     // FUNGSI UNTUK MENDAPATKAN TANGGAL BERAKHIR (FORMAT INDONESIA)
-    // public function getFormattedTenggatAttribute()
-    // {
-    //     return Carbon::parse($this->tenggat)
-    //         ->locale('id') 
-    //         ->translatedFormat('d F'); 
-    // }
+    public function getFormattedTenggatAttribute()
+    {
+        return Carbon::parse($this->activity->activity_end)
+            ->locale('id') 
+            ->translatedFormat('d F'); 
+    }
 
     // FUNGSI UNTUK MENDAPATKAN TANGGAL DIBUAT (FORMAT INDONESIA)
-    // public function getFormattedCreatedatAttribute()
-    // {
-    //     return Carbon::parse($this->tenggat)
-    //         ->locale('id') 
-    //         ->translatedFormat('d F');
-    // }
+    public function getFormattedCreatedatAttribute()
+    {
+        return Carbon::parse($this->activity->activity_start)
+            ->locale('id') 
+            ->translatedFormat('d F');
+    }
 
     // FUNGSI UNTUK MENDAPATKAN STATUS KEMAJUAN
-    // public function getKemajuanAttribute(){
+    public function getKemajuanAttribute(){
         
-    //     $volume = $this->volume;
-    //     $progress = $this->latestprogress;
-    //     $tenggat = Carbon::parse($this->tenggat)->endOfDay();
-    //     $createdAt = Carbon::parse($this->created_at)->startOfDay();
-    //     $hariberlalu = ceil($createdAt->diffInDays(Carbon::now()->endOfDay()));
-    //     $selangharitugas = ceil($tenggat->diffInDays($createdAt,true));
-    //     $targetperhari = ceil($volume/$selangharitugas);
-    //     $targetharustercapai_PHP = min($volume, ceil($hariberlalu * $targetperhari));
+        $EarnedValue = $this->task_latest_progress;
+        
+        $task_volume = $this->task_volume;
+        $activity_end = Carbon::parse($this->activity->activity_end)->endOfDay();
+        $activity_start = Carbon::parse($this->activity->activity_start)->startOfDay();
+        $day_passed = ceil($activity_start->diffInDays(Carbon::now()->endOfDay()));
+        $duty_days = ceil($activity_end->diffInDays($activity_start,true));
+        $target_per_day = ceil($task_volume/$duty_days);
+        $PlannedValue = min($task_volume, ceil($day_passed * $target_per_day));
 
-    //     if($progress == $volume){
-    //         return[
-    //             'status' => 'Selesai',
-    //             'color' => 'blue',
-    //             'hariberlalu' => $hariberlalu,
-    //             'selangharitugas_PHP' => $selangharitugas,
-    //             'targetperhari_PHP' => $targetperhari,
-    //             'tht' => $targetharustercapai_PHP,
-    //         ];
-    //     }
-    //     if ($tenggat < Carbon::today()){
-    //         return[
-    //             'status' => 'Terlambat',
-    //             'color' => 'black',
-    //             'hariberlalu' => $hariberlalu,
-    //             'selangharitugas_PHP' => $selangharitugas,
-    //             'targetperhari_PHP' => $targetperhari,
-    //             'tht' => $targetharustercapai_PHP,
-    //         ];
-    //     }
-    //     if ($progress < $targetharustercapai_PHP){
-    //         return [
-    //             'status' => 'Progress Lambat',
-    //             'color' => 'red',
-    //             'hariberlalu' => $hariberlalu,
-    //             'selangharitugas_PHP' => $selangharitugas,
-    //             'targetperhari_PHP' => $targetperhari,
-    //             'tht' => $targetharustercapai_PHP,
-    //         ];
-    //     } elseif ($progress == $targetharustercapai_PHP){
-    //         return [
-    //             'status' => 'Progress On Time',
-    //             'color' => 'yellow',
-    //             'hariberlalu' => $hariberlalu,
-    //             'selangharitugas_PHP' => $selangharitugas,
-    //             'targetperhari_PHP' => $targetperhari,
-    //             'tht' => $targetharustercapai_PHP,
-    //         ];
-    //     } else {
-    //         return [
-    //             'status' => 'Progress Cepat',
-    //             'color' => 'green',
-    //             'hariberlalu' => $hariberlalu,
-    //             'selangharitugas_PHP' => $selangharitugas,
-    //             'targetperhari_PHP' => $targetperhari,
-    //             'tht' => $targetharustercapai_PHP,
-    //         ];;
-    //     }
-    // }
+        $Schedule_Performance_Index = $EarnedValue / $PlannedValue;
+        if($EarnedValue == $task_volume){
+            return[
+                'status' => 'Selesai',
+                'color' => 'blue',
+                'hariberlalu' => $day_passed,
+                'selangharitugas_PHP' => $duty_days,
+                'targetperhari_PHP' => $target_per_day,
+                'tht' => $PlannedValue,
+            ];
+        }
+        if ($activity_end < Carbon::today()){
+            return[
+                'status' => 'Terlambat',
+                'color' => 'black',
+                'hariberlalu' => $day_passed,
+                'selangharitugas_PHP' => $duty_days,
+                'targetperhari_PHP' => $target_per_day,
+                'tht' => $PlannedValue,
+            ];
+        }
+        if ($Schedule_Performance_Index < 1 && $EarnedValue < $task_volume){
+            return [
+                'status' => 'Progress Lambat',
+                'color' => 'red',
+                'hariberlalu' => $day_passed,
+                'selangharitugas_PHP' => $duty_days,
+                'targetperhari_PHP' => $target_per_day,
+                'tht' => $PlannedValue,
+            ];
+        } elseif ($Schedule_Performance_Index == 1  && $EarnedValue < $task_volume){
+            return [
+                'status' => 'Progress On Time',
+                'color' => 'yellow',
+                'hariberlalu' => $day_passed,
+                'selangharitugas_PHP' => $duty_days,
+                'targetperhari_PHP' => $target_per_day,
+                'tht' => $PlannedValue,
+            ];
+        } elseif ($Schedule_Performance_Index > 1 && $EarnedValue < $task_volume){
+            return [
+                'status' => 'Progress Cepat',
+                'color' => 'green',
+                'hariberlalu' => $day_passed,
+                'selangharitugas_PHP' => $duty_days,
+                'targetperhari_PHP' => $target_per_day,
+                'tht' => $PlannedValue,
+            ];
+        } else {
+            return [
+                'status' => 'Tidak Diketahui',
+                'color' => 'grey',
+                'hariberlalu' => $day_passed,
+                'selangharitugas_PHP' => $duty_days,
+                'targetperhari_PHP' => $target_per_day,
+                'tht' => $PlannedValue,
+            ];
+        }
+    }
     
     // FUNGSI UNTUK MENDAPATKAN PERSENTASE KEMAJUAN
     // public function getPercentageProgressAttribute(){

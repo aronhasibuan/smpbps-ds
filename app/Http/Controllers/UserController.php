@@ -19,28 +19,30 @@ class UserController extends Controller
         $this->notifyService = $notifyService;
     }
 
-    // create user
+    // create employee
     public function create(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username',
+            'team_id' => 'required|exists:teams,id',
+            'user_full_name' => 'required|string|max:255',
+            'user_nickname' => 'required|string|max:255|unique:users,user_nickname',
+            'user_role' => 'required|string|in:ketuatim,anggotatim',
             'email' => 'required|email|unique:users,email',
-            'role' => 'required|string|in:ketuatim,anggotatim',
             'password' => 'required|string|min:8',
-            'no_hp' => 'required|string|max:15',
+            'user_whatsapp_number' => 'required|string|max:15',
         ]);
 
         $user = User::create([
-            'name' => $validatedData['name'],
-            'username' => $validatedData['username'],
+            'team_id' => $validatedData['team_id'],
+            'user_full_name' => $validatedData['user_full_name'],
+            'user_nickname' => $validatedData['user_nickname'],
+            'user_role' => $validatedData['user_role'],
             'email' => $validatedData['email'],
-            'role' => $validatedData['role'],
             'password' => bcrypt($validatedData['password']),
-            'no_hp' => $validatedData['no_hp'],
+            'user_whatsapp_number' => $validatedData['user_whatsapp_number'],
         ]);
 
-        $pesan = "Halo {$validatedData['name']} 👋\n";
+        $pesan = "Halo {$validatedData['user_full_name']} 👋\n";
         $pesan .= "Selamat! Anda telah berhasil terdaftar dalam sistem kami. 🎉\n\n";
         $pesan .= "Berikut detail akun Anda:\n";
         $pesan .= "📧 Email: {$validatedData['email']}\n";
@@ -50,31 +52,32 @@ class UserController extends Controller
         $pesan .= "Jika Anda memiliki pertanyaan, jangan ragu untuk menghubungi kami.\n";
         $pesan .= "Terima kasih! 😊";
 
-        $this->notifyService->sendFonnteNotification($validatedData['no_hp'], $pesan);
-        return redirect('administrator')->with('success', 'Berhasil Menambahkan Pengguna.');
+        $this->notifyService->sendFonnteNotification($validatedData['user_whatsapp_number'], $pesan);
+        return redirect()->route('employeelist')->with('success', 'Berhasil Menambahkan Pengguna.');
     }
 
-    // update user
+    // update employee
     public function update(Request $request, User $user)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'user_full_name' => 'required|string|max:255',
+            'team_id' => 'required|exists:teams,id',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'role' => 'required|string|in:administrator,ketuatim,anggotatim',
-            'no_hp' => 'required|string|max:15',
+            'user_role' => 'required|string|in:administrator,ketuatim,anggotatim',
+            'user_whatsapp_number' => 'required|string|max:15',
         ]);
 
         $user->update($validatedData);
 
-        return redirect()->route('administrator')->with('success', 'Pengguna berhasil diperbarui.');
+        return redirect()->route('employeelist')->with('success', 'Pengguna berhasil diperbarui.');
     }
 
-    // delete user
+    // delete employee
     public function delete(User $user)
     {
         $user->delete();
 
-        return redirect()->route('administrator')->with('success', 'Pengguna berhasil dihapus.');
+        return redirect()->route('employeelist')->with('success', 'Pengguna berhasil dihapus.');
     }
 
     // update password

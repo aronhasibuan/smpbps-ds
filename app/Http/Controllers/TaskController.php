@@ -30,80 +30,81 @@ class TaskController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'namakegiatan' => 'required|string|max:255',
-                'tenggat' => 'required|date',
-                'penerimatugas_id' => 'required|array',
-                'penerimatugas_id.*' => 'exists:users,id',
-                'deskripsi' => 'required|array',
-                'deskripsi.*' => 'string|max:1000',
-                'volume' => 'required|array',
-                'volume.*' => 'numeric',
-                'attachment.*' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120',
-                'satuan' => 'required|string|max:255',
+                'activity_name' => 'required|string|max:255',
+                'activity_start' => 'required|date',
+                'activity_end' => 'required|date',
+                'user_member_id' => 'required|array',
+                'user_member_id.*' => 'exists:users,id',
+                'task_description' => 'required|array',
+                'task_description.*' => 'string|max:1000',
+                'task_volume' => 'required|array',
+                'task_volume.*' => 'numeric',
+                'task_attachment.*' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120',
+                'activity_unit' => 'required|string|max:255',
             ]);
 
-            $kegiatan = Activity::create([
-                'namakegiatan' => $validatedData['namakegiatan'],
-                'slug' => '',
-                'tenggat' => Carbon::parse($validatedData['tenggat'])->format('Y-m-d'),
-                'pemberitugas_id' => Auth::id(),
+            $activity = Activity::create([
+                'user_leader_id' => Auth::id(),
+                'activity_name' => $validatedData['activity_name'],
+                'activity_slug' => '-',
+                'activity_unit' => $validatedData['activity_unit'],
+                'activity_start' => Carbon::parse($validatedData['activity_start'])->format('Y-m-d'),
+                'activity_end' => Carbon::parse($validatedData['activity_end'])->format('Y-m-d'),
             ]);
 
-            $namakegiatan_slug = Str::slug($validatedData['namakegiatan']);
-            $tanggal_dibuat = Carbon::now()->format('d-m-Y');
-            $tanggal_tenggat = Carbon::parse($validatedData['tenggat'])->format('d-m-Y');
-            $kegiatan->slug = "{$kegiatan->id}_{$namakegiatan_slug}_{$tanggal_dibuat}_{$tanggal_tenggat}";
-            $kegiatan->save();
-            $ketuatim = User::find(Auth::id());
+            $activity_name_slug = Str::slug($validatedData['activity_name']);
+            $created_at = Carbon::now()->format('d-m-Y');
+            $activity_end = Carbon::parse($validatedData['activity_end'])->format('d-m-Y');
+            $activity->activity_slug = "{$activity->id}_{$activity_name_slug}_{$created_at}_{$activity_end}";
+            $activity->save();
 
-            foreach ($validatedData['penerimatugas_id'] as $index => $penerimaId) {
-                $penerima = User::find($penerimaId);
+            $user_leader_id = User::find(Auth::id());
+
+            foreach ($validatedData['user_member_id'] as $index => $user_id) {
+                $member = User::find($user_id);
                 $path = null;
 
-                if ($request->hasFile('attachment') && isset($request->file('attachment')[$index])) {
-                    $file = $request->file('attachment')[$index];
+                if ($request->hasFile('task_attachment') && isset($request->file('task_attachment')[$index])) {
+                    $file = $request->file('task_attachment')[$index];
                     $path = $file->store('attachments', 'public');
                 }
                 
                 $task = Task::create([
-                    'namakegiatan' => $validatedData['namakegiatan'],
-                    'slug' => '',
-                    'kegiatan_id' => $kegiatan->id,
-                    'deskripsi' => $validatedData['deskripsi'][$index],
-                    'volume' => $validatedData['volume'][$index],
-                    'satuan' => $validatedData['satuan'],
-                    'tenggat' => Carbon::parse($validatedData['tenggat'])->format('Y-m-d'),
-                    'pemberitugas_id' => Auth::id(),
-                    'penerimatugas_id' => $penerimaId,
-                    'attachment' => $path ? Storage::url($path) : null,
+                    'activity_id' => $activity->id,
+                    'user_member_id' => $user_id,
+                    'task_slug' => '-',
+                    'task_description' => $validatedData['task_description'][$index],
+                    'task_volume' => $validatedData['task_volume'][$index],
+                    'task_attachment' => $path ? Storage::url($path) : null,
                 ]);
 
-                $task->slug = "{$task->id}_{$penerima->username}";
+                $task->task_slug = "{$task->id}_{$member->user_nickname}";
                 $task->save();
 
                 Progress::create([
                     'task_id' => $task->id,
-                    'tanggal' => Carbon::now()->format('Y-m-d'),
-                    'progress' => 0,
-                    'dokumentasi' => null,
+                    'progress_date' => Carbon::now()->format('Y-m-d'),
+                    'progress_amount' => 0,
+                    'progress_notes' => 'Tugas ditambahkan',
+                    'progress_documentation' => null,
                 ]);
 
-                if ($penerima && $penerima->no_hp) {
-                    $pesan = "Halo {$penerima->name} 👋\n";
-                    $pesan .= "Anda telah menerima *tugas baru* dari {$ketuatim->name}.\n\n";
-                    $pesan .= "📌 *Nama Kegiatan*: {$validatedData['namakegiatan']}\n";
-                    $pesan .= "📝 *Deskripsi Pekerjaan*: {$validatedData['deskripsi'][$index]}\n";
-                    $pesan .= "📆 *Tenggat Waktu*: {$validatedData['tenggat']}\n";
-                    $pesan .= "📦 *Jumlah Pekerjaan*: {$validatedData['volume'][$index]} {$validatedData['satuan']}\n\n";
-                    $pesan .= "Silakan cek detail tugas dan mulai pengerjaan melalui sistem:\n";
-                    $pesan .= "🌐 http://smpbps-ds.test/login\n\n";
-                    $pesan .= "Jika ada pertanyaan, silakan hubungi pemberi tugas.\n";
-                    $pesan .= "Semangat menjalankan tugas! 💪";
-                    $this->notifyService->sendFonnteNotification($penerima->no_hp, $pesan);
+                if ($member && $member->user_whatsapp_number) {
+                    $massage = "Halo {$member->user_full_name} 👋\n";
+                    $massage .= "Anda telah menerima *tugas baru* dari {$user_leader_id->user_full_name}.\n\n";
+                    $massage .= "📌 *Nama Kegiatan*: {$validatedData['activity_name']}\n";
+                    $massage .= "📝 *Deskripsi Pekerjaan*: {$validatedData['task_description'][$index]}\n";
+                    $massage .= "📆 *Tenggat Waktu*: {$validatedData['activity_end']}\n";
+                    $massage .= "📦 *Jumlah Pekerjaan*: {$validatedData['task_volume'][$index]} {$validatedData['activity_unit']}\n\n";
+                    $massage .= "Silakan cek detail tugas dan mulai pengerjaan melalui sistem:\n";
+                    $massage .= "🌐 http://smpbps-ds.test/login\n\n";
+                    $massage .= "Jika ada pertanyaan, silakan hubungi pemberi tugas.\n";
+                    $massage .= "Semangat menjalankan tugas! 💪";
+                    $this->notifyService->sendFonnteNotification($member->user_whatsapp_number, $massage);
                 }
             }
             session()->flash('success', 'Kegiatan dan tugas berhasil ditambahkan.');
-            return redirect('monitoringkegiatan');
+            return redirect()->route('activitiesmonitoring');
         } catch (\Exception $e) {
             session()->flash('error', 'Gagal menambahkan data: ' . $e->getMessage());
         }

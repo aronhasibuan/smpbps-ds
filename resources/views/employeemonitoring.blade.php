@@ -13,10 +13,10 @@
             const tasksChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: @json($tasksPerUser->pluck('name')),
+                    labels: @json($tasksPerUser->pluck('user_full_name')),
                     datasets: [{
                         label: 'Jumlah Tugas Aktif',
-                        data: @json($tasksPerUser->pluck('menerimatugas_count')), 
+                        data: @json($tasksPerUser->pluck('tasks_count')), 
                         backgroundColor: 'rgba(54, 162, 235, 0.5)',
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1

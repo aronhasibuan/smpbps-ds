@@ -18,10 +18,10 @@ class progress extends Model
     }
 
     // FUNGSI UNTUK MENDAPATKAN TANGGAL PROGRESS (FORMAT INDONESIA)
-    // public function getFormattedTanggalAttribute()
-    // {
-    //     return Carbon::parse($this->tanggal)
-    //         ->locale('id') 
-    //         ->translatedFormat('d F'); 
-    // }
+    public function getFormattedDateAttribute()
+    {
+        return Carbon::parse($this->progress_date)
+            ->locale('id') 
+            ->translatedFormat('d F Y'); 
+    }
 }

@@ -1,6 +1,6 @@
 <x-layout>
 
-    <p class="text-sm text-gray-600 mt-3 mb-5">Pengguna Terdaftar Pada SMPBPS-DS</p>
+    <p class="text-sm text-gray-600 mt-3 mb-5">Pegawai Terdaftar Pada SMPBPS-DS</p>
 
     <div class="border shadow-lg sm:rounded-t-lg">
         {{-- table headers --}}
@@ -22,10 +22,10 @@
                 </div>
 
                 {{-- button --}}
-                @if (Auth::check() && Auth::user()->role == 'kepalabps')
+                @if (Auth::check() && Auth::user()->user_role == 'kepalabps')
                     <div class="flex mt-2">
-                        <a href="/administrator/createuser" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                            + Tambah Pengguna
+                        <a href="/kepalabps/tambahpegawai" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                            + Tambah Pegawai
                         </a>
                     </div>
                 @endif
@@ -93,23 +93,32 @@
                     @csrf
                     @method('PUT')
                     <div class="mb-4">
-                        <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                        <input type="text" id="name" name="name" class="block w-full p-2 border rounded-lg" required>
+                        <label for="user_full_name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                        <input type="text" id="user_full_name" name="user_full_name" class="block w-full p-2 border rounded-lg" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="team_id" class="block text-sm font-medium text-gray-700">Tim</label>
+                        <select name="team_id" id="team_id" class="block w-full p-2 border rounded-lg"> 
+                            <option selected disabled>Pilih Tim</option>
+                            @foreach($teams as $team)
+                                <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                         <input type="email" id="email" name="email" class="block w-full p-2 border rounded-lg" required>
                     </div>
                     <div class="mb-4">
-                        <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-                        <select id="role" name="role" class="block w-full p-2 border rounded-lg">
+                        <label for="user_role" class="block text-sm font-medium text-gray-700">Role</label>
+                        <select id="user_role" name="user_role" class="block w-full p-2 border rounded-lg">
                             <option value="ketuatim">Ketua Tim</option>
                             <option value="anggotatim">Anggota Tim</option>
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label for="no_hp" class="block text-sm font-medium text-gray-700">Nomor WhatsApp</label>
-                        <input type="text" id="no_hp" name="no_hp" class="block w-full p-2 border rounded-lg" required>
+                        <label for="user_whatsapp_number" class="block text-sm font-medium text-gray-700">Nomor WhatsApp</label>
+                        <input type="text" id="user_whatsapp_number" name="user_whatsapp_number" class="block w-full p-2 border rounded-lg" required>
                     </div>
                     <div class="flex justify-end">
                         <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2" onclick="closeUpdateModal()">Batal</button>

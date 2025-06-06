@@ -70,11 +70,11 @@
                             <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->kemajuan['status'] }}</p>
                             </th>
-                            <td class="px-4 py-3">{{ $task->namakegiatan }}</td>
-                            <td class="px-4 py-3">{{ $task->volume }} {{ $task->satuan }}</td>
+                            <td class="px-4 py-3">{{ $task->activity->activity_name }}</td>
+                            <td class="px-4 py-3">{{ $task->task_volume }} {{ $task->activity->activity_unit }}</td>
                             <td class="px-4 py-3">{{ $task->formatted_tenggat }}</td>
                             <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                                <a href="/daftartugas/{{ $task->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                                <a href="/anggotatim/daftartugas/{{ $task->task_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                     <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                                 </a>
                             </td>

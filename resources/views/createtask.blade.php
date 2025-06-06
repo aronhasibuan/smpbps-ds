@@ -2,7 +2,7 @@
     <div class="bg-white dark:bg-gray-900">
         <div class="py-4 px-4 mx-auto">
 
-            <a href="/monitoringkegiatan" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+            <a href="/ketuatim/monitoringkegiatan" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
 
             <h2 class="mb-4 mt-4 text-xl font-bold text-gray-900 dark:text-white">Tambah Kegiatan</h2>
     
@@ -10,15 +10,21 @@
             @csrf
 
                 <div class="mb-4">
-                    <label for="namakegiatan" class="block text-sm font-medium text-gray-900 dark:text-white">Nama Kegiatan</label>
+                    <label for="activity_name" class="block text-sm font-medium text-gray-900 dark:text-white">Nama Kegiatan</label>
                     <p class="text-xs text-gray-400">Contoh: Susenas Maret 2025</p>
-                    <input type="text" name="namakegiatan" id="namakegiatan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
+                    <input type="text" name="activity_name" id="activity_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                 </div>
 
                 <div class="md:mb-4 mb-10">
-                    <label for="tenggat" class="block text-sm font-medium text-gray-900 dark:text-white">Tenggat Pekerjaan</label>
-                    <p class="  text-xs text-gray-400">Contoh: 26/09/2025</p>
-                    <input type="date" name="tenggat" id="tenggat" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
+                    <label for="activity_start" class="block text-sm font-medium text-gray-900 dark:text-white">Mulai Pekerjaan</label>
+                    <p class="  text-xs text-gray-400">Contoh: 19/09/2025</p>
+                    <input type="date" name="activity_start" id="activity_start" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
+                </div>
+
+                <div class="md:mb-4 mb-10">
+                    <label for="activity_end" class="block text-sm font-medium text-gray-900 dark:text-white">Tenggat Pekerjaan</label>
+                    <p class="  text-xs text-gray-400">Contoh: 19/10/2025</p>
+                    <input type="date" name="activity_end" id="activity_end" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                 </div>
 
                 <div id="taskContainer" class="w-full">
@@ -27,11 +33,11 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-900 dark:text-white">Penerima Tugas</label>
                             <p class="text-xs text-gray-400">Pilih Penerima Tugas</p>
-                            <select name="penerimatugas_id[]" class="penerimatugas bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <select name="user_member_id[]" class="user_member_id bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 <option selected disabled>Pilih Anggota Tim</option>
                                 @foreach ($anggotatim as $user)
                                     <option value="{{ $user->id }}">
-                                        {{ $user->name }}
+                                        {{ $user->user_full_name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -40,19 +46,19 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-900 dark:text-white">Deskripsi</label>
                             <p class="text-xs text-gray-400">Deskripsi Pekerjaan</p>
-                            <textarea name="deskripsi[]" class="deskripsi bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full h-11 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off"></textarea>
+                            <textarea name="task_description[]" class="task_description bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full h-11 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off"></textarea>
                         </div>
                             
                         <div>
                             <label class="block text-sm font-medium text-gray-900 dark:text-white">Volume</label>
                             <p class="text-xs text-gray-400">Contoh: 10</p>
-                            <input type="number" name="volume[]" class="volume bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                            <input type="number" name="task_volume[]" class="task_volume bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                         </div>
 
                         <div>
                             <label class="block text-sm font-medium text-gray-900 dark:text-white">Upload Dokumen</label>
                             <p class="text-xs text-gray-400">Maximum size 5 mb</p>
-                            <input type="file" name="attachment[]" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+                            <input type="file" name="task_attachment[]" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
                         </div>
 
                         <button class="remove-task block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 invisible" type="button">
@@ -67,9 +73,9 @@
                 </div>         
             
                 <div>
-                    <label for="satuan" class="block text-sm font-medium text-gray-900 dark:text-white">Satuan</label>
+                    <label for="activity_unit" class="block text-sm font-medium text-gray-900 dark:text-white">Satuan</label>
                     <p class="text-xs text-gray-400">Contoh: Blok Sensus, Publikasi</p>
-                    <input type="text" name="satuan" id="satuan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
+                    <input type="text" name="activity_unit" id="activity_unit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                 </div>
                    
                 <button type="submit" id="submitForm" class="mt-4 text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
@@ -80,7 +86,7 @@
 
             <div id="confirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 justify-center items-center z-50">
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md text-center">
-                    <p class="mb-4 text-gray-800 dark:text-gray-100">Penerima tugas {{ $busiestUser->name }} memiliki jumlah tugas aktif terbanyak ( {{ $maxTasks }} tugas ). Apakah Anda ingin melanjutkan?</p>
+                    <p class="mb-4 text-gray-800 dark:text-gray-100">Penerima tugas {{ $busiestUser->user_full_name }} memiliki jumlah tugas aktif terbanyak ( {{ $maxTasks }} tugas ). Apakah Anda ingin melanjutkan?</p>
                     <div class="flex justify-center gap-4">
                         <button id="confirmSubmit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Lanjut</button>
                         <button id="cancelSubmit" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
@@ -139,7 +145,7 @@
         document.getElementById("submitForm").addEventListener("click", function () {
             event.preventDefault();
 
-            const selectedUsers = Array.from(document.querySelectorAll('.penerimatugas')).map(select => select.value);
+            const selectedUsers = Array.from(document.querySelectorAll('.user_member_id')).map(select => select.value);
 
             if (selectedUsers.includes(busiestUserId)) {
                 document.getElementById('confirmationModal').classList.remove('hidden');

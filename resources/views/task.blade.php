@@ -4,12 +4,16 @@
             <div class="mx-auto w-full">
                 <div class="not-format">
 
-                    @if (Auth::check() && Auth::user()->role == 'ketuatim')
-                    <a href="/monitoringkegiatan/{{ $task->kegiatan->slug }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                    @if (Auth::check() && Auth::user()->user_role == 'kepalabps')
+                        <a href="/kepalabps/monitoringkegiatan/{{ $task->activity->activity_slug }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
                     @endif
 
-                    @if (Auth::check() && Auth::user()->role == 'anggotatim')
-                    <a href="/daftartugas" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                    @if (Auth::check() && Auth::user()->user_role == 'ketuatim')
+                    <a href="/ketuatim/monitoringkegiatan/{{ $task->activity->activity_slug }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                    @endif
+
+                    @if (Auth::check() && Auth::user()->user_role == 'anggotatim')
+                    <a href="/anggotatim/daftartugas" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
                     @endif
 
                     <div class="flex justify-between items-center mb-5 text-gray-500 mt-2">
@@ -28,11 +32,11 @@
                         </div>
                     </div>
 
-                    <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">{{ $task->namakegiatan }}</h1>
+                    <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">{{ $task->activity->activity_name }}</h1>
 
                     <div class="block md:flex items-center mb-3 not-italic justify-between">
                         <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                            <p class="text-sm md:text-base text-gray-500 dark:text-white">{{ $task->pemberitugas->name }} - {{ $task->formatted_createdat }}</p>
+                            <p class="text-sm md:text-base text-gray-500 dark:text-white">{{ $task->activity->user->user_full_name }} - {{ $task->formatted_createdat }}</p>
                         </div>
                         <p class="text-sm md:text-base text-black font-bold dark:text-white">Tenggat Pekerjaan: {{ $task->formatted_tenggat }}</p>
                     </div>
@@ -40,15 +44,15 @@
                 </div>
 
                 <div class="border-t border-b border-gray-300 text-black">
-                    <p class="dark:text-white mb-4">Deskripsi Pekerjaan: {{ $task->deskripsi }}</p>
-                    <p class="dark:text-white">Banyak Pekerjaan: {{ $task->volume }} {{ $task->satuan }}</p>
+                    <p class="dark:text-white mb-4">Deskripsi Pekerjaan: {{ $task->task_description }}</p>
+                    <p class="dark:text-white">Banyak Pekerjaan: {{ $task->task_volume }} {{ $task->activity->activity_unit }}</p>
                 </div>
 
                 <div>
                     <div class="mt-8">
-                        @if ($task->attachment)
+                        @if ($task->task_attachment)
                             <div class="cursor-pointer mb-10">
-                                <a href="{{ url('/file/' . basename($task->attachment)) }}" target="_blank" class="no-underline bg-[#228be6] text-white text-md p-2 rounded-md">Lihat Lampiran</a>
+                                <a href="{{ url('/file/' . basename($task->task_attachment)) }}" target="_blank" class="no-underline bg-[#228be6] text-white text-md p-2 rounded-md">Lihat Lampiran</a>
                             </div>
                         @endif
                     </div>
@@ -63,16 +67,16 @@
                                         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                                     </svg>
                                 </span>
-                                <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">Jumlah Progress: {{ $progress->progress }} {{ $task->satuan }}
+                                <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">Jumlah Progress: {{ $progress->progress_amount }} {{ $task->activity->activity_unit }}
                                     @if ($loop->last)    
                                         <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300 ms-3">Progress Terbaru</span>
                                     @endif 
                                 </h3>
-                                <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Tanggal Progress: {{ $progress->formatted_tanggal }}</time>
-                                <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">{{ $progress->catatan }}</p>
-                                @if ($progress->dokumentasi)
+                                <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Tanggal Progress: {{ $progress->formatted_date }}</time>
+                                <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">{{ $progress->progress_notes }}</p>
+                                @if ($progress->progress_documentation)
                                     <div class="cursor-pointer mb-10">
-                                        <a href="{{ url('/file/' . basename($progress->dokumentasi)) }}" target="_blank" class="no-underline inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-100 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">Lihat Dokumentasi</a>
+                                        <a href="{{ url('/file/' . basename($progress->progress_documentation)) }}" target="_blank" class="no-underline inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-100 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">Lihat Dokumentasi</a>
                                     </div>
                                 @endif
                             </li>
@@ -88,7 +92,7 @@
             </div>
 
             {{-- Update Progress --}}
-            @if (Auth::check() && Auth::user()->role == 'anggotatim' && $task->active)
+            @if (Auth::check() && Auth::user()->user_role == 'anggotatim' && $task->task_active_status)
                 <div class="flex justify-center gap-4 mt-20">
                     <button type="submit" id="openModal" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
                         Perbarui Progress
@@ -98,7 +102,7 @@
                 <div id="popupModal" class="fixed inset-0 items-center justify-center bg-opacity-50 hidden">
                     <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl border">
                         <h2 class="text-lg font-semibold mb-4 text-black dark:text-white">Masukkan Progress Terbaru</h2>
-                        <form action="{{ route('updateprogress', [$task->slug, $task->id]) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('updateprogress', [$task->task_slug, $task->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                             <label for="quantity">Jumlah Progress Terbaru <span class="text-red-500">*</span></label>
                             <input type="number" id="quantity" name="quantity" min="{{ $task->latestprogress + 1}}" value="{{ $task->latestprogress + 1 }}" max="{{ $task->volume }}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full">
@@ -126,7 +130,7 @@
                 </div>
             @endif
         
-            @if (Auth::check() && Auth::user()->role == 'ketuatim' && $task->active)
+            @if (Auth::check() && Auth::user()->user_role == 'ketuatim' && $task->task_active_status)
             <div>
                 <div class="flex justify-center gap-4 mt-20">
 
@@ -188,13 +192,13 @@
                             @method('PUT')
                                 <div>
                                     <div class="mb-6">
-                                        <label for="volume" class="block text-sm font-medium text-gray-900 dark:text-white">Volume</label>
-                                        <input type="number" name="volume" id="volume" value="{{ $task->volume }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
+                                        <label for="task_volume" class="block text-sm font-medium text-gray-900 dark:text-white">Volume</label>
+                                        <input type="number" name="volume" id="volume" value="{{ $task->task_volume }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
                                     </div>
                                     
                                     <div class="mb-6">
                                         <label class="block text-sm font-medium text-gray-900 dark:text-white">Deskripsi</label>
-                                        <textarea name="deskripsi" class="deskripsi bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full h-11 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">{{ $task->deskripsi }}</textarea>
+                                        <textarea name="task_description" class="deskripsi bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full h-11 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">{{ $task->task_description }}</textarea>
                                     </div>
                             
                                     <div class="mb-6">

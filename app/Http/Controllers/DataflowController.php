@@ -36,7 +36,9 @@ class DataflowController extends Controller
         $perPage = $request->get('perPage', 10);
         $users = $usersQuery->paginate($perPage)->appends($request->query());
 
-        return view('employeelist', ['users' => $users]);
+        $teams = DB::table('teams')->where('team_name', '!=', 'Kepala BPS')->get();
+
+        return view('employeelist', ['users' => $users, 'teams' => $teams]);
     }
 
     // data view ('home')
@@ -176,7 +178,7 @@ class DataflowController extends Controller
             }
         });
 
-        return view('activitiesarchive', ['activites' => $activities]);
+        return view('activitiesarchive', ['activities' => $activities]);
     }
 
     // data view('activitiesmonitoring')
@@ -208,7 +210,9 @@ class DataflowController extends Controller
 
         $activities = $activities->paginate($perPage)->withQueryString();
 
-        return view('activitiesmonitoring', ['activities' => $activities]);
+        $actionUrl = Auth::user()->user_role === 'kepalabps'? '/kepalabps/monitoringkegiatan': (Auth::user()->user_role === 'ketuatim'? '/ketuatim/monitoringkegiatan': '#');
+
+        return view('activitiesmonitoring', ['activities' => $activities, 'actionUrl' => $actionUrl]);
     }
 
     // data view('employeemonitoring')
@@ -218,41 +222,42 @@ class DataflowController extends Controller
             $query->where('task_active_status', true);
         }])->get();
     
-        return view('monitoringpegawai', ['tasksPerUser' => $tasksPerUser]);
+        return view('employeemonitoring', ['tasksPerUser' => $tasksPerUser]);
     }
 
     // data view ('createtask')
     public function createtask()
     {
-        $anggotatim = User::where('role', 'anggotatim')
-            ->withCount(['menerimatugas' => function ($query) {
-                $query->where('active', true);
+        $anggotatim = User::where('user_role', 'anggotatim')
+            ->withCount(['tasks' => function ($query) {
+                $query->where('task_active_status', true);
             }])
             ->get();
 
-        $busiestUser = $anggotatim->sortByDesc('menerimatugas_count')->first();
-        $maxTasks = $busiestUser ? $busiestUser->menerimatugas_count : 0;
+        $busiestUser = $anggotatim->sortByDesc('tasks_count')->first();
+        $maxTasks = $busiestUser ? $busiestUser->tasks_count : 0;
 
         return view('createtask', ['anggotatim' => $anggotatim, 'busiestUser' => $busiestUser, 'maxTasks' => $maxTasks]);
     }
 
-    // data view ('createuser')
-    public function createuser()
+    // data view ('createemployee')
+    public function createemployee()
     {
-        return view('createuser');
+        $teams = DB::table('teams')->where('team_name', '!=', 'Kepala BPS')->get();
+        return view('createemployee', ['teams' => $teams]);
     }
 
-    // data view('activies')
-    public function activities(Activity $activities)
+    // data view('activity')
+    public function activity(Activity $activity)
     {
-        $tasks = Task::where('activity_id', $activities->id)->paginate(5);
-        if ($tasks->isEmpty()) {
-            abort(404, 'Data tidak ditemukan');
-        }
-        $totalProgress = $tasks->sum('task_latest_progress');
-        $totalVolume = $tasks->sum('task_volume');
-        $persentaseProgress = $totalVolume > 0 ? round(($totalProgress / $totalVolume) * 100, 2) : 0;
-        return view('activities', ['tasks' => $tasks, 'persentaseprogress' => $persentaseProgress, 'activites' => $activities]);
+        $tasks = Task::where('activity_id', $activity->id)->paginate(5);
+        // $totalProgress = $tasks->sum('task_latest_progress');
+        // $totalVolume = $tasks->sum('task_volume');
+        // $persentaseProgress = $totalVolume > 0 ? round(($totalProgress / $totalVolume) * 100, 2) : 0;
+        $actionUrl = Auth::user()->user_role === 'kepalabps'? '/kepalabps/monitoringkegiatan': (Auth::user()->user_role === 'ketuatim'? '/ketuatim/monitoringkegiatan': '#');
+        return view('activity', ['tasks' => $tasks, 'actionUrl' => $actionUrl, 'activity' => $activity
+        // 'persentaseprogress' => $persentaseProgress, 'activites' => $activities
+    ]);
     }
 
     // data view('task')

@@ -1,10 +1,10 @@
 <x-layout>
     <div>
 
-        <a href="/kepalabps/monitoringkegiatan" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+        <a href="{{ $actionUrl }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
         
         <div class="flex items-center mt-5 mb-2">
-            <p class="font-bold dark:text-white">{{ $kegiatan->namakegiatan }}</p>
+            <p class="font-bold dark:text-white">{{ $activity->activity_name }}</p>
             <button href="" class="ml-2" type="button" id="updatemodalbutton" data-modal-target="updatemodal" data-modal-toggle="updatemodal">
                 <img class="w-5 h-5" src="{{ asset('img/task-edit.svg') }}" alt="Detail">
             </button>
@@ -23,13 +23,13 @@
                             <span class="sr-only">Close modal</span>
                         </button>
                     </div>
-                    <form action="{{ route('updatekegiatan', $kegiatan->id) }}" method="POST">
+                    <form action="{{ route('updatekegiatan', $activity->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="grid gap-4 mb-4 sm:grid-cols-2">
                             <div>
-                                <label for="namakegiatan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Kegiatan</label>
-                                <input type="text" name="namakegiatan" id="namakegiatan" value="{{ $kegiatan->namakegiatan }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
+                                <label for="activity_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Kegiatan</label>
+                                <input type="text" name="activity_name" id="activity_name" value="{{ $activity->activity_name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
                             </div>
                             <div>
                                 <label for="tenggat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tenggat</label>
@@ -67,16 +67,17 @@
                                 'Progress Lambat' => 'bg-red-500',
                                 'Progress On Time' => 'bg-yellow-500',
                                 'Progress Cepat' => 'bg-green-500'
+                                
                             ];
                             $backgroundColor = $colorMap[$task->kemajuan['status']] ?? 'bg-gray-500';
                         @endphp
                         <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->kemajuan['status'] }}</p>
                         </th>
-                        <td class="px-4 py-3">{{ $task->penerimatugas->name }}</td>
-                        <td class="px-4 py-3">{{ $task->latestprogress }} dari {{ $task->volume }} {{ $task->satuan }}</td>
+                        <td class="px-4 py-3">{{ $task->user->user_full_name }}</td>
+                        <td class="px-4 py-3">{{ $task->task_latest_progress }} dari {{ $task->task_volume }} {{ $activity->activity_unit }}</td>
                         <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                            <a href="{{ route('taskmonitoring', ['kegiatan_slug' => $kegiatan->slug, 'slug'=>$task->slug])}}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                            <a href="{{ route('taskmonitoring', ['kegiatan_slug' => $activity->activity_slug, 'slug'=>$task->task_slug])}}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                 <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                             </a>
                         </td>
@@ -94,11 +95,11 @@
             <span class="md:text-base text-sm font-bold text-gray-900 dark:text-white">Tenggat Pekerjaan: {{ $tasks->first()->formatted_tenggat; }}</span>
         </div>
         <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
-            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: {{ $persentaseprogress }}%">{{ $persentaseprogress }}%</div>
+            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: 100%">100%</div>
         </div>
 
         {{-- button - tandai kegiatan selesai --}}
-        @if ($persentaseprogress == 100 && $kegiatan->active)    
+        @if ( $activity->activity_active_status)    
             <div class="flex justify-center gap-4 mt-20">
                 <button type="button" onclick="openModal()" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
                 Tandai Kegiatan Selesai
@@ -114,7 +115,7 @@
                     <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 dark:text-black px-4 py-2 rounded hover:bg-gray-400 transition duration-200">
                         Batal
                     </button>
-                    <form action="{{ route('markkegiatanasdone', ['kegiatan' => $kegiatan->slug, 'id' => $kegiatan->id]) }}" method="POST">
+                    <form action="{{ route('markkegiatanasdone', ['kegiatan' => $activity->activity_slug, 'id' => $activity->id]) }}" method="POST">
                         @csrf
                         @method('POST')
                         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200">
