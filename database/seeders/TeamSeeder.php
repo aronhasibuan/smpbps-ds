@@ -19,18 +19,53 @@ class TeamSeeder extends Seeder
             'team_name' => 'Kepala BPS',
             'team_description' => 'Kepala BPS adalah seseorang yang memiliki wewenang tertinggi dalam kantor BPS.'
         ]);
-        // Tim Statistik Distribusi
+        // Tim Statistik Produksi
         #2
         Team::create([
-            'team_name' => 'Statistik Distribusi',
-            'team_description' => 'Tim Statistik Distribusi adalah tim yang bertugas mengumpulkan, mengolah, dan menganalisis data terkait distribusi barang dan jasa di wilayah kerja BPS.'
+            'team_name' => 'Statistik Produksi',
+            'team_description' => 'Tim ini memiliki tugas untuk melaksanakan kegiatan di statistik Produksi. Kegiatan Statistik Produksi dimaksud meliputi Statistik Pertanian; Statistik Industri Mikro dan Kecil; Statistik Industri Besar dan Sedang; dan Statistik Pertambangan, Energi, dan Konstruksi.'
         ]);
-
-        // Tim Statistik Sosial
+        
+        // Tim Statistik Distribusi
         #3
         Team::create([
+            'team_name' => 'Statistik Distribusi',
+            'team_description' => 'Tim ini memiliki tugas untuk melaksanakan kegiatan di Statistik Distribusi. Kegiatan Statistik Distribusi meliputi Statistik Harga Konsumen dan Harga Perdagangan Besar; Statistik Keuangan dan Harga Produsen; dan Statistik Niaga dan Jasa.'
+        ]);
+        
+        // Tim Statistik Sosial
+        #4
+        Team::create([
             'team_name' => 'Statistik Sosial',
-            'team_description' => 'Tim Statistik Sosial adalah tim yang bertugas mengumpulkan, mengolah, dan menganalisis data terkait kondisi sosial masyarakat di wilayah kerja BPS.'
+            'team_description' => 'Tim ini memiliki tugas untuk melaksanakan kegiatan di Statistik Sosial. Kegiatan Statistik Sosial meliputi Statistik Kependudukan; Statistik kesejahteraan Rakyat; dan Statistik Ketahanan Sosial.'
+        ]);
+
+        // Tim Neraca Wilayah dan Analisis Statistik
+        #5
+        Team::create([
+            'team_name' => 'Neraca Wilayah dan Analisis Statistik',
+            'team_description' => 'Tim ini memiliki tugas untuk melaksanakan kegiatan di Neraca Wilayah dan Analisis Statistik. Kegiatan pada fungsi ini meliputi penyusunan Neraca Produksi; Neraca Konsumsi; dan Analisis Statistik Lintas Sektor.'
+        ]);
+
+        // Tim Integrasi Pengolahan & Diseminasi Statistik
+        #6
+        Team::create([
+            'team_name' => 'Integrasi Pengolahan & Diseminasi Statistik',
+            'team_description' => 'Tim ini memiliki tugas untuk melakukan pengintegrasian pengolahan data, pengelolaan jaringan dan rujukan statistik, serta diseminasi dan layanan statistik.'
+        ]);
+
+        // Tim Statistik Sektoral
+        #7
+        Team::create([
+            'team_name' => 'Statistik Sektoral',
+            'team_description' => 'Tim ini memiliki tugas untuk melakukan pembinaan statistik sektoral.'
+        ]);
+
+        // Tim Hubungan Masyarakat
+        #8
+        Team::create([
+            'team_name' => 'Hubungan Masyarakat',
+            'team_description' => 'Tim ini memiliki tugas untuk menyampaikan segala informasi penting mengenai organisasi kepada publik.'
         ]);
     }
 }

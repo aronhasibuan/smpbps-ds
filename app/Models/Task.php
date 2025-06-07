@@ -13,16 +13,20 @@ class Task extends Model{
 
     use HasFactory;
     
-    protected $fillable = ['activity_id', 'user_member_id', 'task_slug', 'task_description', 'task_volume', 'task_latest_progress', 'task_attachment', 'task_active_status'];
+    protected $fillable = ['activity_id', 'user_member_id', 'status_id','task_slug', 'task_description', 'task_volume', 'task_latest_progress', 'task_attachment'];
 
     protected $with = ['activity', 'user', 'progress'];
 
     public function activity(): BelongsTo{
-        return $this->belongsTo(Activity::class);
+        return $this->belongsTo(Activity::class, 'activity_id');
     }
 
     public function user(): BelongsTo{
         return $this->belongsTo(User::class, 'user_member_id');
+    }
+
+    public function status(): BelongsTo{
+        return $this->belongsTo(Status::class, 'status_id');
     }
 
     public function progress(): HasMany{

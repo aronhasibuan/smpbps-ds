@@ -23,12 +23,15 @@ return new class extends Migration
                 table: 'users',
                 indexName: 'tasks_users_id'
             );
+            $table->foreignId('status_id')->constrained(
+                table: 'statuses',
+                indexName:'tasks_statuses_id'
+            );
             $table->string('task_slug')->unique();
             $table->text('task_description');
             $table->integer('task_volume');
             $table->string('task_latest_progress')->default(0);
             $table->string('task_attachment')->nullable();
-            $table->boolean('task_active_status')->default(true);
             $table->timestamps();
         });
     }
