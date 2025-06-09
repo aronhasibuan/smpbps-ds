@@ -67,6 +67,12 @@ Route::middleware(['auth'])->group(function(){
         // view activitiesmonitoring
         Route::get('/kepalabps/monitoringkegiatan', [DataflowController::class, 'activitiesmonitoring'])->name('activitiesmonitoring');
 
+        // view activity
+        Route::get('/kepalabps/monitoringkegiatan/{activity:activity_slug}', [DataflowController::class, 'activity'])->name('activity');
+
+        // view task
+        Route::get('/kepalabps/monitoringkegiatan/{activity_slug}/{slug}', [DataflowController::class, 'taskmonitoring'])->name('taskmonitoring_kepalabps');
+
         // view employeemonitoring
         Route::get('/kepalabps/monitoringpegawai', [DataflowController::class, 'employeemonitoring'])->name('employeemonitoring');
         
@@ -79,7 +85,7 @@ Route::middleware(['auth'])->group(function(){
     // ketua tim
 
         // view activitiesmonitoring
-        Route::get('/ketuatim/monitoringkegiatan', [DataflowController::class, 'activitiesmonitoring'])->name('activitiesmonitoring');
+        Route::get('/ketuatim/monitoringkegiatan', [DataflowController::class, 'activitiesmonitoring'])->name('activitiesmonitoring_ketuatim');
         
         // view activity
         Route::get('/ketuatim/monitoringkegiatan/{activity:activity_slug}', [DataflowController::class, 'activity'])->name('activity');
@@ -87,7 +93,7 @@ Route::middleware(['auth'])->group(function(){
         Route::put('/ketuatim/monitoringkegiatan/{kegiatan}', [ActivityController::class, 'update'])->name('updatekegiatan');
 
         // view task
-        Route::get('/ketuatim/monitoringkegiatan/{kegiatan_slug}/{slug}', [DataflowController::class, 'taskmonitoring'])->name('taskmonitoring');
+        Route::get('/ketuatim/monitoringkegiatan/{activity_slug}/{slug}', [DataflowController::class, 'taskmonitoring'])->name('taskmonitoring_ketuatim');
         Route::put('/ketuatim/tasks/{task}', [TaskController::class, 'update'])->name('updatetask');
         Route::delete('/ketuatim/tasks/{task}', [TaskController::class, 'destroy'])->name('deletetask');
 

@@ -171,28 +171,27 @@ class TaskController extends Controller
         $task = Task::findOrFail($id);
 
         $request->validate([
-            'quantity' => 'required|integer|min:' . ($task->latestprogress + 1) . '|max:' . $task->volume,
-            'catatan' => 'nullable|string|max:1000',
-            'dokumentasi' => 'nullable|file|mimes:jpg,png|max:5120'
+            'progress_amount' => 'required|integer|min:' . ($task->task_latest_progress + 1) . '|max:' . $task->task_volume,
+            'progress_notes' => 'required|string|max:1000',
+            'progress_documentation' => 'nullable|file|mimes:jpg,png|max:5120'
         ]);
 
-        $catatan = $request->catatan ?? 'Tidak ada catatan pada progress ini';
-        $attachmentPath = $request->hasFile('dokumentasi') ? $request->file('dokumentasi')->store('attachments', 'public') : null;
+        $attachmentPath = $request->hasFile('progress_documentation') ? $request->file('progress_documentation')->store('attachments', 'public') : null;
 
         Progress::create([
             'task_id' => $id,
-            'tanggal' => Carbon::now()->format('Y-m-d'),
-            'progress' => $request->quantity,
-            'catatan' => $catatan,
-            'dokumentasi' => $attachmentPath,
+            'progress_date' => Carbon::now()->format('Y-m-d'),
+            'progress_amount' => $request->progress_amount,
+            'progress_notes' => $request->progress_notes,
+            'progress_documentation' => $attachmentPath,
         ]);
 
-        $task->latestprogress = $request->quantity;
+        $task->task_latest_progress = $request->progress_amount;
     
-        if ($task->volume == $request->quantity) {
-            $task->active = false;
+        if ($task->task_volume == $request->progress_amount) {
+            $task->status_id = 1;
             $task->save();
-            return redirect('daftartugas')->with('success', 'Tugas berhasil ditandai selesai!'); 
+            return redirect('tasklist')->with('success', 'Tugas berhasil ditandai selesai!'); 
         } else{
             $task->save();
             return redirect()->back()->with('updated', 'Progress Berhasil Diperbarui');

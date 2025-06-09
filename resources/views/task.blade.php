@@ -36,7 +36,7 @@
 
                     <div class="block md:flex items-center mb-3 not-italic justify-between">
                         <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                            <p class="text-sm md:text-base text-gray-500 dark:text-white">{{ $task->activity->user->user_full_name }} - {{ $task->formatted_createdat }}</p>
+                            <p class="text-sm md:text-base text-gray-500 dark:text-white">Pemberi Tugas: {{ $task->activity->user->user_full_name }} <br> Tanggal Dimulai: {{ $task->formatted_createdat }}</p>
                         </div>
                         <p class="text-sm md:text-base text-black font-bold dark:text-white">Tenggat Pekerjaan: {{ $task->formatted_tenggat }}</p>
                     </div>
@@ -85,14 +85,14 @@
 
                     <div class="relative w-full bg-gray-300 rounded-full h-6">
                         <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
-                            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: {{ $task->percentage_progress }}%">{{ $task->percentage_progress }}%</div>
+                            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: {{ $task->progress_percentage }}%">{{ $task->progress_percentage }}%</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             {{-- Update Progress --}}
-            @if (Auth::check() && Auth::user()->user_role == 'anggotatim' && $task->task_active_status)
+            @if (Auth::check() && Auth::user()->user_role == 'anggotatim' && $task->status_id == 2)
                 <div class="flex justify-center gap-4 mt-20">
                     <button type="submit" id="openModal" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
                         Perbarui Progress
@@ -104,11 +104,11 @@
                         <h2 class="text-lg font-semibold mb-4 text-black dark:text-white">Masukkan Progress Terbaru</h2>
                         <form action="{{ route('updateprogress', [$task->task_slug, $task->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                            <label for="quantity">Jumlah Progress Terbaru <span class="text-red-500">*</span></label>
-                            <input type="number" id="quantity" name="quantity" min="{{ $task->latestprogress + 1}}" value="{{ $task->latestprogress + 1 }}" max="{{ $task->volume }}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full">
+                            <label for="progress_amount">Jumlah Progress Terbaru <span class="text-red-500">*</span></label>
+                            <input type="number" id="progress_amount" name="progress_amount" min="{{ $task->task_latest_progress + 1}}" value="{{ $task->task_latest_progress + 1 }}" max="{{ $task->task_volume }}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full">
 
-                            <label for="note" class="mt-4 block">Catatan/Kendala Perkerjaan</label>
-                            <input type="text" id="catatan" name="catatan" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full" autocomplete="off">
+                            <label for="progress_notes" class="mt-4 block">Catatan/Kendala Perkerjaan <span class="text-red-500">*</span></label>
+                            <input type="text" id="progress_notes" name="progress_notes" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full" autocomplete="off">
                                                         
                             <label class="inline-flex items-center cursor-pointer mt-4">
                                 <input type="checkbox" id="uploadCheckbox" class="sr-only peer">
@@ -117,8 +117,9 @@
                             </label>
                             
                             <div id="uploadInputContainer" class="hidden mt-4">
-                                <label for="dokumentasi" class="block text-sm font-medium text-gray-900 dark:text-white">Images (.jpg atau .png)</label>
-                                <input type="file" id="dokumentasi" name="dokumentasi" accept="image/*" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-gray-400 dark:border-gray-600 dark:placeholder-gray-400 dark:bg-gray-700 dark:focus:ring-blue-500 dark:focus:border-blue-500">                            </div>
+                                <label for="progress_documentation" class="block text-sm font-medium text-gray-900 dark:text-white">Images (.jpg atau .png)</label>
+                                <input type="file" id="progress_documentation" name="progress_documentation" accept="image/*" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-gray-400 dark:border-gray-600 dark:placeholder-gray-400 dark:bg-gray-700 dark:focus:ring-blue-500 dark:focus:border-blue-500">                            
+                            </div>
 
                             <div class="flex justify-end mt-4">
                                 <button id="closeModal" type="button" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition">Batal</button>
@@ -219,7 +220,7 @@
             </div>
             @endif
     
-            @if (Auth::check() && Auth::user()->role == 'ketuatim')
+            @if (Auth::check() && Auth::user()->user_role == 'ketuatim')
                 <script>
                     document.addEventListener("DOMContentLoaded", function(event) {
                         document.getElementById('defaultModalButton').click();
@@ -227,7 +228,7 @@
                 </script>
             @endif
 
-            @if (Auth::check() && Auth::user()->role == 'anggotatim' && $task->active)
+            @if (Auth::check() && Auth::user()->user_role == 'anggotatim' && $task->status_id == 2)
                 <script>
                     const modal = document.getElementById('popupModal');
                     const openModal = document.getElementById('openModal');

@@ -77,9 +77,15 @@
                         <td class="px-4 py-3">{{ $task->user->user_full_name }}</td>
                         <td class="px-4 py-3">{{ $task->task_latest_progress }} dari {{ $task->task_volume }} {{ $activity->activity_unit }}</td>
                         <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                            <a href="{{ route('taskmonitoring', ['kegiatan_slug' => $activity->activity_slug, 'slug'=>$task->task_slug])}}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                            @if($role === 'kepalabps')
+                                <a href="{{ route('taskmonitoring_kepalabps', ['activity_slug' => $activity->activity_slug, 'slug'=>$task->task_slug])}}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                 <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                             </a>
+                            @elseif($role === 'ketuatim')
+                                <a href="{{ route('taskmonitoring_ketuatim', ['activity_slug' => $activity->activity_slug, 'slug'=>$task->task_slug])}}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                                <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
+                            </a>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
@@ -92,10 +98,10 @@
         {{-- progress --}}
         <div class="flex justify-between mb-2 mt-20">
             <span class="md:text-base text-sm font-bold text-gray-900 dark:text-white">Total Progress</span>
-            <span class="md:text-base text-sm font-bold text-gray-900 dark:text-white">Tenggat Pekerjaan: {{ $tasks->first()->formatted_tenggat; }}</span>
+            <span class="md:text-base text-sm font-bold text-gray-900 dark:text-white">Tenggat Pekerjaan: {{ $activity->id_format_deadline }}</span>
         </div>
         <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
-            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: 100%">100%</div>
+            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: {{ $activity->total_progress }}%">{{ $activity->total_progress }}%</div>
         </div>
 
         {{-- button - tandai kegiatan selesai --}}

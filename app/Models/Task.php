@@ -138,10 +138,10 @@ class Task extends Model{
     }
     
     // FUNGSI UNTUK MENDAPATKAN PERSENTASE KEMAJUAN
-    // public function getPercentageProgressAttribute(){
-    //     $volume = $this->volume;
-    //     $progress = $this->latestprogress;
-    //     $percentageprogress = floor($progress/$volume*100);
-    //     return $percentageprogress;
-    // }
+    public function getProgressPercentageAttribute(){
+        if ($this->task_volume > 0) {
+            return round(($this->task_latest_progress / $this->task_volume) * 100, 2);
+        }
+        return 0;      
+    }
 }

@@ -20,17 +20,22 @@ class StatusSeeder extends Seeder
 
         #2
         Status::create([
-            'status_description' => 'Task menunggu verifikasi dari ketua tim sendiri'
+            'status_description' => 'Task aktif'
         ]);
-
+        
         #3
         Status::create([
-            'status_description' => 'Task menunggu verifikasi dari ketu tim lain'
+            'status_description' => 'Task belum dimulai, menunggu verifikasi dari ketua tim lain'
         ]);
-
+        
         #4
         Status::create([
-            'status_description' => 'Task aktif'
+            'status_description' => 'Task menunggu verifikasi dari ketua tim bahwa task sudah selesai'
+        ]);
+
+        #5
+        Status::create([
+            'status_description' => 'Task dalam masa sanggah, menunggu persetujuan dari ketua tim'
         ]);
     }
 }

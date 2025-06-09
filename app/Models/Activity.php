@@ -23,10 +23,17 @@ class Activity extends Model
         return $this->belongsTo(User::class, 'user_leader_id');
     }
     
-    public function getFormattedTenggatAttribute()
+    public function getIdFormatDeadlineAttribute()
     {
-        return Carbon::parse($this->tenggat)
+        return Carbon::parse($this->activity_end)
             ->locale('id') 
             ->translatedFormat('d F'); 
+    }
+
+    public function getTotalProgressAttribute()
+    {
+        $totalProgress = $this->tasks->sum('task_latest_progress');
+        $totalVolume = $this->tasks->sum('task_volume');
+        return $totalVolume > 0 ? round(($totalProgress / $totalVolume) * 100, 2) : 0;
     }
 }

@@ -54,10 +54,10 @@
                         @forelse ($activities as $activity)
                             <tr class="border-t">
                                 <td class="px-4 py-3">{{ $activity->activity_name }}</td>
-                                <td class="px-4 py-3">{{ $activity->activity_end }}</td>
-                                <td class="px-4 py-3">100%</td>
+                                <td class="px-4 py-3">{{ $activity->id_format_deadline }}</td>
+                                <td class="px-4 py-3">{{ $activity->total_progress }}%</td>
                                 <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                                    <a href="/ketuatim/monitoringkegiatan/{{ $activity->activity_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                                    <a href="{{ $actionUrl }}{{ $activity->activity_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                         <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                                     </a>
                                 </td>

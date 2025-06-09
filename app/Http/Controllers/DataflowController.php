@@ -45,7 +45,7 @@ class DataflowController extends Controller
     public function home(Request $request)
     {
         $user = Auth::user();
-        $tasks = Task::where('user_member_id', $user->id)->where('task_active_status', true)->get();
+        $tasks = Task::where('user_member_id', $user->id)->where('status_id', 2)->get();
         return view('home', ['user' => $user, 'tasks' => $tasks]);
     }
 
@@ -54,7 +54,7 @@ class DataflowController extends Controller
     {
         $user = Auth::user();
 
-        $tasksQuery = Task::where('user_member_id', $user->id)->where('task_active_status', true)->get();
+        $tasksQuery = Task::where('user_member_id', $user->id)->where('status_id', 2)->get();
             // ->select(
             //     'tasks.*',
             //     DB::raw("
@@ -111,7 +111,7 @@ class DataflowController extends Controller
     {
         $search = $request->input('search');
         $user = Auth::user();
-        $tasksQuery = Task::where('user_member_id', $user->id)->where('task_active_status', false);
+        $tasksQuery = Task::where('user_member_id', $user->id)->where('status_id', 2);
 
         if ($search) {
             $tasksQuery->where(function ($query) use ($search) {
@@ -210,7 +210,7 @@ class DataflowController extends Controller
 
         $activities = $activities->paginate($perPage)->withQueryString();
 
-        $actionUrl = Auth::user()->user_role === 'kepalabps'? '/kepalabps/monitoringkegiatan': (Auth::user()->user_role === 'ketuatim'? '/ketuatim/monitoringkegiatan': '#');
+        $actionUrl = Auth::user()->user_role === 'kepalabps'? '/kepalabps/monitoringkegiatan/': (Auth::user()->user_role === 'ketuatim'? '/ketuatim/monitoringkegiatan/': '#');
 
         return view('activitiesmonitoring', ['activities' => $activities, 'actionUrl' => $actionUrl]);
     }
@@ -219,7 +219,7 @@ class DataflowController extends Controller
     public function employeemonitoring()
     {
         $tasksPerUser = User::where('user_role','anggotatim')->withCount(['tasks' => function ($query) {
-            $query->where('task_active_status', true);
+            $query->where('status_id', 2);
         }])->get();
     
         return view('employeemonitoring', ['tasksPerUser' => $tasksPerUser]);
@@ -230,7 +230,7 @@ class DataflowController extends Controller
     {
         $anggotatim = User::where('user_role', 'anggotatim')
             ->withCount(['tasks' => function ($query) {
-                $query->where('task_active_status', true);
+                $query->where('status_id', 2);
             }])
             ->get();
 
@@ -250,14 +250,10 @@ class DataflowController extends Controller
     // data view('activity')
     public function activity(Activity $activity)
     {
+        $role = Auth::user()->user_role;
         $tasks = Task::where('activity_id', $activity->id)->paginate(5);
-        // $totalProgress = $tasks->sum('task_latest_progress');
-        // $totalVolume = $tasks->sum('task_volume');
-        // $persentaseProgress = $totalVolume > 0 ? round(($totalProgress / $totalVolume) * 100, 2) : 0;
         $actionUrl = Auth::user()->user_role === 'kepalabps'? '/kepalabps/monitoringkegiatan': (Auth::user()->user_role === 'ketuatim'? '/ketuatim/monitoringkegiatan': '#');
-        return view('activity', ['tasks' => $tasks, 'actionUrl' => $actionUrl, 'activity' => $activity
-        // 'persentaseprogress' => $persentaseProgress, 'activites' => $activities
-    ]);
+        return view('activity', ['tasks' => $tasks, 'actionUrl' => $actionUrl, 'activity' => $activity, 'role' => $role]);
     }
 
     // data view('task')
