@@ -9,7 +9,7 @@
             <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                 
                 <div class="w-full md:w-1/2">
-                    <form class="flex items-center" action="/arsip" method="GET">
+                    <form class="flex items-center" action="/anggotatim/arsiptugas" method="GET">
                         <label for="search" class="sr-only"></label>
                         <div class="relative w-full">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -38,22 +38,22 @@
                 </thead>
                 <tbody class="border-t text-gray-700 dark:text-gray-400">
                     @forelse ($tasks as $task)
-                    {{-- <tr>
-                        <td class="px-4 py-3">{{ $task->namakegiatan }}</td>
-                        <td class="px-4 py-3">{{ $task->volume }} {{ $task->satuan }}</td>
-                        <td class="px-4 py-3">{{ $task->formatted_tenggat }}</td>
+                    <tr>
+                        <td class="px-4 py-3">{{ $task->activity->activity_name }}</td>
+                        <td class="px-4 py-3">{{ $task->task_volume }} {{ $task->activity->activity_unit }}</td>
+                        <td class="px-4 py-3">{{ $task->activity->id_format_deadline }}</td>
                         <td class="px-4 py-3">{{ $task->updated_at->format('d M') }}</td>
                         <td class="px-4 py-3 items-center justify-center hover:cursor-pointer">
-                            <a href="/arsip/penilaian/{{ $task->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                            <a href="/arsip/penilaian/{{ $task->task_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                 <img class="w-6 h-6" src="{{ asset('img/star.svg') }}" alt="Nilai">
                             </a>
                         </td>
                         <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                            <a href="/daftartugas/{{ $task->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                            <a href="/daftartugas/{{ $task->task_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                 <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                             </a>
                         </td>
-                    </tr> --}}
+                    </tr>
                     @empty
                     <tr class="text-center">
                         <td colspan="5" class="px-4 py-3">Tidak Ada Tugas Yang Diselesaikan</td>

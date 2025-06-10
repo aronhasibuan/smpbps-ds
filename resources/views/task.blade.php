@@ -18,17 +18,11 @@
 
                     <div class="flex justify-between items-center mb-5 text-gray-500 mt-2">
                         @php
-                            $colorMap = [
-                                'Selesai' => 'bg-blue-500',
-                                'Terlambat' => 'bg-black',
-                                'Progress Lambat' => 'bg-red-500',
-                                'Progress On Time' => 'bg-yellow-500',
-                                'Progress Cepat' => 'bg-green-500'
-                            ];
-                            $backgroundColor = $colorMap[$task->kemajuan['status']] ?? 'bg-gray-500';
+                            $color = $task->spi_data['color'];
+                            $backgroundColor = in_array($color, ['red', 'yellow', 'green', 'blue']) ? "bg-{$color}-500" : 'bg-black';
                         @endphp
                         <div class="py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->kemajuan['status'] }}</p>
+                            <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->spi_data['status'] }}</p>
                         </div>
                     </div>
 

@@ -36,7 +36,7 @@
                 @forelse ($activities as $activity)
                     <tr class="border">
                         <td class="px-4 py-3">{{ $activity->activity_name }}</td>
-                        <td class="px-4 py-3">{{ $activity->totalvolume }}</td>
+                        <td class="px-4 py-3">{{ $activity->total_volume }}</td>
                         <td class="px-4 py-3">{{ $activity->activity_unit }}</td>
                         <td class="px-4 py-3 flex items-center hover:cursor-pointer">
                             <a href="/monitoringkegiatan/{{ $activity->slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">

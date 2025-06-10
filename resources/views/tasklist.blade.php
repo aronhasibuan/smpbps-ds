@@ -8,7 +8,7 @@
             <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                 
                 <div class="w-full md:w-1/2">
-                    <form class="flex items-center" action="/daftartugas" method="GET">
+                    <form class="flex items-center" action="/anggotatim/daftartugas" method="GET">
                         <label for="search" class="sr-only"></label>
                         <div class="relative w-full">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -64,11 +64,11 @@
                     @forelse ($tasks as $task)
                         <tr class="border-t">
                             @php
-                                $color = $task->kemajuan['color'];
-                                $backgroundColor = in_array($color, ['red', 'yellow', 'green']) ? "bg-{$color}-500" : 'bg-black'; 
+                                $color = $task->spi_data['color'];
+                                $backgroundColor = in_array($color, ['red', 'yellow', 'green', 'blue']) ? "bg-{$color}-500" : 'bg-black'; 
                             @endphp
                             <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->kemajuan['status'] }}</p>
+                                <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->spi_data['status'] }}</p>
                             </th>
                             <td class="px-4 py-3">{{ $task->activity->activity_name }}</td>
                             <td class="px-4 py-3">{{ $task->task_volume }} {{ $task->activity->activity_unit }}</td>

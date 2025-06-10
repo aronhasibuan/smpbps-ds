@@ -15,7 +15,7 @@ class Task extends Model{
     
     protected $fillable = ['activity_id', 'user_member_id', 'status_id','task_slug', 'task_description', 'task_volume', 'task_latest_progress', 'task_attachment'];
 
-    protected $with = ['activity', 'user', 'progress'];
+    protected $with = ['activity', 'user', 'progress', 'status'];
 
     public function activity(): BelongsTo{
         return $this->belongsTo(Activity::class, 'activity_id');
@@ -64,78 +64,6 @@ class Task extends Model{
             ->translatedFormat('d F');
     }
 
-    // FUNGSI UNTUK MENDAPATKAN STATUS KEMAJUAN
-    public function getKemajuanAttribute(){
-        
-        $EarnedValue = $this->task_latest_progress;
-        
-        $task_volume = $this->task_volume;
-        $activity_end = Carbon::parse($this->activity->activity_end)->endOfDay();
-        $activity_start = Carbon::parse($this->activity->activity_start)->startOfDay();
-        $day_passed = ceil($activity_start->diffInDays(Carbon::now()->endOfDay()));
-        $duty_days = ceil($activity_end->diffInDays($activity_start,true));
-        $target_per_day = ceil($task_volume/$duty_days);
-        $PlannedValue = min($task_volume, ceil($day_passed * $target_per_day));
-
-        $Schedule_Performance_Index = $EarnedValue / $PlannedValue;
-        if($EarnedValue == $task_volume){
-            return[
-                'status' => 'Selesai',
-                'color' => 'blue',
-                'hariberlalu' => $day_passed,
-                'selangharitugas_PHP' => $duty_days,
-                'targetperhari_PHP' => $target_per_day,
-                'tht' => $PlannedValue,
-            ];
-        }
-        if ($activity_end < Carbon::today()){
-            return[
-                'status' => 'Terlambat',
-                'color' => 'black',
-                'hariberlalu' => $day_passed,
-                'selangharitugas_PHP' => $duty_days,
-                'targetperhari_PHP' => $target_per_day,
-                'tht' => $PlannedValue,
-            ];
-        }
-        if ($Schedule_Performance_Index < 1 && $EarnedValue < $task_volume){
-            return [
-                'status' => 'Progress Lambat',
-                'color' => 'red',
-                'hariberlalu' => $day_passed,
-                'selangharitugas_PHP' => $duty_days,
-                'targetperhari_PHP' => $target_per_day,
-                'tht' => $PlannedValue,
-            ];
-        } elseif ($Schedule_Performance_Index == 1  && $EarnedValue < $task_volume){
-            return [
-                'status' => 'Progress On Time',
-                'color' => 'yellow',
-                'hariberlalu' => $day_passed,
-                'selangharitugas_PHP' => $duty_days,
-                'targetperhari_PHP' => $target_per_day,
-                'tht' => $PlannedValue,
-            ];
-        } elseif ($Schedule_Performance_Index > 1 && $EarnedValue < $task_volume){
-            return [
-                'status' => 'Progress Cepat',
-                'color' => 'green',
-                'hariberlalu' => $day_passed,
-                'selangharitugas_PHP' => $duty_days,
-                'targetperhari_PHP' => $target_per_day,
-                'tht' => $PlannedValue,
-            ];
-        } else {
-            return [
-                'status' => 'Tidak Diketahui',
-                'color' => 'grey',
-                'hariberlalu' => $day_passed,
-                'selangharitugas_PHP' => $duty_days,
-                'targetperhari_PHP' => $target_per_day,
-                'tht' => $PlannedValue,
-            ];
-        }
-    }
     
     // FUNGSI UNTUK MENDAPATKAN PERSENTASE KEMAJUAN
     public function getProgressPercentageAttribute(){

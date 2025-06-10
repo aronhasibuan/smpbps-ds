@@ -10,6 +10,7 @@ use App\Models\Progress;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\NotifyService;
+use App\Services\EVMService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,58 +53,31 @@ class DataflowController extends Controller
     // data view('tasklist')
     public function tasklist(Request $request)
     {
+        $EVMService = new EVMService();
+        
         $user = Auth::user();
+        $search = $request->input('search');
 
-        $tasksQuery = Task::where('user_member_id', $user->id)->where('status_id', 2)->get();
-            // ->select(
-            //     'tasks.*',
-            //     DB::raw("
-            //         CEIL(DATEDIFF(NOW(), created_at)) + 1 AS hariberlalu_MySQL,
-            //         DATEDIFF(tenggat, created_at) + 1 AS selangharitugas_MySQL,
-            //         CEIL(volume / (DATEDIFF(tenggat, created_at) + 1)) AS targetperhari_MySQL,
-            //         LEAST(volume, (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1)))) AS targetharustercapai_MySQL,
-                    
-            //         FLOOR((latestprogress / volume) * 100) AS percentage_progress,
+        $tasks = Task::where('user_member_id', $user->id)->where('status_id', 2);
 
-            //         CASE 
-            //             WHEN tenggat < CURDATE() THEN 1
-            //             WHEN latestprogress < (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 2
-            //             WHEN latestprogress = (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 3
-            //             WHEN latestprogress > (CEIL(DATEDIFF(NOW(), created_at)+1) * CEIL(volume / (DATEDIFF(tenggat, created_at) + 1))) THEN 4  
-            //         END AS kodekategori
-            //     ")
-            // )
-        // ->filter($request->only(['search']));
+        if ($search) {
+            $tasks->where(function ($query) use ($search) {
+                $query->where('task_description', 'like', '%' . $search . '%')
+                ->orWhereHas('activity', function ($query) use ($search) {
+                    $query->where('activity_name', 'like', '%' . $search . '%')
+                    ->orWhere('activity_unit', 'like', '%' . $search . '%');
+                });
+            });
+        }
 
-        // if ($request->has('filter')) {
-        //     switch ($request->filter) {
-        //         case 'terlambat':
-        //             $tasksQuery->having('kodekategori', 1);
-        //             break;
-        //         case 'progress_lambat':
-        //             $tasksQuery->having('kodekategori', 2);
-        //             break;
-        //         case 'progress_ontime':
-        //             $tasksQuery->having('kodekategori', 3);
-        //             break;
-        //         case 'progress_cepat':
-        //             $tasksQuery->having('kodekategori', 4);
-        //             break;
-        //     }
-        // }
+        $perPage = $request->get('perPage', 10);
+        $tasks = $tasks->paginate($perPage)->withQueryString();
 
-        // $sort = $request->get('sort', 'priority');
+        foreach ($tasks as $task){
+            $task->spi_data = $EVMService->calculateSPI($task);
+        }
 
-        // if (in_array($sort, ['id', 'tenggat'])) {
-        //     $tasksQuery->orderBy($sort);
-        // } elseif ($sort === 'priority') {
-        //     $tasksQuery->orderBy('kodekategori')->orderBy('tenggat', 'ASC')->orderBy('percentage_progress', 'ASC');
-        // }
-
-        // $perPage = $request->get('perPage', 10);
-        // $tasks = $tasksQuery->paginate($perPage)->withQueryString();
-
-        return view('tasklist', ['tasks' => $tasksQuery]);
+        return view('tasklist', ['tasks' => $tasks]);
     }
 
     // data view('taskarchive')
@@ -111,22 +85,22 @@ class DataflowController extends Controller
     {
         $search = $request->input('search');
         $user = Auth::user();
-        $tasksQuery = Task::where('user_member_id', $user->id)->where('status_id', 2);
+        $tasks = Task::where('user_member_id', $user->id)->where('status_id', 1);
 
         if ($search) {
-            $tasksQuery->where(function ($query) use ($search) {
-                $query->where('satuan', 'like', '%' . $search . '%');
-            })
-            ->orWhereHas('team', function ($query) use ($search) {
-                $query->where('activity_name', 'like', '%' . $search . '%')
-                      ->orWhere('task_description', 'like', '%' . $search . '%');
+            $tasks->where(function ($query) use ($search) {
+                $query->where('task_description', 'like', '%' . $search . '%')
+                ->orWhereHas('activity', function ($query) use ($search) {
+                    $query->where('activity_name', 'like', '%' . $search . '%')
+                    ->orWhere('activity_unit', 'like', '%' . $search . '%');
+                });
             });
         }
 
         $perPage = $request->get('perPage', 10);
-        $tasks = $tasksQuery->paginate($perPage)->withQueryString();
+        $tasks = $tasks->paginate($perPage)->withQueryString();
 
-        return view('taskarchive', ['tasks' => $tasksQuery]);
+        return view('taskarchive', ['tasks' => $tasks]);
     }
 
     // data view ('evaluation')
@@ -153,31 +127,25 @@ class DataflowController extends Controller
         $perPage = $request->get('perPage', 10); 
 
         if ($user->user_role === 'kepalabps'){
-            $activityQuery = Activity::where('activity_active_status', false);
+            $activities = Activity::with('tasks')->where('activity_active_status', false);
         } elseif ($user->user_role === 'ketuatim'){
-            $activityQuery = Activity::where('user_leader_id', $user->id)->where('activity_active_status', false);
+            $activities = Activity::with('tasks')->where('user_leader_id', $user->id)->where('activity_active_status', false);
         }else {
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         };
 
         if ($search) {
-            $activityQuery->where(function ($query) use ($search) {
+            $activities->where(function ($query) use ($search) {
                 $query->where('activity_name', 'like', '%' . $search . '%');
             });
         }
+        
+        $activities = $activities->paginate($perPage)->appends($request->query());
 
-        $activities = $activityQuery->paginate($perPage)->withQueryString();
-
-        $activities->each(function ($activity) {
-            if ($activity->tasks->isNotEmpty()) {
-                $activity->totalvolume = $activity->tasks->sum('task_volume');
-                $activity->satuan = $activity->tasks->first()->satuan;
-            } else {
-                $activity->totalvolume = 0;
-                $activity->satuan = '';
-            }
-        });
-
+        foreach ($activities as $activity){
+            $activity->total_volume = $activity->tasks->sum('task_volume');
+        }
+        
         return view('activitiesarchive', ['activities' => $activities]);
     }
 
@@ -259,7 +227,9 @@ class DataflowController extends Controller
     // data view('task')
     public function task(Task $task)
     {
+        $EVMService = new EVMService();
         $progress = Progress::where('task_id', $task->id)->get();
+        $task->spi_data = $EVMService->calculateSPI($task);
         return view('task', ['task' => $task, 'progresses'=>$progress]);
     }
 
