@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Activity;
 use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Activity;
 use App\Models\Progress;
 use Illuminate\Support\Str;
+use App\Services\EVMService;
 use Illuminate\Http\Request;
 use App\Services\NotifyService;
-use App\Services\EVMService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Services\TaskSuggestionService;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class DataflowController extends Controller
 {
@@ -45,19 +47,25 @@ class DataflowController extends Controller
     // data view ('home')
     public function home(Request $request)
     {
+        $tasksuggestionservice = new TaskSuggestionService(10);
         $user = Auth::user();
-        $tasks = Task::where('user_member_id', $user->id)->where('status_id', 2)->get();
-        return view('home', ['user' => $user, 'tasks' => $tasks]);
+
+        $suggestions = $tasksuggestionservice->getTaskSuggestion($user);
+
+        return view('home', ['user' => $user, 'suggestions' => $suggestions]);
     }
 
     // data view('tasklist')
     public function tasklist(Request $request)
     {
         $EVMService = new EVMService();
-        
         $user = Auth::user();
+        
         $search = $request->input('search');
-
+        $perPage = $request->get('perPage', 5);
+        $sort = $request->get('sort', 'priority');
+        $filter = $request->get('filter', '');
+        
         $tasks = Task::where('user_member_id', $user->id)->where('status_id', 2);
 
         if ($search) {
@@ -70,12 +78,42 @@ class DataflowController extends Controller
             });
         }
 
-        $perPage = $request->get('perPage', 10);
-        $tasks = $tasks->paginate($perPage)->withQueryString();
+        $tasks = $tasks->get();
 
         foreach ($tasks as $task){
             $task->spi_data = $EVMService->calculateSPI($task);
         }
+
+        if($filter){
+            $tasks = $tasks->filter(function ($task) use ($filter){
+                return isset($task->spi_data['status']) && $task->spi_data['status'] === $filter;
+            })->values();
+        }
+
+        if ($sort == 'priority') {
+            $tasks = $tasks->sortBy(function($task) {
+                return $task->spi_data['spi'];
+            })->values();
+        } elseif ($sort == 'tenggat') {
+            $tasks = $tasks->sortBy(function($task) {
+                return $task->activity->activity_end;
+            })->values();
+        } elseif ($sort == 'id') {
+            $tasks = $tasks->sortBy(function($task) {
+                return $task->id;
+            })->values();
+        }
+
+        $currentPage = $request->get('page', 1);
+        $pagedTasks = $tasks->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        $tasks = new LengthAwarePaginator(
+            $pagedTasks,
+            $tasks->count(),
+            $perPage,
+            $currentPage,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         return view('tasklist', ['tasks' => $tasks]);
     }
@@ -97,7 +135,7 @@ class DataflowController extends Controller
             });
         }
 
-        $perPage = $request->get('perPage', 10);
+        $perPage = $request->get('perPage', 5);
         $tasks = $tasks->paginate($perPage)->withQueryString();
 
         return view('taskarchive', ['tasks' => $tasks]);

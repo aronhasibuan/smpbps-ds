@@ -263,7 +263,7 @@ class ProgressSeeder extends Seeder
         Progress::create([
             'task_id' => 15,
             'progress_date' => '2025-06-10',
-            'progress_amount' => 1,
+            'progress_amount' => 11,
             'progress_notes' => 'Progres pencacahan',
             'progress_documentation' => null,
         ]);

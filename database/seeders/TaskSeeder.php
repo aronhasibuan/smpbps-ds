@@ -204,7 +204,7 @@ class TaskSeeder extends Seeder
             'task_slug' => '15-anggotaproduksi1',
             'task_description' => 'Pencacahan',
             'task_volume' => 30,
-            'task_latest_progress' => 1,
+            'task_latest_progress' => 11,
             'task_attachment' => null,
         ]);
 
@@ -216,7 +216,7 @@ class TaskSeeder extends Seeder
             'status_id' => 2,
             'task_slug' => '16-anggotaproduksi1',
             'task_description' => 'Pencacahan',
-            'task_volume' => 30,
+            'task_volume' => 10,
             'task_latest_progress' => 8,
             'task_attachment' => null,
         ]);
@@ -229,7 +229,7 @@ class TaskSeeder extends Seeder
             'status_id' => 2,
             'task_slug' => '17-anggotaproduksi1',
             'task_description' => 'Pencacahan',
-            'task_volume' => 30,
+            'task_volume' => 10,
             'task_latest_progress' => 9,
             'task_attachment' => null,
         ]);

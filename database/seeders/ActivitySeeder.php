@@ -188,7 +188,7 @@ class ActivitySeeder extends Seeder
             'activity_slug' => '9-survei-hortikultura-dan-indikator-pertanian-juni-2025',
             'activity_unit' => 'Rumah Tangga Usaha Pertanian',
             'activity_start' => '2025-06-01',
-            'activity_end' => '2025-06-30',
+            'activity_end' => '2025-06-25',
             'activity_active_status' => 1,
         ]);
 
@@ -199,7 +199,7 @@ class ActivitySeeder extends Seeder
             'activity_slug' => '10-survei-pertanian-tanaman-pangan-ubinan-juni-2025',
             'activity_unit' => 'Segmen',
             'activity_start' => '2025-06-01',
-            'activity_end' => '2025-06-30',
+            'activity_end' => '2025-06-20',
             'activity_active_status' => 1,
         ]);
 
@@ -210,7 +210,7 @@ class ActivitySeeder extends Seeder
             'activity_slug' => '11-survei-perusahaan-perkebunan-juni-2025',
             'activity_unit' => 'Perusahaan Perkebunan',
             'activity_start' => '2025-06-01',
-            'activity_end' => '2025-06-30',
+            'activity_end' => '2025-06-15',
             'activity_active_status' => 1,
         ]);
 
@@ -232,7 +232,7 @@ class ActivitySeeder extends Seeder
             'activity_slug' => '13-survei-perusahaan-perikanan-juni-2025',
             'activity_unit' => 'Perusahaan Perikanan',
             'activity_start' => '2025-06-01',
-            'activity_end' => '2025-06-30',
+            'activity_end' => '2025-06-10',
             'activity_active_status' => 1,
         ]);
 
@@ -243,7 +243,7 @@ class ActivitySeeder extends Seeder
             'activity_slug' => '14-survei-perusahaan-peternakan-juni-2025',
             'activity_unit' => 'Perusahaan Peternakan',
             'activity_start' => '2025-06-01',
-            'activity_end' => '2025-06-30',
+            'activity_end' => '2025-06-15',
             'activity_active_status' => 1,
         ]);
         

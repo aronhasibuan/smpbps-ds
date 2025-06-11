@@ -38,10 +38,10 @@
                                 <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                             </svg>
                             <option value="" {{ request('filter') == '' ? 'selected' : '' }}>Semua</option>
-                            <option value="terlambat" {{ request('filter') == 'terlambat' ? 'selected' : '' }}>Terlambat</option>
-                            <option value="progress_lambat" {{ request('filter') == 'progress_lambat' ? 'selected' : '' }}>Progress Lambat</option>
-                            <option value="progress_ontime" {{ request('filter') == 'progress_ontime' ? 'selected' : '' }}>Progress On Time</option>
-                            <option value="progress_cepat" {{ request('filter') == 'progress_cepat' ? 'selected' : '' }}>Progress Cepat</option>
+                            <option value="Terlambat" {{ request('filter') == 'Terlambat' ? 'selected' : '' }}>Terlambat</option>
+                            <option value="Progress Lambat" {{ request('filter') == 'Progress Lambat' ? 'selected' : '' }}>Progress Lambat</option>
+                            <option value="Progress On Time" {{ request('filter') == 'Progress On Time' ? 'selected' : '' }}>Progress On Time</option>
+                            <option value="Progress Cepat" {{ request('filter') == 'Progress Cepat' ? 'selected' : '' }}>Progress Cepat</option>
                         </select>
                   
                     </div>
@@ -95,9 +95,11 @@
             </table>
         </div>
         <div class="bg-white p-4 dark:bg-gray-800 bottom-0 border-t">
+            {{ $tasks->links() }}
             <div class="flex items-center w-full space-x-3 md:w-auto">
                 <p class="text-sm text-gray-500">Data per halaman</p>
                 <select id="perPage" class="flex items-center justify-center w-full px-4 py-2 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                    <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>5</option>
                     <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
                     <option value="15" {{ request('perPage') == 15 ? 'selected' : '' }}>15</option>
                     <option value="20" {{ request('perPage') == 20 ? 'selected' : '' }}>20</option>
