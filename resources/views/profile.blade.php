@@ -1,6 +1,6 @@
 <x-layout>
     <div>
-        <h2 class="mb-5 text-lg lg:text-xl">{{ $user->username }}</h2>    
+        <h2 class="mb-5 text-lg lg:text-xl">{{ $user->user_nickname }}</h2>    
          
         {{-- Konten --}}
         <div class="w-full p-4">
@@ -16,7 +16,7 @@
                                 <p class="text-base lg:text-lg">Nama</p>
                                 <p class="text-sm text-gray-500">Nama lengkap anda.</p>
                             </div>
-                            <input type="text" id="name" name="name" value="{{ $user->name }}" class="text-sm text-gray-900 border border-gray-300 rounded-md p-2 w-full lg:w-auto" autocomplete="off" readonly>                
+                            <input type="text" id="name" name="name" value="{{ $user->user_full_name }}" class="text-sm text-gray-900 border border-gray-300 rounded-md p-2 w-full lg:w-auto" autocomplete="off" readonly>                
                         </div>
                         <div class="flex flex-col lg:flex-row justify-between">
                             <div class="mb-2 lg:mb-0">

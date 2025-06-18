@@ -26,8 +26,8 @@ const localizer = dateFnsLocalizer({
 });
 
 const formats = {
-  eventTimeRangeFormat: () => '', // hilangkan jam pada event
-  agendaTimeFormat: () => '',     // hilangkan jam pada agenda
+  eventTimeRangeFormat: () => '', 
+  agendaTimeFormat: () => '',     
   dayHeaderFormat: (date, culture, localizer) => localizer.format(date, 'dd MMMM yyyy', culture),
   dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>
     localizer.format(start, 'dd MMM', culture) + ' – ' + localizer.format(end, 'dd MMM', culture),

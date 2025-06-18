@@ -1,17 +1,49 @@
 <x-layout>
     <div class="text-center">
-        <p class="text-[#002d57] font-bold text-3xl mb-3">Selamat datang, {{ $user->user_full_name }}!</p>
-        <p class="text-xl">Saran tugas untuk dikerjakan hari ini:</p>
+        <p class="text-[#002d57] font-bold text-xl mb-3">Halo. Selamat datang, {{ $user->user_full_name }}!</p>
+    </div>
+
+    <div class="flex w-full gap-6">
+
+        <div class="border p-8 rounded-lg flex flex-col items-center flex-1 bg-white shadow">
+            <div class="flex items-center justify-between w-full">
+                <img src="{{ asset('img/alarm-clock-plus.svg') }}" alt="Tugas Diterima" class="w-12 h-12">
+                <span class="text-4xl font-bold text-blue-600">12</span>
+            </div>
+            <p class="mt-6 text-center text-gray-700 text-lg font-semibold">Tugas Diterima</p>
+        </div>
+        
+        <div class="border p-8 rounded-lg flex flex-col items-center flex-1 bg-white shadow">
+            <div class="flex items-center justify-between w-full">
+                <img src="{{ asset('img/alarm-clock.svg') }}" alt="Tugas Berlangsung" class="w-12 h-12">
+                <span class="text-4xl font-bold text-yellow-500">8</span>
+            </div>
+            <p class="mt-6 text-center text-gray-700 text-lg font-semibold">Tugas Berlangsung</p>
+        </div>
+        
+        <div class="border p-8 rounded-lg flex flex-col items-center flex-1 bg-white shadow">
+            <div class="flex items-center justify-between w-full">
+                <img src="{{ asset('img/alarm-clock-minus.svg') }}" alt="Tugas Terlambat" class="w-12 h-12">
+                <span class="text-4xl font-bold text-red-500">3</span>
+            </div>
+            <p class="mt-6 text-center text-gray-700 text-lg font-semibold">Tugas Terlambat</p>
+        </div>
+        
+        <div class="border p-8 rounded-lg flex flex-col items-center flex-1 bg-white shadow">
+            <div class="flex items-center justify-between w-full">
+                <img src="{{ asset('img/alarm-clock-check.svg') }}" alt="Tugas Selesai" class="w-12 h-12">
+                <span class="text-4xl font-bold text-green-500">20</span>
+            </div>
+            <p class="mt-6 text-center text-gray-700 text-lg font-semibold">Tugas Selesai</p>
+        </div>
     </div>
 
     <div class="container mx-auto px-4 py-8">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Saran Tugas Harian</h2>
-
-        <!-- Today's Tasks -->
+        
         <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
             <div class="bg-blue-600 px-4 py-3 flex justify-between items-center">
                 <h3 class="text-lg font-semibold text-white">
-                    Hari Ini 
+                    Saran Tugas Untuk dikerjakan Hari Ini:
                 </h3>
             </div>
             <div class="p-4">
@@ -21,15 +53,7 @@
                     <ul class="space-y-2">
                         @foreach($suggestions as $task)
                             <li class="flex justify-between items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50">
-                                <div>
-                                    <p class="font-medium text-gray-800">{{ $task->activity->activity_name }}</p>
-                                    <p class="text-xs text-gray-500 mt-1">
-                                        Progress: {{ $task->task_latest_progress }}/{{ $task->task_volume }}
-                                    </p>
-                                </div>
-                                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                                    Saran Penyelesaian: {{ $task->volumesuggestion }}
-                                </span>
+                                <p class="font-medium text-gray-800">{{ $task->activity->activity_name }} - {{ $task->volumesuggestion }} {{ $task->activity->activity_unit }}</p>
                             </li>
                         @endforeach
                     </ul>

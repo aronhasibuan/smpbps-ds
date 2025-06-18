@@ -48,11 +48,46 @@ Route::middleware(['auth'])->group(function(){
         // Calendar
         Route::get('/api/tasks/calendar', function () {
             $user = Auth::user();
-            return Task::where('penerimatugas_id', $user->id)->select([
-                'namakegiatan as title',
-                'created_at as start',
-                'tenggat as end'
-            ])->get();
+
+            if ($user->user_role === 'anggotatim') {
+                $tasks = Task::with('activity')
+                    ->where('user_member_id', $user->id)
+                    ->get()
+                    ->map(function ($task) {
+                        return [
+                            'title' => $task->activity->activity_name ?? '-',
+                            'start' => $task->activity->activity_start ?? $task->created_at,
+                            'end'   => $task->activity->activity_end ?? $task->created_at,
+                        ];
+                    });
+                return response()->json($tasks);
+            }
+
+            if ($user->user_role === 'ketuatim') {
+                $activities = Activity::where('user_leader_id', $user->id)->get()
+                    ->map(function ($activity) {
+                        return [
+                            'title' => $activity->activity_name,
+                            'start' => $activity->activity_start,
+                            'end'   => $activity->activity_end,
+                        ];
+                    });
+                return response()->json($activities);
+            }
+
+            if ($user->user_role === 'kepalabps') {
+                $activities = Activity::all()
+                    ->map(function ($activity) {
+                        return [
+                            'title' => $activity->activity_name,
+                            'start' => $activity->activity_start,
+                            'end'   => $activity->activity_end,
+                        ];
+                    });
+                return response()->json($activities);
+            }
+
+            return response()->json([]);
         })->middleware('auth');
 
     // kepalaBPS

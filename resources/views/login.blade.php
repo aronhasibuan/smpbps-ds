@@ -19,14 +19,17 @@
                     <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
 
                         {{-- logo --}}
-                        <img src="{{ asset('img/Logo SM Raja.png') }}" alt="Sistem Manajemen Pekerjaan BPS Kabupaten Deli Serdang" class="border shadow dark:border-gray-700">
+                        <img src="{{ asset('img/Logo SM Raja - cutted.png') }}" alt="Sistem Manajemen Pekerjaan BPS Kabupaten Deli Serdang" class="">
 
                         {{-- form login --}}
                         <form class="space-y-4 md:space-y-6" action="{{ route('login') }}" method="POST">
                         @csrf
-                            <div>
+                            <div class="relative">
                                 <label for="email" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                                <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@gmail.com" required="" autocomplete="off">
+                                <input type="email" name="email" id="email"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="nama@gmail.com" required autocomplete="off">
+                                <img src="{{ asset('img/person.svg') }}" alt="Person" class="absolute right-3 top-9 w-5 h-5 text-gray-400 pointer-events-none">
                             </div>
                             <div>
                                 <label for="password" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Kata Sandi</label>
