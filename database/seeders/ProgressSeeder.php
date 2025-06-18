@@ -251,10 +251,10 @@ class ProgressSeeder extends Seeder
             'progress_documentation' => null,
         ]);
 
-        // Survei KSA Juni 2025
+        // Survei KSA Februari 2025
         Progress::create([
             'task_id' => 15,
-            'progress_date' => '2025-06-01',
+            'progress_date' => '2025-02-01',
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
@@ -262,67 +262,67 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 15,
-            'progress_date' => '2025-06-10',
-            'progress_amount' => 11,
-            'progress_notes' => 'Progres pencacahan',
-            'progress_documentation' => null,
-        ]);
-
-        // Survei Hortikultura Dan Indikator Pertanian Juni 2025
-        Progress::create([
-            'task_id' => 16,
-            'progress_date' => '2025-06-01',
-            'progress_amount' => 0,
-            'progress_notes' => 'Tugas dimulai',
-            'progress_documentation' => null,
-        ]);
-
-        Progress::create([
-            'task_id' => 16,
-            'progress_date' => '2025-06-10',
-            'progress_amount' => 8,
-            'progress_notes' => 'Progres pencacahan',
-            'progress_documentation' => null,
-        ]);
-
-        // Survei Pertanian Tanaman Pangan/Ubinan Juni 2025
-        Progress::create([
-            'task_id' => 17,
-            'progress_date' => '2025-06-01',
-            'progress_amount' => 0,
-            'progress_notes' => 'Tugas dimulai',
-            'progress_documentation' => null,
-        ]);
-
-        Progress::create([
-            'task_id' => 17,
-            'progress_date' => '2025-06-10',
-            'progress_amount' => 9,
-            'progress_notes' => 'Progres pencacahan',
-            'progress_documentation' => null,
-        ]);
-
-        // Survei Perusahaan Perkebunan Juni 2025
-        Progress::create([
-            'task_id' => 18,
-            'progress_date' => '2025-06-01',
-            'progress_amount' => 0,
-            'progress_notes' => 'Tugas dimulai',
-            'progress_documentation' => null,
-        ]);
-
-        Progress::create([
-            'task_id' => 18,
-            'progress_date' => '2025-06-10',
+            'progress_date' => '2025-02-10',
             'progress_amount' => 10,
             'progress_notes' => 'Progres pencacahan',
             'progress_documentation' => null,
         ]);
 
-        // Survei Perusahaan Kehutanan Juni 2025
+        // Survei Hortikultura Dan Indikator Pertanian Februari 2025
+        Progress::create([
+            'task_id' => 16,
+            'progress_date' => '2025-02-01',
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 16,
+            'progress_date' => '2025-02-10',
+            'progress_amount' => 10,
+            'progress_notes' => 'Progres pencacahan',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Pertanian Tanaman Pangan/Ubinan Februari 2025
+        Progress::create([
+            'task_id' => 17,
+            'progress_date' => '2025-02-01',
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 17,
+            'progress_date' => '2025-02-10',
+            'progress_amount' => 10,
+            'progress_notes' => 'Progres pencacahan',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Perusahaan Perkebunan Februari 2025
+        Progress::create([
+            'task_id' => 18,
+            'progress_date' => '2025-02-01',
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 18,
+            'progress_date' => '2025-02-10',
+            'progress_amount' => 10,
+            'progress_notes' => 'Progres pencacahan',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Perusahaan Kehutanan Februari 2025
         Progress::create([
             'task_id' => 19,
-            'progress_date' => '2025-06-01',
+            'progress_date' => '2025-02-01',
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
@@ -330,16 +330,16 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 19,
-            'progress_date' => '2025-06-10',
-            'progress_amount' => 11,
+            'progress_date' => '2025-02-10',
+            'progress_amount' => 10,
             'progress_notes' => 'Progres pencacahan',
             'progress_documentation' => null,
         ]);
 
-        // Survei Perusahaan Perikanan Juni 2025
+        // Survei Perusahaan Perikanan Februari 2025
         Progress::create([
             'task_id' => 20,
-            'progress_date' => '2025-06-01',
+            'progress_date' => '2025-02-01',
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
@@ -347,27 +347,851 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 20,
-            'progress_date' => '2025-06-10',
-            'progress_amount' => 12,
+            'progress_date' => '2025-02-10',
+            'progress_amount' => 10,
             'progress_notes' => 'Progres pencacahan',
             'progress_documentation' => null,
         ]);
 
-        // Survei Perusahaan Peternakan Juni 2025
+        // Survei Perusahaan Peternakan Februari 2025
         Progress::create([
             'task_id' => 21,
-            'progress_date' => '2025-06-01',
+            'progress_date' => '2025-02-01',
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
         ]);
         Progress::create([
             'task_id' => 21,
-            'progress_date' => '2025-06-10',
-            'progress_amount' => 13,
+            'progress_date' => '2025-02-10',
+            'progress_amount' => 10,
             'progress_notes' => 'Progres pencacahan',
             'progress_documentation' => null,
         ]);
 
+        // Sensus Pertanian
+        Progress::create([
+            'task_id' => 22,
+            'progress_date' => now()->subDays(7)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 23,
+            'progress_date' => now()->subDays(7)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 24,
+            'progress_date' => now()->subDays(7)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 25,
+            'progress_date' => now()->subDays(7)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 26,
+            'progress_date' => now()->subDays(7)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 22,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 7,
+            'progress_notes' => 'Pengerjaan Berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 23,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 5,
+            'progress_notes' => 'Pengerjaan Berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 24,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 4,
+            'progress_notes' => 'Pengerjaan Berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 25,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan Berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 26,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan Berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei KSA
+        Progress::create([
+            'task_id' => 27,
+            'progress_date' => now()->subDays(7)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 28,
+            'progress_date' => now()->subDays(7)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 29,
+            'progress_date' => now()->subDays(7)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 30,
+            'progress_date' => now()->subDays(7)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 31,
+            'progress_date' => now()->subDays(7)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Tugas dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 27,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 10,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 28,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 29,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 10,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 30,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 3,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 31,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 4,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Ubinan
+        Progress::create([
+            'task_id' => 32,
+            'progress_date' => now()->subDays(5)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 33,
+            'progress_date' => now()->subDays(5)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 34,
+            'progress_date' => now()->subDays(5)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 32,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 9,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 33,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Industri Besar Sedang
+        Progress::create([
+            'task_id' => 35,
+            'progress_date' => now()->subDays(4)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',  
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 36,
+            'progress_date' => now()->subDays(4)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',  
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 37,
+            'progress_date' => now()->subDays(4)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai', 
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 35,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 6,
+            'progress_notes' => 'Pengerjaan berlangsung', 
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 36,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan berlangsung',  
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 37,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan berlangsung',  
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Konversi Gabah Beras
+        Progress::create([
+            'task_id' => 38,
+            'progress_date' => now()->subDays(4)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 39,
+            'progress_date' => now()->subDays(4)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 40,
+            'progress_date' => now()->subDays(4)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 41,
+            'progress_date' => now()->subDays(4)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 38,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 3,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 39,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 7,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 40,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 41,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 4,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Industri Mikro dan Kecil
+        Progress::create([
+            'task_id' => 42,
+            'progress_date' => now()->subDays(3)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 43,
+            'progress_date' => now()->subDays(3)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 44,
+            'progress_date' => now()->subDays(3)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 42,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 4,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 44,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Pertanian Antar Sensus
+        Progress::create([
+            'task_id' => 45,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 46,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 47,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 48,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 45,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 6,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 46,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 3,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 47,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 48,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Matriks Arus Komoditas
+        Progress::create([
+            'task_id' => 49,
+            'progress_date' => now()->subDays(5)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 50,
+            'progress_date' => now()->subDays(5)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai', 
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 50,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Harga Konsumen
+        Progress::create([
+            'task_id' => 51,
+            'progress_date' => now()->subDays(4)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 52,
+            'progress_date' => now()->subDays(4)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 53,
+            'progress_date' => now()->subDays(4)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 51,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 52,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 3,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 53,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 5,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Harga Produsen
+        Progress::create([
+            'task_id' => 54,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 55,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 56,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 54,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 3,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 55,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 6,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 56,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 5,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Angkatan Kerja Nasional
+        Progress::create([
+            'task_id' =>57,
+            'progress_date' => now()->subDays(7)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 58,
+            'progress_date' => now()->subDays(7)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 57,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 58,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 4,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Sensus Ekonomi
+        Progress::create([
+            'task_id' => 59,
+            'progress_date' => now()->subDays(6)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 60,
+            'progress_date' => now()->subDays(6)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 61,
+            'progress_date' => now()->subDays(6)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 62,
+            'progress_date' => now()->subDays(6)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 63,
+            'progress_date' => now()->subDays(6)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 59,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 3,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 60,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 61,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 62,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 6,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 63,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Sosial Ekonomi Nasional
+        Progress::create([
+            'task_id' => 64,
+            'progress_date' => now()->subDays(4)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 64,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Perilaku Anti Korupsi
+        Progress::create([
+            'task_id' => 65,
+            'progress_date' => now()->subDays(3)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 66,
+            'progress_date' => now()->subDays(3)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 65,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 6,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 66,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 5,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Demografi dan Kependudukan Indonesia
+        Progress::create([
+            'task_id' => 67,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 68,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 69,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 70,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 67,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 68,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 69,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 70,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 4,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Tendensi Konsumen
+        Progress::create([
+            'task_id' => 71,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 72,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 71,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 5,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 72,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Sensus Penduduk
+        Progress::create([
+            'task_id' => 73,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 73,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
     }
 }

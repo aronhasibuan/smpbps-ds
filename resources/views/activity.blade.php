@@ -61,18 +61,11 @@
                     @foreach ($tasks as $task)
                     <tr class="border-t">
                         @php
-                            $colorMap = [
-                                'Selesai' => 'bg-blue-500',
-                                'Terlambat' => 'bg-black',
-                                'Progress Lambat' => 'bg-red-500',
-                                'Progress On Time' => 'bg-yellow-500',
-                                'Progress Cepat' => 'bg-green-500'
-                                
-                            ];
-                            $backgroundColor = $colorMap[$task->kemajuan['status']] ?? 'bg-gray-500';
+                            $color = $task->spi_data['color'];
+                            $backgroundColor = in_array($color, ['red', 'yellow', 'green', 'blue']) ? "bg-{$color}-500" : 'bg-black'; 
                         @endphp
                         <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->kemajuan['status'] }}</p>
+                            <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->spi_data['status'] }}</p>
                         </th>
                         <td class="px-4 py-3">{{ $task->user->user_full_name }}</td>
                         <td class="px-4 py-3">{{ $task->task_latest_progress }} dari {{ $task->task_volume }} {{ $activity->activity_unit }}</td>

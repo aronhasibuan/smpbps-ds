@@ -36,8 +36,8 @@
                             <select name="user_member_id[]" class="user_member_id bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 <option selected disabled>Pilih Anggota Tim</option>
                                 @foreach ($anggotatim as $user)
-                                    <option value="{{ $user->id }}">
-                                        {{ $user->user_full_name }}
+                                    <option value="{{ $user->id }}" data-lintas-tim="{{ $user->team_id != auth()->user()->team_id ? '1' : '0' }}">
+                                        {{ $user->user_full_name }}@if ($user->team_id != auth()->user()->team_id) - (Lintas Tim)@endif
                                     </option>
                                 @endforeach
                             </select>
@@ -90,6 +90,16 @@
                     <div class="flex justify-center gap-4">
                         <button id="confirmSubmit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Lanjut</button>
                         <button id="cancelSubmit" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id = "teamConfirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 justify-center items-center z-50">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md text-center">
+                    <p class="mb-4 text-gray-800 dark:text-gray-100">Terdapat penerima tugas yang berasal dari tim yang lain. Apakah Anda ingin melanjutkan?</p>
+                    <div class="flex justify-center gap-4">
+                        <button id="teamConfirmSubmit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Lanjut</button>
+                        <button id="teamCancelSubmit" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
                     </div>
                 </div>
             </div>

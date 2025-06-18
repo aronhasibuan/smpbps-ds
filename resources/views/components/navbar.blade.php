@@ -84,7 +84,10 @@
                             <x-nav-link href="/ketuatim/arsipkegiatan" :active="request()->is('arsipkegiatan')">Arsip Kegiatan</x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link href="/anggotatim/kalender" :active="request()->is('anggotatim/kalender')">Kalender</x-nav-link>
+                            <x-nav-link href="/ketuatim/kalender" :active="request()->is('kalender')">Kalender</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="/ketuatim/verifikasi" :active="request()->is('verifikasi')">Verifikasi</x-nav-link>
                         </li>              
                     @endif
 

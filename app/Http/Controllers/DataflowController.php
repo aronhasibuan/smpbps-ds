@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\Activity;
 use App\Models\Progress;
+use App\Models\Objection;
 use Illuminate\Support\Str;
 use App\Services\EVMService;
 use Illuminate\Http\Request;
@@ -47,12 +48,18 @@ class DataflowController extends Controller
     // data view ('home')
     public function home(Request $request)
     {
-        $tasksuggestionservice = new TaskSuggestionService(10);
         $user = Auth::user();
+        $today = Carbon::today()->toDateString();
+        $tasksuggestionservice = new TaskSuggestionService(10);
 
         $suggestions = $tasksuggestionservice->getTaskSuggestion($user);
-
-        return view('home', ['user' => $user, 'suggestions' => $suggestions]);
+        $todayProgress = Progress::with('task')
+            ->where('progress_date', $today)
+            ->whereHas('task', function($query) use ($user){
+                $query->where('user_member_id', $user->id);
+            })
+            ->get(); 
+        return view('home', ['user' => $user, 'suggestions' => $suggestions, 'todayProgress' => $todayProgress]);
     }
 
     // data view('tasklist')
@@ -224,11 +231,34 @@ class DataflowController extends Controller
     // data view('employeemonitoring')
     public function employeemonitoring()
     {
-        $tasksPerUser = User::where('user_role','anggotatim')->withCount(['tasks' => function ($query) {
-            $query->where('status_id', 2);
-        }])->get();
-    
-        return view('employeemonitoring', ['tasksPerUser' => $tasksPerUser]);
+        $tasks = Task::with(['user', 'status'])->get();
+
+        $groupedByUser = $tasks->groupBy(function ($task) {
+            return $task->user->user_full_name ?? 'Tidak diketahui';
+        });
+
+        $statusDescriptions = $tasks->pluck('status.status_description')->unique()->values();
+
+        $chartData = [];
+        foreach ($statusDescriptions as $desc) {
+            $chartData[$desc] = [];
+        }
+
+        foreach ($groupedByUser as $userName => $userTasks) {
+            foreach ($statusDescriptions as $desc) {
+                $count = $userTasks->filter(function ($task) use ($desc) {
+                    return $task->status->status_description === $desc;
+                })->count();
+
+                $chartData[$desc][] = $count;
+            }
+        }
+
+        return view('employeemonitoring', [
+            'userNames' => $groupedByUser->keys(),
+            'statusDescriptions' => $statusDescriptions,
+            'chartData' => $chartData,
+        ]);
     }
 
     // data view ('createtask')
@@ -257,8 +287,15 @@ class DataflowController extends Controller
     public function activity(Activity $activity)
     {
         $role = Auth::user()->user_role;
-        $tasks = Task::where('activity_id', $activity->id)->paginate(5);
         $actionUrl = Auth::user()->user_role === 'kepalabps'? '/kepalabps/monitoringkegiatan': (Auth::user()->user_role === 'ketuatim'? '/ketuatim/monitoringkegiatan': '#');
+        
+        $tasks = Task::where('activity_id', $activity->id)->paginate(5);
+
+        $EVMService = new EVMService;
+        foreach ($tasks as $task){
+            $task->spi_data = $EVMService->calculateSPI($task);
+        }
+
         return view('activity', ['tasks' => $tasks, 'actionUrl' => $actionUrl, 'activity' => $activity, 'role' => $role]);
     }
 
@@ -268,7 +305,8 @@ class DataflowController extends Controller
         $EVMService = new EVMService();
         $progress = Progress::where('task_id', $task->id)->get();
         $task->spi_data = $EVMService->calculateSPI($task);
-        return view('task', ['task' => $task, 'progresses'=>$progress]);
+        $user = Auth::user();
+        return view('task', ['task' => $task, 'progresses' => $progress, 'user' => $user]);
     }
 
     public function taskmonitoring($grouptask_slug, $slug)
@@ -283,5 +321,12 @@ class DataflowController extends Controller
     {
         $user = Auth::user();
         return view('profile', ['user' => $user]);
+    }
+
+    // data view('verification)
+    public function verification()
+    {
+        $objections = Objection::all();
+        return view('verification', ['objections' => $objections] );
     }
 }

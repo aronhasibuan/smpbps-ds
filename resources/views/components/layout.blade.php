@@ -18,11 +18,14 @@
 
         @viteReactRefresh
         @vite('resources/js/app.jsx')
+
         {{-- <style type="text/css">
             * {
                     outline: 1px solid red;
               }
         </style> --}}
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body class="h-full bg-white dark:bg-gray-900">
    

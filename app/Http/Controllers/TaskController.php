@@ -43,8 +43,10 @@ class TaskController extends Controller
                 'activity_unit' => 'required|string|max:255',
             ]);
 
+            $user_leader = User::find(Auth::id());
+            
             $activity = Activity::create([
-                'user_leader_id' => Auth::id(),
+                'user_leader_id' => $user_leader->id,
                 'activity_name' => $validatedData['activity_name'],
                 'activity_slug' => '-',
                 'activity_unit' => $validatedData['activity_unit'],
@@ -53,16 +55,18 @@ class TaskController extends Controller
             ]);
 
             $activity_name_slug = Str::slug($validatedData['activity_name']);
-            $created_at = Carbon::now()->format('d-m-Y');
-            $activity_end = Carbon::parse($validatedData['activity_end'])->format('d-m-Y');
-            $activity->activity_slug = "{$activity->id}_{$activity_name_slug}_{$created_at}_{$activity_end}";
+            $activity->activity_slug = "{$activity->id}_{$activity_name_slug}";
             $activity->save();
-
-            $user_leader_id = User::find(Auth::id());
 
             foreach ($validatedData['user_member_id'] as $index => $user_id) {
                 $member = User::find($user_id);
                 $path = null;
+
+                if ($member->team_id == $user_leader->id){
+                    $status_id = 2;
+                } else {
+                    $status_id = 3;
+                }
 
                 if ($request->hasFile('task_attachment') && isset($request->file('task_attachment')[$index])) {
                     $file = $request->file('task_attachment')[$index];
@@ -72,6 +76,7 @@ class TaskController extends Controller
                 $task = Task::create([
                     'activity_id' => $activity->id,
                     'user_member_id' => $user_id,
+                    'status_id' => $status_id,
                     'task_slug' => '-',
                     'task_description' => $validatedData['task_description'][$index],
                     'task_volume' => $validatedData['task_volume'][$index],
@@ -91,7 +96,7 @@ class TaskController extends Controller
 
                 if ($member && $member->user_whatsapp_number) {
                     $massage = "Halo {$member->user_full_name} 👋\n";
-                    $massage .= "Anda telah menerima *tugas baru* dari {$user_leader_id->user_full_name}.\n\n";
+                    $massage .= "Anda telah menerima *tugas baru* dari {$user_leader->user_full_name}.\n\n";
                     $massage .= "📌 *Nama Kegiatan*: {$validatedData['activity_name']}\n";
                     $massage .= "📝 *Deskripsi Pekerjaan*: {$validatedData['task_description'][$index]}\n";
                     $massage .= "📆 *Tenggat Waktu*: {$validatedData['activity_end']}\n";
@@ -194,7 +199,7 @@ class TaskController extends Controller
             return redirect('tasklist')->with('success', 'Tugas berhasil ditandai selesai!'); 
         } else{
             $task->save();
-            return redirect()->back()->with('updated', 'Progress Berhasil Diperbarui');
+            return redirect()->back()->with('updated', 'Progress Berhasil Diperbarui!');
         }
     }
 

@@ -12,6 +12,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\DataflowController;
+use App\Http\Controllers\ObjectionController;
 
 // GET, POST, PUT, PATCH, DELETE
 
@@ -110,6 +111,9 @@ Route::middleware(['auth'])->group(function(){
         // view calendar
         Route::get('/ketuatim/kalender', [DataflowController::class, 'calendar'])->name('calendar');
 
+        // view verification
+        Route::get('/ketuatim/verifikasi', [DataflowController::class, 'verification'])->name('verification');
+
     // anggota tim
 
         // view home
@@ -121,6 +125,7 @@ Route::middleware(['auth'])->group(function(){
         // view task
         Route::get('/anggotatim/daftartugas/{task:task_slug}', [DataflowController::class, 'task']);
         Route::post('/anggotatim/daftartugas/{task:task_slug}/{id}', [TaskController::class, 'updateprogress'])->name('updateprogress');
+        Route::post('{user:user_role}/daftartugas/{task:task_slug}/keberatan/{id}', [ObjectionController::class, 'create'])->name('createobjection');
         
         // view taskarchive
         Route::get('/anggotatim/arsiptugas', [DataflowController::class, 'taskarchive'])->name('taskarchive');

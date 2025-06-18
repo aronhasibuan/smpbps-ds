@@ -33,63 +33,25 @@
                             </li>
                         @endforeach
                     </ul>
-                    <!-- Capacity Progress Bar -->
-                    {{-- <div class="mt-4">
-                        <div class="flex justify-between text-sm text-gray-600 mb-1">
-                            <span>Kapasitas Terpakai</span>
-                            <span>{{ $suggestions['capacity_status']['today']['remaining'] }} tersisa</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div class="bg-blue-600 h-2.5 rounded-full" 
-                                style="width: {{ $suggestions['capacity_status']['today']['used'] * 10 }}%"></div>
-                        </div>
-                    </div> --}}
                 @endif
             </div>
         </div>
 
-        <!-- Tomorrow's Tasks -->
-        {{-- <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="bg-gray-700 px-4 py-3 flex justify-between items-center">
-                <h3 class="text-lg font-semibold text-white">
-                    Besok (Kapasitas: {{ $suggestions['capacity_status']['tomorrow']['used'] }}/10)
-                </h3>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $suggestions['capacity_status']['tomorrow']['status'] == 'FULL' ? 'bg-red-500' : 'bg-green-500' }}">
-                    {{ $suggestions['capacity_status']['tomorrow']['status'] }}
-                </span>
-            </div>
-            <div class="p-4">
-                @if($suggestions['tomorrow']->isEmpty())
-                    <p class="text-gray-500 italic">Tidak ada tugas untuk besok.</p>
-                @else
-                    <ul class="space-y-2">
-                        @foreach($suggestions['tomorrow'] as $task)
-                            <li class="flex justify-between items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50">
-                                <div>
-                                    <p class="font-medium text-gray-800">{{ $task->task_description }}</p>
-                                    <p class="text-xs text-gray-500 mt-1">
-                                        Deadline: {{ $task->activity->activity_end->format('d M Y') }}
-                                    </p>
-                                </div>
-                                <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">
-                                    Sisa: {{ $task->task_volume - $task->task_latest_progress }}
-                                </span>
-                            </li>
-                        @endforeach
-                    </ul>
-                    <!-- Capacity Progress Bar -->
-                    <div class="mt-4">
-                        <div class="flex justify-between text-sm text-gray-600 mb-1">
-                            <span>Kapasitas Terpakai</span>
-                            <span>{{ $suggestions['capacity_status']['tomorrow']['remaining'] }} tersisa</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div class="bg-gray-600 h-2.5 rounded-full" 
-                                style="width: {{ $suggestions['capacity_status']['tomorrow']['used'] * 10 }}%"></div>
-                        </div>
-                    </div>
-                @endif
-            </div>
-        </div> --}}
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Daftar Tugas Yang Diselesaikan Hari Ini:</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+            @forelse($todayProgress as $progress)
+                <div class="bg-white shadow rounded-lg p-4 border">
+                    <h3 class="font-semibold text-lg mb-2">{{ $progress->task->activity->activity_name ?? '-' }}</h3>
+                    <p class="text-gray-600 mb-1">Tanggal: {{ $progress->progress_date }}</p>
+                    <p class="text-gray-600 mb-1">Progress: {{ $progress->progress_amount }}</p>
+                </div>
+            @empty
+                <div class="col-span-3 text-center text-gray-500">
+                    Tidak ada progress hari ini.
+                </div>
+            @endforelse
+        </div>
+
     </div>
 </x-layout>

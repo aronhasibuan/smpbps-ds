@@ -15,27 +15,27 @@ class StatusSeeder extends Seeder
     {
         #1
         Status::create([
-            'status_description' => 'Task tidak aktif'
+            'status_description' => 'Tugas Tidak Aktif'
         ]);
 
         #2
         Status::create([
-            'status_description' => 'Task aktif'
+            'status_description' => 'Tugas Aktif'
         ]);
         
         #3
         Status::create([
-            'status_description' => 'Task belum dimulai, menunggu verifikasi dari ketua tim lain'
+            'status_description' => 'Tugas Belum Dimulai, Menunggu Persetujuan Dari Ketua Tim Lain'
         ]);
         
         #4
         Status::create([
-            'status_description' => 'Task menunggu verifikasi dari ketua tim bahwa task sudah selesai'
+            'status_description' => 'Tugas Menunggu Persetujuan Dari Ketua Tim Bahwa Tugas Sudah Selesai'
         ]);
 
         #5
         Status::create([
-            'status_description' => 'Task dalam masa sanggah, menunggu persetujuan dari ketua tim'
+            'status_description' => 'Tugas Dalam Masa Sanggah, Menunggu Persetujuan Dari Ketua Tim'
         ]);
     }
 }

@@ -15,7 +15,7 @@ class Task extends Model{
     
     protected $fillable = ['activity_id', 'user_member_id', 'status_id','task_slug', 'task_description', 'task_volume', 'task_latest_progress', 'task_attachment'];
 
-    protected $with = ['activity', 'user', 'progress', 'status'];
+    protected $with = ['activity', 'user', 'progress', 'status', 'objection'];
 
     public function activity(): BelongsTo{
         return $this->belongsTo(Activity::class, 'activity_id');
@@ -31,6 +31,10 @@ class Task extends Model{
 
     public function progress(): HasMany{
         return $this->hasMany(Progress::class, 'task_id');
+    }
+
+    public function objection(): HasMany{
+        return $this->hasMany(Objection::class, 'task_id');
     }
 
     // FUNGSI UNTUK SEARCH

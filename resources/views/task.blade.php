@@ -22,7 +22,8 @@
                             $backgroundColor = in_array($color, ['red', 'yellow', 'green', 'blue']) ? "bg-{$color}-500" : 'bg-black';
                         @endphp
                         <div class="py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->spi_data['status'] }}</p>
+                            <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->spi_data['status'] }}
+                            </p>
                         </div>
                     </div>
 
@@ -101,7 +102,7 @@
                             <label for="progress_amount">Jumlah Progress Terbaru <span class="text-red-500">*</span></label>
                             <input type="number" id="progress_amount" name="progress_amount" min="{{ $task->task_latest_progress + 1}}" value="{{ $task->task_latest_progress + 1 }}" max="{{ $task->task_volume }}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full">
 
-                            <label for="progress_notes" class="mt-4 block">Catatan/Kendala Perkerjaan <span class="text-red-500">*</span></label>
+                            <label for="progress_notes" class="mt-4 block">Catatan/Kendala Pekerjaan <span class="text-red-500">*</span></label>
                             <input type="text" id="progress_notes" name="progress_notes" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full" autocomplete="off">
                                                         
                             <label class="inline-flex items-center cursor-pointer mt-4">
@@ -123,6 +124,33 @@
                         </form>
                     </div>
                 </div>
+
+                <div class="flex justify-center gap-4 mt-5">
+                    <button type="submit" id="openObjection" class="bg-red-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
+                        Ajukan Keberatan
+                    </button>
+                </div>
+
+                <div id="objectionModal" class="fixed inset-0 items-center justify-center bg-opacity-50 hidden">
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl border">
+                        <h2 class="text-lg font-semibold mb-4 text-black dark:text-white">Ajukan Keberatan</h2>
+                        <form action="{{ route('createobjection', [$user->user_role, $task->task_slug, $task->id]) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                            <label for="task_progress">Jumlah Progress yang Ditugaskan </label>
+                            <input type="number" id="task_progress" name="taks_progress" value="{{ $task->task_latest_progress}}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full" readonly>
+
+                            <label for="objection_reason" class="mt-4 block">Alasan Keberatan<span class="text-red-500">*</span></label>
+                            <textarea type="text" id="objection_reason" name="objection reason" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full" autocomplete="off" cols="30" rows="10"></textarea>
+
+                            <div class="flex justify-end mt-4">
+                                <button id="closeObjection" type="button" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition">Batal</button>
+                                <button id="submitObjection" class="bg-blue-600 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-700 transition">Kirim</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
             @endif
         
             @if (Auth::check() && Auth::user()->user_role == 'ketuatim' && $task->task_active_status)
@@ -248,6 +276,19 @@
                             }
                         });
                     });
+                </script>
+                <script>
+                    const objectionModal = document.getElementById('objectionModal');
+                    const openObjection = document.getElementById('openObjection');
+                    const closeObjection = document.getElementById('closeObjection');
+                    openObjection.addEventListener('click', function(){
+                        objectionModal.classList.remove('hidden');
+                        objectionModal.classList.add('flex');
+                    });
+                    closeObjection.addEventListener('click', function(){
+                        objectionModal.classList.remove('flex');
+                        objectionModal.classList.add('hidden');
+                    })
                 </script>
             @endif
 
