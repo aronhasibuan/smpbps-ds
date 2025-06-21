@@ -62,7 +62,7 @@ class TaskSuggestionService
         $startDate = Carbon::parse($task->activity->activity_start);
         $endDate = Carbon::parse($task->activity->activity_end);
 
-        $totalDuration = $startDate->diffInDays($endDate);
+        $totalDuration = $startDate->diffInDays($endDate) + 1;
 
         $plannedProgress = 1 / $totalDuration;
 

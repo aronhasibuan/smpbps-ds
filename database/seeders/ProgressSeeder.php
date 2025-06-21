@@ -412,7 +412,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 22,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 7,
             'progress_notes' => 'Pengerjaan Berlangsung',
             'progress_documentation' => null,
@@ -420,7 +420,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 23,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 5,
             'progress_notes' => 'Pengerjaan Berlangsung',
             'progress_documentation' => null,
@@ -428,7 +428,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 24,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 4,
             'progress_notes' => 'Pengerjaan Berlangsung',
             'progress_documentation' => null,
@@ -436,7 +436,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 25,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan Berlangsung',
             'progress_documentation' => null,
@@ -444,7 +444,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 26,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan Berlangsung',
             'progress_documentation' => null,
@@ -493,7 +493,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 27,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 10,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -501,7 +501,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 28,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -509,7 +509,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 29,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 10,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -517,7 +517,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 30,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -525,7 +525,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 31,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 4,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -558,7 +558,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 32,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 9,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -566,7 +566,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 33,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -599,7 +599,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 35,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 6,
             'progress_notes' => 'Pengerjaan berlangsung', 
             'progress_documentation' => null,
@@ -607,7 +607,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 36,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',  
             'progress_documentation' => null,
@@ -615,7 +615,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 37,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',  
             'progress_documentation' => null,
@@ -656,7 +656,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 38,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -664,7 +664,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 39,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 7,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -672,7 +672,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 40,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -680,7 +680,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 41,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 4,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -713,7 +713,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 42,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 4,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -721,7 +721,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 44,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -762,7 +762,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 45,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 6,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -770,7 +770,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 46,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -778,7 +778,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 47,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -786,7 +786,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 48,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -811,7 +811,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 50,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -844,7 +844,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 51,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -852,7 +852,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 52,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -860,7 +860,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 53,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 5,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -869,7 +869,7 @@ class ProgressSeeder extends Seeder
         // Survei Harga Produsen
         Progress::create([
             'task_id' => 54,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
@@ -877,7 +877,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 55,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
@@ -885,7 +885,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 56,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
@@ -893,7 +893,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 54,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -901,7 +901,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 55,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 6,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -909,7 +909,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 56,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 5,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -934,7 +934,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 57,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -942,7 +942,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 58,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 4,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -991,7 +991,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 59,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -999,7 +999,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 60,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1007,7 +1007,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 61,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1015,7 +1015,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 62,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 6,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1023,7 +1023,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 63,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1040,7 +1040,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 64,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1065,7 +1065,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 65,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 6,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1073,7 +1073,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 66,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 5,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1114,7 +1114,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 67,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1122,7 +1122,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 68,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1130,7 +1130,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 69,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1138,7 +1138,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 70,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 4,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1163,7 +1163,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 71,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 5,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1171,7 +1171,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 72,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
@@ -1180,7 +1180,7 @@ class ProgressSeeder extends Seeder
         // Sensus Penduduk
         Progress::create([
             'task_id' => 73,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
@@ -1188,7 +1188,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 73,
-            'progress_date' => now()->format('Y-m-d'),
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,

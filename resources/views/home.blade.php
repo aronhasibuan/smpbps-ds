@@ -8,7 +8,7 @@
         <div class="border p-8 rounded-lg flex flex-col items-center flex-1 bg-white shadow">
             <div class="flex items-center justify-between w-full">
                 <img src="{{ asset('img/alarm-clock-plus.svg') }}" alt="Tugas Diterima" class="w-12 h-12">
-                <span class="text-4xl font-bold text-blue-600">12</span>
+                <span class="text-4xl font-bold text-blue-600">{{ $taskStats['running'] }}</span>
             </div>
             <p class="mt-6 text-center text-gray-700 text-lg font-semibold">Tugas Diterima</p>
         </div>
@@ -16,7 +16,7 @@
         <div class="border p-8 rounded-lg flex flex-col items-center flex-1 bg-white shadow">
             <div class="flex items-center justify-between w-full">
                 <img src="{{ asset('img/alarm-clock.svg') }}" alt="Tugas Berlangsung" class="w-12 h-12">
-                <span class="text-4xl font-bold text-yellow-500">8</span>
+                <span class="text-4xl font-bold text-yellow-500">{{ $taskStats['ontime'] }}</span>
             </div>
             <p class="mt-6 text-center text-gray-700 text-lg font-semibold">Tugas Berlangsung</p>
         </div>
@@ -24,7 +24,7 @@
         <div class="border p-8 rounded-lg flex flex-col items-center flex-1 bg-white shadow">
             <div class="flex items-center justify-between w-full">
                 <img src="{{ asset('img/alarm-clock-minus.svg') }}" alt="Tugas Terlambat" class="w-12 h-12">
-                <span class="text-4xl font-bold text-red-500">3</span>
+                <span class="text-4xl font-bold text-red-500">{{ $taskStats['late'] }}</span>
             </div>
             <p class="mt-6 text-center text-gray-700 text-lg font-semibold">Tugas Terlambat</p>
         </div>
@@ -32,7 +32,7 @@
         <div class="border p-8 rounded-lg flex flex-col items-center flex-1 bg-white shadow">
             <div class="flex items-center justify-between w-full">
                 <img src="{{ asset('img/alarm-clock-check.svg') }}" alt="Tugas Selesai" class="w-12 h-12">
-                <span class="text-4xl font-bold text-green-500">20</span>
+                <span class="text-4xl font-bold text-green-500">{{ $taskStats['completed'] }}</span>
             </div>
             <p class="mt-6 text-center text-gray-700 text-lg font-semibold">Tugas Selesai</p>
         </div>
@@ -52,9 +52,9 @@
                 @else
                     <ul class="space-y-2">
                         @foreach($suggestions as $task)
-                            <li class="flex justify-between items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50">
+                            <a href="#" class="flex justify-between items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50">
                                 <p class="font-medium text-gray-800">{{ $task->activity->activity_name }} - {{ $task->volumesuggestion }} {{ $task->activity->activity_unit }}</p>
-                            </li>
+                            </a>
                         @endforeach
                     </ul>
                 @endif

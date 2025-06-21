@@ -277,7 +277,7 @@ class ActivitySeeder extends Seeder
             'activity_slug' => '24-survei-ubinan',
             'activity_unit' => 'Petak Lahan',
             'activity_start' => now()->subDays(5)->format('Y-m-d'),
-            'activity_end' => now()->format('Y-m-d'),
+            'activity_end' => now()->subDays(1)->format('Y-m-d'),
             'activity_active_status' => 1,
         ]);
 
@@ -321,7 +321,7 @@ class ActivitySeeder extends Seeder
             'activity_slug' => '28-survei-pertanian-antar-sensus',
             'activity_unit' => 'Responden',
             'activity_start' => now()->subDays(1)->format('Y-m-d'),
-            'activity_end' => now()->format('Y-m-d'),
+            'activity_end' => now()->subDays(1)->format('Y-m-d'),
             'activity_active_status' => 1,
         ]);
 
@@ -354,7 +354,7 @@ class ActivitySeeder extends Seeder
             'activity_name' => 'Survei Harga Produsen',
             'activity_slug' => '31-survei-harga-produsen',
             'activity_unit' => 'Dokumen',
-            'activity_start' => now()->format('Y-m-d'),
+            'activity_start' => now()->subDays(1)->format('Y-m-d'),
             'activity_end' => now()->addDays(4)->format('Y-m-d'),
             'activity_active_status' => 1,
         ]);
@@ -367,7 +367,7 @@ class ActivitySeeder extends Seeder
             'activity_slug' => '32-survei-angkatan-kerja-nasional',
             'activity_unit' => 'Blok Sensus',
             'activity_start' => now()->subDays(7)->format('Y-m-d'),
-            'activity_end' => now()->format('Y-m-d'),
+            'activity_end' => now()->subDays(1)->format('Y-m-d'),
             'activity_active_status' => 1,
         ]);
 
@@ -432,7 +432,7 @@ class ActivitySeeder extends Seeder
             'activity_name' => 'Sensus Penduduk',
             'activity_slug' => '38-sensus-penduduk',
             'activity_unit' => 'Rumah Tangga', 
-            'activity_start' => now()->format('Y-m-d'),
+            'activity_start' => now()->subDays(1)->format('Y-m-d'),
             'activity_end' => now()->addDays(6)->format('Y-m-d'),
             'activity_active_status' => 1,
         ]);

@@ -58,8 +58,26 @@ class DataflowController extends Controller
             ->whereHas('task', function($query) use ($user){
                 $query->where('user_member_id', $user->id);
             })
-            ->get(); 
-        return view('home', ['user' => $user, 'suggestions' => $suggestions, 'todayProgress' => $todayProgress]);
+            ->get();
+            
+        $runningtask = Task::where('status_id', 2)->where('user_member_id', $user->id)->count();
+        $latetasks = Task::where('status_id', 2)
+            ->where('user_member_id', $user->id)
+            ->whereHas('activity', function($query) use ($today) {
+                $query->where('activity_end', '<', $today);
+            })
+            ->count();
+        $ontimetask = $runningtask - $latetasks;
+        $completedtask = Task::where('status_id', 1)->where('user_member_id', $user->id)->count(); 
+
+        $taskStats = [
+            'running'   => $runningtask,
+            'late'      => $latetasks,
+            'ontime'    => $ontimetask,
+            'completed' => $completedtask,
+        ];
+        
+        return view('home', ['user' => $user, 'suggestions' => $suggestions, 'todayProgress' => $todayProgress, 'taskStats' => $taskStats]);
     }
 
     // data view('tasklist')
