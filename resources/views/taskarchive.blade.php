@@ -21,6 +21,19 @@
                         </div>
                     </form>
                 </div>
+
+                <form method="GET" class="mb-4">
+                    <label for="month_year" class="mr-2">Filter Bulan-Tahun:</label>
+                    <select name="month_year" id="month_year" onchange="this.form.submit()" class="border rounded px-2 py-1">
+                        <option value="">Semua</option>
+                        @foreach($activityDates as $date)
+                            <option value="{{ $date }}" {{ request('month_year') == $date ? 'selected' : '' }}>
+                                {{ \Carbon\Carbon::createFromFormat('Y-m', $date)->translatedFormat('F Y') }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
+                
             </div>
         </div>
         {{-- tabel daftar tugas selesai --}}
@@ -31,8 +44,8 @@
                         <th scope="col" class="px-4 py-3">Nama Kegiatan</th>
                         <th scope="col" class="px-4 py-3">Volume/Satuan</th>
                         <th scope="col" class="px-4 py-3">Tenggat</th>
-                        <th scope="col" class="px-4 py-3">Tanggal Selesai</th>
-                        <th scope="col" class="px-4 py-3">Lihat Nilai</th>
+                        <th scope="col" class="px-4 py-3">Selesai</th>
+                        <th scope="col" class="px-4 py-3">Nilai</th>
                         <th scope="col" class="px-4 py-3">Aksi</th>
                     </tr>
                 </thead>

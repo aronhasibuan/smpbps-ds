@@ -42,7 +42,7 @@ Route::middleware(['auth'])->group(function(){
         })->where('filename', '.*');
 
         // view profile
-        Route::get('/profile', [DataflowController::class, 'profile'])->name('profile');
+        Route::get('{user:user_role}/profil', [DataflowController::class, 'profile'])->name('profile');
         Route::put('/profile/updatepassword/{user}', [UserController::class, 'updatepassword'])->name('updatepassword');
 
         // Calendar
@@ -125,8 +125,8 @@ Route::middleware(['auth'])->group(function(){
         
         // view activity
         Route::get('/ketuatim/monitoringkegiatan/{activity:activity_slug}', [DataflowController::class, 'activity'])->name('activity');
-        Route::post('/ketuatim/monitoringkegiatan/{kegiatan:slug}/{id}', [TaskController::class, 'markkegiatanasdone'])->name('markkegiatanasdone');
-        Route::put('/ketuatim/monitoringkegiatan/{kegiatan}', [ActivityController::class, 'update'])->name('updatekegiatan');
+        Route::post('/ketuatim/monitoringkegiatan/{activity:activity_slug}/{id}', [TaskController::class, 'markkegiatanasdone'])->name('markkegiatanasdone');
+        Route::put('/ketuatim/monitoringkegiatan/{activity}', [ActivityController::class, 'update'])->name('updatekegiatan');
 
         // view task
         Route::get('/ketuatim/monitoringkegiatan/{activity_slug}/{slug}', [DataflowController::class, 'taskmonitoring'])->name('taskmonitoring_ketuatim');

@@ -490,8 +490,8 @@ class TaskSeeder extends Seeder
             'status_id' => 2,
             'task_slug' => '38_anggotaproduksi1',
             'task_description' => 'Pencacahan',
-            'task_volume' => 9,
-            'task_latest_progress' => 3,
+            'task_volume' => 10,
+            'task_latest_progress' => 5,
             'task_attachment' => null, 
         ]);
 
@@ -576,8 +576,8 @@ class TaskSeeder extends Seeder
             'status_id' => 2,
             'task_slug' => '45_anggotaproduksi1',
             'task_description' => 'Pencacahan',
-            'task_volume' => 9,
-            'task_latest_progress' => 6,
+            'task_volume' => 7,
+            'task_latest_progress' => 5,
             'task_attachment' => null,
         ]);
 
@@ -924,6 +924,55 @@ class TaskSeeder extends Seeder
             'task_description' => 'Pencacahan',
             'task_volume' => 3,
             'task_latest_progress' => 2,
+            'task_attachment' => null,
+        ]);
+
+
+        // Survei Hortikultura dan Indikator Pertanian
+        Task::create([
+            'activity_id' => 39,
+            'user_member_id' => 9,
+            'status_id' => 2,
+            'task_slug' => '74_anggotaproduksi1',
+            'task_description' => 'Pencacahan',
+            'task_volume' => 10,
+            'task_latest_progress' => 2,
+            'task_attachment' => null,
+        ]);
+
+        // Survei Pertanian Tanaman Pangan/Ubinan
+        Task::create([
+            'activity_id' => 40,
+            'user_member_id' => 9,
+            'status_id' => 2,
+            'task_slug' => '75_anggotaproduksi1',
+            'task_description' => 'Pencacahan',
+            'task_volume' => 10,
+            'task_latest_progress' => 6,
+            'task_attachment' => null,
+        ]);
+
+        // Survei Perusahaan Perkebunan
+        Task::create([
+            'activity_id' => 41,
+            'user_member_id' => 9,
+            'status_id' => 2,
+            'task_slug' => '76_anggotaproduksi1',
+            'task_description' => 'Pencacahan',
+            'task_volume' => 7,
+            'task_latest_progress' => 5,
+            'task_attachment' => null,
+        ]);
+
+        // Survei Perusahaan Kehutanan
+        Task::create([
+            'activity_id' => 42,
+            'user_member_id' => 9,
+            'status_id' => 2,
+            'task_slug' => '77_anggotaproduksi1',
+            'task_description' => 'Pencacahan',
+            'task_volume' => 7,
+            'task_latest_progress' => 0,
             'task_attachment' => null,
         ]);
     }

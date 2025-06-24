@@ -299,7 +299,7 @@ class ActivitySeeder extends Seeder
             'activity_slug' => '26-survei-konversi-gabah-beras',
             'activity_unit' => 'Penggilingan Padi',
             'activity_start' => now()->subDays(4)->format('Y-m-d'),
-            'activity_end' => now()->addDays(6)->format('Y-m-d'),
+            'activity_end' => now()->addDays(5)->format('Y-m-d'),
             'activity_active_status' => 1,
         ]);
 
@@ -321,7 +321,7 @@ class ActivitySeeder extends Seeder
             'activity_slug' => '28-survei-pertanian-antar-sensus',
             'activity_unit' => 'Responden',
             'activity_start' => now()->subDays(1)->format('Y-m-d'),
-            'activity_end' => now()->subDays(1)->format('Y-m-d'),
+            'activity_end' => now()->subDays(5)->format('Y-m-d'),
             'activity_active_status' => 1,
         ]);
 
@@ -437,5 +437,49 @@ class ActivitySeeder extends Seeder
             'activity_active_status' => 1,
         ]);
         
+        // Seeder Tambahan Produksi
+        #39
+        Activity::create([
+            'user_leader_id' => 2,
+            'activity_name' => 'Survei Hortikultura dan Indikator Pertanian',
+            'activity_slug' => '39-survei-hortikultura-dan-indikator-pertanian',
+            'activity_unit' => 'Rumah Tangga Usaha Pertanian',
+            'activity_start' => now()->subDays(2)->format('Y-m-d'),
+            'activity_end' => now()->addDays(7)->format('Y-m-d'),
+            'activity_active_status' => 1,
+        ]);
+
+        #40
+        Activity::create([
+            'user_leader_id' => 2,
+            'activity_name' => 'Survei Pertanian Tanaman Pangan/Ubinan',
+            'activity_slug' => '40-survei-pertanian-tanaman-pangan-ubinan',
+            'activity_unit' => 'Segmen',
+            'activity_start' => now()->subDays(2)->format('Y-m-d'),
+            'activity_end' => now()->addDays(7)->format('Y-m-d'),
+            'activity_active_status' => 1,
+        ]);
+
+        #41
+        Activity::create([
+            'user_leader_id' => 2,
+            'activity_name' => 'Survei Perusahaan Perkebunan',
+            'activity_slug' => '41-survei-perusahaan-perkebunan',
+            'activity_unit' => 'Perusahaan Perkebunan',
+            'activity_start' => now()->subDays(3)->format('Y-m-d'),
+            'activity_end' => now()->addDays(3)->format('Y-m-d'),
+            'activity_active_status' => 1,
+        ]);
+
+        #42
+        Activity::create([
+            'user_leader_id' => 2,
+            'activity_name' => 'Survei Perusahaan Kehutanan',
+            'activity_slug' => '42-survei-perusahaan-kehutanan',
+            'activity_unit' => 'Perusahaan Kehutanan',
+            'activity_start' => now()->format('Y-m-d'),
+            'activity_end' => now()->addDays(6)->format('Y-m-d'),
+            'activity_active_status' => 0,
+        ]);
     }
 }

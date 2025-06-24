@@ -656,12 +656,20 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 38,
-            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_date' => now()->subDays(3)->format('Y-m-d'),
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
         ]);
 
+        Progress::create([
+            'task_id' => 38,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 5,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+        
         Progress::create([
             'task_id' => 39,
             'progress_date' => now()->subDays(1)->format('Y-m-d'),
@@ -763,8 +771,16 @@ class ProgressSeeder extends Seeder
         Progress::create([
             'task_id' => 45,
             'progress_date' => now()->subDays(1)->format('Y-m-d'),
-            'progress_amount' => 6,
+            'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 45,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 5,
+            'progress_notes' => 'Responden sulit untuk ditemui',
             'progress_documentation' => null,
         ]);
 
@@ -1191,6 +1207,90 @@ class ProgressSeeder extends Seeder
             'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Hortikultura dan Indikator Pertanian
+        Progress::create([
+            'task_id' => 74,
+            'progress_date' => now()->subDays(2)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 74,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 74,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Pertanian Tanaman Pangan/Ubinan
+        Progress::create([
+            'task_id' => 75,
+            'progress_date' => now()->subDays(2)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 75,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 75,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 6,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Perusahaan Perkebunan
+        Progress::create([
+            'task_id' => 76,
+            'progress_date' => now()->subDays(3)->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 76,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 2,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 76,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 5,
+            'progress_notes' => 'Pengerjaan berlangsung',
+            'progress_documentation' => null,
+        ]);
+
+        // Survei Perusahaan Kehutanan
+        Progress::create([
+            'task_id' => 77,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
         ]);
     }

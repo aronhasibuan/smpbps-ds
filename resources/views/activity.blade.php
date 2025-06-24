@@ -98,7 +98,7 @@
         </div>
 
         {{-- button - tandai kegiatan selesai --}}
-        @if ( $activity->activity_active_status)    
+        @if ( $activity->total_progress == 100)    
             <div class="flex justify-center gap-4 mt-20">
                 <button type="button" onclick="openModal()" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
                 Tandai Kegiatan Selesai
@@ -114,7 +114,7 @@
                     <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 dark:text-black px-4 py-2 rounded hover:bg-gray-400 transition duration-200">
                         Batal
                     </button>
-                    <form action="{{ route('markkegiatanasdone', ['kegiatan' => $activity->activity_slug, 'id' => $activity->id]) }}" method="POST">
+                    <form action="{{ route('markkegiatanasdone', ['activity' => $activity->activity_slug, 'id' => $activity->id]) }}" method="POST">
                         @csrf
                         @method('POST')
                         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200">

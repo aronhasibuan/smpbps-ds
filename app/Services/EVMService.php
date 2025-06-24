@@ -12,7 +12,7 @@ class EVMService
         $ev = $task->task_latest_progress; 
         $pv = $this->calculatePlannedValue($task);
         
-        $spi = ($pv != 0) ? floor(($ev / $pv) * 10) / 10 : 0;
+        $spi = ($pv != 0) ? ($ev / $pv) : 0;
 
         if($ev == $task->task_volume) {
             return [
@@ -27,7 +27,7 @@ class EVMService
             return [
                 'spi' => $spi,
                 'ev' => $ev,
-                'pv' => $pv,
+                'pv' => $task->task_volume,
                 'status' => 'Terlambat',
                 'color' => 'black'
             ];
@@ -63,7 +63,11 @@ class EVMService
     {
         $startDate = Carbon::parse($task->activity->activity_start);
         $endDate = Carbon::parse($task->activity->activity_end);
-        $today = Carbon::now();
+        $today = Carbon::today();
+
+        if ($endDate->lessThan($startDate)) {
+            return 0;
+        }
 
         if ($today->lessThan($startDate)) {
             return 0; 
@@ -73,12 +77,12 @@ class EVMService
             return $task->task_volume; 
         }
 
-        $totalDuration = $endDate->diffInDays($startDate);
-        $elapsedDays = $today->diffInDays($startDate);
+        $totalDuration = $startDate->diffInDays($endDate) + 1;
+        $elapsedDays = $startDate->diffInDays($today) + 1;
 
-        $plannedProgress = $elapsedDays / $totalDuration;
+        $plannedProgress = abs($elapsedDays / $totalDuration);
 
-        return $plannedProgress * $task->task_volume;
+        return ceil($plannedProgress * $task->task_volume);
     }
 
 }

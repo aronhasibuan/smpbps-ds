@@ -51,15 +51,24 @@ class DataflowController extends Controller
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
         $tasksuggestionservice = new TaskSuggestionService(10);
+        $EVMService = new EVMService();
 
         $suggestions = $tasksuggestionservice->getTaskSuggestion($user);
         $todayProgress = Progress::with('task')
             ->where('progress_date', $today)
+            ->where('progress_amount', '!=', 0)
             ->whereHas('task', function($query) use ($user){
                 $query->where('user_member_id', $user->id);
             })
             ->get();
-            
+        
+        $tasks = Task::with('activity')->where('status_id', 2)->where('user_member_id', $user->id)->get();   
+        foreach($tasks as $task){
+            $task->spi_data = $EVMService->calculateSPI($task);
+        }
+        $groupedTasks = $tasks->groupBy(fn($task) => $task->spi_data['status'] ?? 'Unknown');
+        $pieData = $groupedTasks->map->count();
+
         $runningtask = Task::where('status_id', 2)->where('user_member_id', $user->id)->count();
         $latetasks = Task::where('status_id', 2)
             ->where('user_member_id', $user->id)
@@ -76,8 +85,15 @@ class DataflowController extends Controller
             'ontime'    => $ontimetask,
             'completed' => $completedtask,
         ];
+
+        $newtasks = Task::with('activity')
+            ->whereHas('activity', function($query) use ($today) {
+                $query->whereDate('activity_start', $today);
+            })
+            ->where('user_member_id', $user->id)
+            ->get();
         
-        return view('home', ['user' => $user, 'suggestions' => $suggestions, 'todayProgress' => $todayProgress, 'taskStats' => $taskStats]);
+        return view('home', ['user' => $user, 'suggestions' => $suggestions, 'todayProgress' => $todayProgress, 'taskStats' => $taskStats, 'pieData' => $pieData, 'newtasks' => $newtasks]);
     }
 
     // data view('tasklist')
@@ -116,8 +132,19 @@ class DataflowController extends Controller
         }
 
         if ($sort == 'priority') {
-            $tasks = $tasks->sortBy(function($task) {
-                return $task->spi_data['spi'];
+            $statusOrder = [
+                'Terlambat'        => 1,
+                'Progress Lambat'  => 2,
+                'Progress On Time' => 3,
+                'Progress Cepat'   => 4,
+            ];
+            $tasks = $tasks->sort(function($a, $b) use ($statusOrder) {
+                $statusA = $statusOrder[$a->spi_data['status']] ?? 99;
+                $statusB = $statusOrder[$b->spi_data['status']] ?? 99;
+            if ($statusA !== $statusB) {
+                return $statusA <=> $statusB;
+            }
+            return $a->spi_data['spi'] <=> $b->spi_data['spi'];
             })->values();
         } elseif ($sort == 'tenggat') {
             $tasks = $tasks->sortBy(function($task) {
@@ -148,22 +175,48 @@ class DataflowController extends Controller
     {
         $search = $request->input('search');
         $user = Auth::user();
-        $tasks = Task::where('user_member_id', $user->id)->where('status_id', 1);
+
+        $activityDates = Task::where('user_member_id', $user->id)
+            ->where('status_id', 1)
+            ->with('activity')
+            ->get()
+            ->pluck('activity.activity_start')
+            ->filter()
+            ->map(function($date) {
+                return \Carbon\Carbon::parse($date)->format('Y-m');
+            })
+            ->unique()
+            ->sort()
+            ->values();
+
+        $tasks = Task::where('user_member_id', $user->id)
+            ->where('status_id', 1)
+            ->with('activity');
+
+        $monthYear = $request->get('month_year');
+        if ($monthYear) {
+            $tasks->whereHas('activity', function($query) use ($monthYear) {
+                $query->whereRaw("DATE_FORMAT(activity_start, '%Y-%m') = ?", [$monthYear]);
+            });
+        }
 
         if ($search) {
             $tasks->where(function ($query) use ($search) {
                 $query->where('task_description', 'like', '%' . $search . '%')
-                ->orWhereHas('activity', function ($query) use ($search) {
-                    $query->where('activity_name', 'like', '%' . $search . '%')
-                    ->orWhere('activity_unit', 'like', '%' . $search . '%');
-                });
+                    ->orWhereHas('activity', function ($query) use ($search) {
+                        $query->where('activity_name', 'like', '%' . $search . '%')
+                            ->orWhere('activity_unit', 'like', '%' . $search . '%');
+                    });
             });
         }
 
         $perPage = $request->get('perPage', 5);
         $tasks = $tasks->paginate($perPage)->withQueryString();
 
-        return view('taskarchive', ['tasks' => $tasks]);
+        return view('taskarchive', [
+            'tasks' => $tasks,
+            'activityDates' => $activityDates,
+        ]);
     }
 
     // data view ('evaluation')
@@ -329,13 +382,15 @@ class DataflowController extends Controller
 
     public function taskmonitoring($grouptask_slug, $slug)
     {
+        $EVMService = new EVMService();
         $task = Task::where('task_slug', $slug)->firstOrFail();
         $progress = Progress::where('task_id', $task->id)->get();
+        $task->spi_data = $EVMService->calculateSPI($task);
         return view('task', ['task' => $task, 'progresses'=>$progress]);
     }
 
     // data view('profile')
-    public function profile()
+    public function profile($user_role)
     {
         $user = Auth::user();
         return view('profile', ['user' => $user]);

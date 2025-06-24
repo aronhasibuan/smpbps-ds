@@ -1,9 +1,9 @@
 <x-layout>
     <div>
-        <h2 class="mb-5 text-lg lg:text-xl">{{ $user->user_nickname }}</h2>    
+        <h2 class="mb-5 text-base lg:text-lg font-semibold">{{ $user->user_nickname }}</h2>    
          
         {{-- Konten --}}
-        <div class="w-full p-4">
+        <div class="w-full">
             {{-- Tab General --}}
             <div id="generalTab">
                 <div class="border rounded-lg p-4 bg-gray-50">
@@ -30,7 +30,7 @@
             </div>
 
             {{-- Tab Password --}}
-            <div id="passwordTab">
+            <div id="passwordTab" class="mt-5">
                 <div class="border rounded-lg p-4 bg-gray-50">
                     <p class="text-base lg:text-lg">Kata Sandi</p>
                     <p class="text-sm text-gray-500">Anda dapat mengubah kata sandi anda di sini.</p>
@@ -85,10 +85,10 @@
                             </div>
                         </div>
                         <div class="border bg-white p-4 rounded-b-lg h-auto flex flex-col lg:flex-row items-center justify-end gap-2">
-                            <button id="resetpasswordButton" type="button" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition hidden">
+                            <button id="resetpasswordButton" type="button" class="bg-gray-500 text-white px-8 py-2 rounded-md hover:bg-gray-600 transition hidden">
                                 Reset
                             </button>
-                            <button id="savepasswordButton" type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition hidden">
+                            <button id="savepasswordButton" type="submit" class="bg-blue-600 text-white px-8 py-2 rounded-md hover:bg-blue-700 transition hidden">
                                 Save
                             </button>
                         </div>

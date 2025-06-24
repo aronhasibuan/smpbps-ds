@@ -65,7 +65,7 @@ class Task extends Model{
     {
         return Carbon::parse($this->activity->activity_start)
             ->locale('id') 
-            ->translatedFormat('d F');
+            ->translatedFormat('d F Y');
     }
 
     

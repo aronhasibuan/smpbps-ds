@@ -9,14 +9,14 @@
                     @endif
 
                     @if (Auth::check() && Auth::user()->user_role == 'ketuatim')
-                    <a href="/ketuatim/monitoringkegiatan/{{ $task->activity->activity_slug }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                        <a href="/ketuatim/monitoringkegiatan/{{ $task->activity->activity_slug }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
                     @endif
 
                     @if (Auth::check() && Auth::user()->user_role == 'anggotatim')
-                    <a href="/anggotatim/daftartugas" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                        <a href="/anggotatim/daftartugas" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
                     @endif
 
-                    <div class="flex justify-between items-center mb-5 text-gray-500 mt-2">
+                    <div class="flex justify-between items-center mb-5 mt-2">
                         @php
                             $color = $task->spi_data['color'];
                             $backgroundColor = in_array($color, ['red', 'yellow', 'green', 'blue']) ? "bg-{$color}-500" : 'bg-black';
@@ -27,20 +27,20 @@
                         </div>
                     </div>
 
-                    <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">{{ $task->activity->activity_name }}</h1>
+                    <h1 class="mb-4 font-bold text-gray-900 lg:text-3xl dark:text-white">{{ $task->activity->activity_name }}</h1>
 
                     <div class="block md:flex items-center mb-3 not-italic justify-between">
                         <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                            <p class="text-sm md:text-base text-gray-500 dark:text-white">Pemberi Tugas: {{ $task->activity->user->user_full_name }} <br> Tanggal Dimulai: {{ $task->formatted_createdat }}</p>
+                            <p class="text-xl font-semibold dark:text-white">Pemberi Tugas: {{ $task->activity->user->user_full_name }} - {{ $task->formatted_createdat }}</p>
                         </div>
-                        <p class="text-sm md:text-base text-black font-bold dark:text-white">Tenggat Pekerjaan: {{ $task->formatted_tenggat }}</p>
+                        <p class="text-xl text-black font-bold dark:text-white">Tenggat Tugas: {{ $task->formatted_tenggat }}</p>
                     </div>
 
                 </div>
 
-                <div class="border-t border-b border-gray-300 text-black">
-                    <p class="dark:text-white mb-4">Deskripsi Pekerjaan: {{ $task->task_description }}</p>
-                    <p class="dark:text-white">Banyak Pekerjaan: {{ $task->task_volume }} {{ $task->activity->activity_unit }}</p>
+                <div class="border-t border-b border-gray-300 text-black py-5">
+                    <p class="dark:text-white mb-1 text-xl">Banyak Pekerjaan: {{ $task->task_volume }} {{ $task->activity->activity_unit }}</p>
+                    <p class="dark:text-white text-base">Deskripsi Pekerjaan: {{ $task->task_description }}</p>
                 </div>
 
                 <div>
@@ -92,6 +92,10 @@
                     <button type="submit" id="openModal" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
                         Perbarui Progress
                     </button>
+
+                    <button type="submit" id="openObjection" class="bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700 transition duration-200">
+                        Ajukan Keberatan
+                    </button>
                 </div>
         
                 <div id="popupModal" class="fixed inset-0 items-center justify-center bg-opacity-50 hidden">
@@ -124,13 +128,7 @@
                         </form>
                     </div>
                 </div>
-
-                <div class="flex justify-center gap-4 mt-5">
-                    <button type="submit" id="openObjection" class="bg-red-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
-                        Ajukan Keberatan
-                    </button>
-                </div>
-
+                
                 <div id="objectionModal" class="fixed inset-0 items-center justify-center bg-opacity-50 hidden">
                     <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl border">
                         <h2 class="text-lg font-semibold mb-4 text-black dark:text-white">Ajukan Keberatan</h2>
@@ -153,7 +151,7 @@
 
             @endif
         
-            @if (Auth::check() && Auth::user()->user_role == 'ketuatim' && $task->task_active_status)
+            @if (Auth::check() && Auth::user()->user_role == 'ketuatim' && $task->status_id == 2)
             <div>
                 <div class="flex justify-center gap-4 mt-20">
 

@@ -19,7 +19,7 @@
                     <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
 
                         {{-- logo --}}
-                        <img src="{{ asset('img/Logo SM Raja - cutted.png') }}" alt="Sistem Manajemen Pekerjaan BPS Kabupaten Deli Serdang" class="">
+                        <img src="{{ asset('img/Logo SM Raja.png') }}" alt="Sistem Manajemen Pekerjaan BPS Kabupaten Deli Serdang" class="w-2/3 h-2/3 mx-auto">
 
                         {{-- form login --}}
                         <form class="space-y-4 md:space-y-6" action="{{ route('login') }}" method="POST">
@@ -43,7 +43,10 @@
                                 </button>
                               </div>
                             </div>
-                            <button type="submit" class="w-full text-white bg-[#002d57] hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Masuk</button>
+                            <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Masuk</button>
+                            <p class="text-sm text-blue-500 font-semibold dark:text-gray-400 hover:underline hover:cursor-pointer">
+                                Lupa Password atau Tidak Punya Akun?
+                            </p>
                         </form>
 
                     </div>
