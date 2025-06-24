@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Activity;
 use App\Models\Progress;
 use App\Models\Objection;
+use App\Services\Evaluation_EVMService;
 use Illuminate\Support\Str;
 use App\Services\EVMService;
 use Illuminate\Http\Request;
@@ -222,10 +223,44 @@ class DataflowController extends Controller
     // data view ('evaluation')
     public function evaluation(Task $task)
     {
-        $start = Carbon::parse($task->created_at)->startOfDay();
-        $end = Carbon::parse($task->updated_at)->startOfDay();
-        $progress = Progress::where('task_id', $task->id)->get();
-        return view('evaluation', ['task' => $task, 'start' => $start, 'end' => $end]);
+        $progresses = Progress::where('task_id', $task->id)->get();
+        $evaluation_evmservice = new Evaluation_EVMService();
+
+        $start = Carbon::parse($task->activity->activity_start);
+        $end = Carbon::parse($task->activity->activity_end);
+        
+        $progressbydate = [];
+        foreach ($progresses as $progress){
+            $progressbydate[$progress->progress_date] = $progress;
+        }
+        
+        $taskbydate = [];
+        $lastProgress = null;
+
+        for($date = $start->copy(); $date->lte($end); $date->addDay() ){
+            $dateStr = $date->format('Y-m-d');
+            $progress = $progressbydate[$dateStr] ?? $lastProgress;
+            if (isset($progressbydate[$dateStr])) {
+                $lastProgress = $progressbydate[$dateStr];
+            }
+
+            $taskClone = clone $task;
+            $taskClone->task_date = $dateStr;
+            $taskClone->latest_progress = $progress ? $progress->progress_amount : 0;
+            $taskClone->spi_data = $evaluation_evmservice->calculateSPI($task, $date, $progress->progress_amount);
+            $taskbydate[] = $taskClone;
+        }
+
+        $totalPoint = 0;
+        $count = 0;
+        foreach($taskbydate as $task){
+            $totalPoint += $task->spi_data['poin'];
+            $count++;
+        }
+
+        $task->average_progress_point = $totalPoint / $count;
+
+        return view('evaluation', ['task' => $task, 'tasksbydate' => $taskbydate,]);
     }
 
     // data view('calendar')
@@ -374,10 +409,34 @@ class DataflowController extends Controller
     public function task(Task $task)
     {
         $EVMService = new EVMService();
-        $progress = Progress::where('task_id', $task->id)->get();
+        $progresses = Progress::where('task_id', $task->id)->get();
         $task->spi_data = $EVMService->calculateSPI($task);
         $user = Auth::user();
-        return view('task', ['task' => $task, 'progresses' => $progress, 'user' => $user]);
+
+        $start = Carbon::parse($task->activity->activity_start);
+        $end = Carbon::parse($task->activity->activity_end);
+        $today = Carbon::today();
+
+        $lastDate = $today->lessThan($end) ? $today : $end;
+
+        $lastProgress = $progresses->sortByDesc('progress_date')->first();
+        if ($lastProgress && Carbon::parse($lastProgress->progress_date)->greaterThan($end)) {
+            $lastDate = Carbon::parse($lastProgress->progress_date);
+        }
+
+        $progressByDate = [];
+        foreach ($progresses as $progress) {
+            $progressByDate[$progress->progress_date] = $progress;
+        }
+
+        return view('task', [
+            'task' => $task,
+            'progresses' => $progresses,
+            'user' => $user,
+            'start' => $start,
+            'end' => $lastDate,
+            'progressByDate' => $progressByDate,
+        ]);
     }
 
     public function taskmonitoring($grouptask_slug, $slug)

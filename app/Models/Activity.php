@@ -30,6 +30,13 @@ class Activity extends Model
             ->translatedFormat('d F'); 
     }
 
+    public function getIdFormatStartAttribute()
+    {
+        return Carbon::parse($this->activity_start)
+        ->locale('id')
+        ->translatedFormat('d F');
+    }
+
     public function getTotalProgressAttribute()
     {
         $totalProgress = $this->tasks->sum('task_latest_progress');

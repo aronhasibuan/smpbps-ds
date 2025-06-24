@@ -1293,5 +1293,38 @@ class ProgressSeeder extends Seeder
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
         ]);
+
+        // Survei Perusahaan Perikanan
+        Progress::create([
+            'task_id' => 78,
+            'progress_date' => now()->subDays(6)->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 78,
+            'progress_date' => now()->subDays(4)->format('Y-m-d'),
+            'progress_amount' => 3,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 78,
+            'progress_date' => now()->subDays(3)->format('Y-m-d'),
+            'progress_amount' => 5,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
+            'task_id' => 78,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 7,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
     }
 }

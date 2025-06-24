@@ -929,6 +929,7 @@ class TaskSeeder extends Seeder
 
 
         // Survei Hortikultura dan Indikator Pertanian
+        #74
         Task::create([
             'activity_id' => 39,
             'user_member_id' => 9,
@@ -941,6 +942,7 @@ class TaskSeeder extends Seeder
         ]);
 
         // Survei Pertanian Tanaman Pangan/Ubinan
+        #75
         Task::create([
             'activity_id' => 40,
             'user_member_id' => 9,
@@ -953,6 +955,7 @@ class TaskSeeder extends Seeder
         ]);
 
         // Survei Perusahaan Perkebunan
+        #76
         Task::create([
             'activity_id' => 41,
             'user_member_id' => 9,
@@ -965,6 +968,7 @@ class TaskSeeder extends Seeder
         ]);
 
         // Survei Perusahaan Kehutanan
+        #77
         Task::create([
             'activity_id' => 42,
             'user_member_id' => 9,
@@ -973,6 +977,19 @@ class TaskSeeder extends Seeder
             'task_description' => 'Pencacahan',
             'task_volume' => 7,
             'task_latest_progress' => 0,
+            'task_attachment' => null,
+        ]);
+
+        // Survei Perusahaan Perikanan
+        #78
+        Task::create([
+            'activity_id' => 43,
+            'user_member_id' => 10,
+            'status_id' => 1,
+            'task_slug' => '78_anggotaproduksi2',
+            'task_description' => 'Pencacahan',
+            'task_volume' => 7,
+            'task_latest_progress' => 7,
             'task_attachment' => null,
         ]);
     }

@@ -23,7 +23,6 @@
                 </div>
 
                 <form method="GET" class="mb-4">
-                    <label for="month_year" class="mr-2">Filter Bulan-Tahun:</label>
                     <select name="month_year" id="month_year" onchange="this.form.submit()" class="border rounded px-2 py-1">
                         <option value="">Semua</option>
                         @foreach($activityDates as $date)
@@ -43,8 +42,8 @@
                     <tr>
                         <th scope="col" class="px-4 py-3">Nama Kegiatan</th>
                         <th scope="col" class="px-4 py-3">Volume/Satuan</th>
+                        <th scope="col" class="px-4 py-3">Mulai</th>
                         <th scope="col" class="px-4 py-3">Tenggat</th>
-                        <th scope="col" class="px-4 py-3">Selesai</th>
                         <th scope="col" class="px-4 py-3">Nilai</th>
                         <th scope="col" class="px-4 py-3">Aksi</th>
                     </tr>
@@ -54,15 +53,15 @@
                     <tr>
                         <td class="px-4 py-3">{{ $task->activity->activity_name }}</td>
                         <td class="px-4 py-3">{{ $task->task_volume }} {{ $task->activity->activity_unit }}</td>
+                        <td class="px-4 py-3">{{ $task->activity->id_format_start }}</td>
                         <td class="px-4 py-3">{{ $task->activity->id_format_deadline }}</td>
-                        <td class="px-4 py-3">{{ $task->updated_at->format('d M') }}</td>
                         <td class="px-4 py-3 items-center justify-center hover:cursor-pointer">
                             <a href="/arsip/penilaian/{{ $task->task_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                 <img class="w-6 h-6" src="{{ asset('img/star.svg') }}" alt="Nilai">
                             </a>
                         </td>
                         <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                            <a href="/daftartugas/{{ $task->task_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
+                            <a href="/anggotatim/daftartugas/{{ $task->task_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
                                 <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                             </a>
                         </td>

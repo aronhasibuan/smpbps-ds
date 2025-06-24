@@ -479,7 +479,18 @@ class ActivitySeeder extends Seeder
             'activity_unit' => 'Perusahaan Kehutanan',
             'activity_start' => now()->format('Y-m-d'),
             'activity_end' => now()->addDays(6)->format('Y-m-d'),
-            'activity_active_status' => 0,
+            'activity_active_status' => 1,
+        ]);
+
+        #43
+        Activity::create([
+            'user_leader_id' => 2,
+            'activity_name' => 'Survei Perusahaan Perikanan',
+            'activity_slug' => '43-survei-perusahaan-perikanan',
+            'activity_unit' => 'Perusahaan Perikanan',
+            'activity_start' => now()->subDays(6)->format('Y-m-d'),
+            'activity_end' => today()->format('Y-m-d'),
+            'activity_active_status' => 1,
         ]);
     }
 }

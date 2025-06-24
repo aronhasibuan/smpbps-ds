@@ -31,51 +31,61 @@
 
                     <div class="block md:flex items-center mb-3 not-italic justify-between">
                         <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                            <p class="text-xl font-semibold dark:text-white">Pemberi Tugas: {{ $task->activity->user->user_full_name }} - {{ $task->formatted_createdat }}</p>
+                            <p class="text-lg font-semibold dark:text-white">Pemberi Tugas: {{ $task->activity->user->user_full_name }} - {{ $task->formatted_createdat }}</p>
                         </div>
-                        <p class="text-xl text-black font-bold dark:text-white">Tenggat Tugas: {{ $task->formatted_tenggat }}</p>
+                        <p class="text-lg text-black font-bold dark:text-white">Tenggat Tugas: {{ $task->formatted_tenggat }}</p>
                     </div>
 
                 </div>
 
                 <div class="border-t border-b border-gray-300 text-black py-5">
-                    <p class="dark:text-white mb-1 text-xl">Banyak Pekerjaan: {{ $task->task_volume }} {{ $task->activity->activity_unit }}</p>
                     <p class="dark:text-white text-base">Deskripsi Pekerjaan: {{ $task->task_description }}</p>
+                    <p class="dark:text-white mb-1 text-base">Volume Pekerjaan: {{ $task->task_volume }} {{ $task->activity->activity_unit }}</p>
                 </div>
 
                 <div>
-                    <div class="mt-8">
+                    <div class="mt-4">
                         @if ($task->task_attachment)
-                            <div class="cursor-pointer mb-10">
-                                <a href="{{ url('/file/' . basename($task->task_attachment)) }}" target="_blank" class="no-underline bg-[#228be6] text-white text-md p-2 rounded-md">Lihat Lampiran</a>
+                            <div class="cursor-pointer">
+                                <a href="{{ url('/file/' . basename($task->task_attachment)) }}" target="_blank" class="no-underline bg-[#228be6] text-white text-md p-2 rounded-md">Lihat Lampiran Tugas</a>
                             </div>
                         @endif
                     </div>
 
-                    <label class="text-gray-700 font-bold mb-2 block dark:text-white">Progress Pekerjaan:</label>
+                    <label class="text-gray-700 font-bold mb-2 block dark:text-white text-center text-base">Progress Pekerjaan:</label>
                     
+                    @php
+                        $lastProgress = null;
+                    @endphp
+
                     <ul class="relative border-s border-gray-200 dark:border-gray-700 list-none">     
-                        @foreach ($progresses as $progress)                                     
+                        @for ($date = $start->copy(); $date->lte($end); $date->addDay())
+                            @php
+                                $progress = $progressByDate[$date->format('Y-m-d')] ?? $lastProgress;
+                                if (isset($progressByDate[$date->format('Y-m-d')])) {
+                                    $lastProgress = $progressByDate[$date->format('Y-m-d')];
+                                }
+                            @endphp                                     
                             <li class="mb-10 ms-6">            
                                 <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
                                     <svg class="w-2.5 h-2.5 text-blue-800 dark:text-blue-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                                     </svg>
                                 </span>
-                                <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">Jumlah Progress: {{ $progress->progress_amount }} {{ $task->activity->activity_unit }}
-                                    @if ($loop->last)    
-                                        <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300 ms-3">Progress Terbaru</span>
+                                <h3 class="flex items-center mb-1 text-base font-semibold text-gray-900 dark:text-white">Jumlah Progress: {{ $progress->progress_amount }} {{ $task->activity->activity_unit }}
+                                    @if ($date->eq($end))    
+                                        <span class="bg-blue-100 text-blue-800 text-base font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300 ms-3">Progress Terbaru</span>
                                     @endif 
                                 </h3>
-                                <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Tanggal Progress: {{ $progress->formatted_date }}</time>
-                                <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">{{ $progress->progress_notes }}</p>
+                                <time class="block mb-2 text-base font-normal leading-none text-gray-400 dark:text-gray-500">Tanggal Progress: {{ $date->locale('id')->translatedFormat('d F Y') }}</time>
+                                <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">Catatan: {{ $progress->progress_notes }}</p>
                                 @if ($progress->progress_documentation)
                                     <div class="cursor-pointer mb-10">
                                         <a href="{{ url('/file/' . basename($progress->progress_documentation)) }}" target="_blank" class="no-underline inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-100 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">Lihat Dokumentasi</a>
                                     </div>
                                 @endif
                             </li>
-                        @endforeach
+                        @endfor
                     </ul>
 
                     <div class="relative w-full bg-gray-300 rounded-full h-6">
@@ -89,11 +99,13 @@
             {{-- Update Progress --}}
             @if (Auth::check() && Auth::user()->user_role == 'anggotatim' && $task->status_id == 2)
                 <div class="flex justify-center gap-4 mt-20">
-                    <button type="submit" id="openModal" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
+                    <button type="submit" id="openModal" class="bg-blue-600 inline-flex text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
+                        <img class="w-5 h-5 mr-1 -ml-1" src="{{ asset('img/statistics.svg') }}" alt="Perbarui Progress">
                         Perbarui Progress
                     </button>
 
-                    <button type="submit" id="openObjection" class="bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700 transition duration-200">
+                    <button type="submit" id="openObjection" class="bg-red-600 inline-flex text-white px-6 py-3 rounded-full hover:bg-red-700 transition duration-200">
+                        <img class="w-5 h-5 mr-1 -ml-1" src="{{ asset('img/cross.svg') }}" alt="Ajukan Keberatan">
                         Ajukan Keberatan
                     </button>
                 </div>

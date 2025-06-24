@@ -90,7 +90,10 @@ Route::middleware(['auth'])->group(function(){
             return response()->json([]);
         })->middleware('auth');
 
-    // kepalaBPS
+        // view evaluation
+        Route::get('/arsip/penilaian/{task:task_slug}', [DataflowController::class, 'evaluation'])->name('evaluation');
+    
+        // kepalaBPS
         // view employeelist
         Route::get('/kepalabps/daftarpegawai', [DataflowController::class, 'employeelist'])->name('employeelist');
         Route::put('/kepalabps/updateuser/{user}', [UserController::class, 'update'])->name('updateuser');
