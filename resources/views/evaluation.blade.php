@@ -25,15 +25,14 @@
             </tr>
             @endforeach
             <tr>
-                <td colspan="3" class="w-3/4 font-bold">
-                    <div class="flex items-start justify-start gap-2">
+                <td colspan="4" class="w-full font-bold">
+                    <div class="flex items-center justify-center gap-2 mt-4">
                         <span class="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-                            <img class="w-2.5 h-2.5 text-blue-800 dark:text-blue-300" src="{{ asset('img/quantity.svg') }}" alt="Detail">
+                            <img class="w-5 h-5 text-blue-800 dark:text-blue-300" src="{{ asset('img/quantity.svg') }}" alt="Detail">
                         </span>
-                        <span class="underline">Rata-rata nilai dari sisi progress</span>
+                        <span class="text-lg">Rata-rata nilai dari sisi progress: {{ number_format($task->average_progress_point, 0) }}</span>
                     </div>
                 </td>
-                <td class="w-1/4 text-center font-bold">Rata-Rata: {{ number_format($task->average_progress_point, 2) }}</td>
             </tr>
         </tbody>
     </table>
@@ -48,11 +47,11 @@
                                 <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                             </svg>
                         </span>
-                        <span>Kelengkapan Isian:</span>
+                        <span>Kelengkapan Isian</span>
                     </div>
                 </td>
-                <td class="w-1/4 text-center text-black border border-black rounded-md">Cukup Lengkap</td>
-                <td class="w-1/4 text-center">Poin: 0.50</td>
+                <td class="w-1/4 text-center text-black border border-black rounded-md">{{ $task->evaluation->evaluation_comprehensiveness }}</td>
+                <td class="w-1/4 text-center">Poin: {{ $task->comprehensiveness_point }}</td>
             </tr>
             <tr>
                 <td colspan="2" class="w-2/4 text-left">
@@ -62,38 +61,27 @@
                                 <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                             </svg>
                         </span>
-                        <span>Kerapian: </span>
+                        <span>Kerapian</span>
                     </div>
                 </td>
-                <td class="w-1/4 text-center text-black border border-black rounded-md">Tidak Rapi</td>
-                <td class="w-1/4 text-center">Poin: 0.25</td>
+                <td class="w-1/4 text-center text-black border border-black rounded-md">{{ $task->evaluation->evaluation_tidiness }}</td>
+                <td class="w-1/4 text-center">Poin: {{ $task->tidiness_point }}</td>
             </tr>
             <tr>
-                <td colspan="2" class="w-2/4 text-left">
-                    <div class="flex items-start justify-start gap-2">
+                <td colspan="4" class="w-full font-bold">
+                    <div class="flex items-center justify-center gap-2 mt-4">
                         <span class="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-                            <svg class="w-2.5 h-2.5 text-blue-800 dark:text-blue-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                            </svg>
+                            <img class="w-5 h-5 text-blue-800 dark:text-blue-300" src="{{ asset('img/quality.svg') }}" alt="Detail">
                         </span>
-                        <span>Moda yang digunakan:</span>
+                        <span class="text-lg">Rata-rata nilai dari sisi Kualitas: {{ $task->average_quality_point }}</span>
                     </div>
                 </td>
-                <td class="w-1/4 text-center text-black border border-black rounded-md">PAPI</td>
-                <td class="w-1/4 text-center"></td>
-            </tr>
-            <tr>
-                <td colspan="3" class="w-3/4 font-bold">
-                    <div class="flex items-start justify-start gap-2">
-                        <span class="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-                            <img class="w-2.5 h-2.5 text-blue-800 dark:text-blue-300" src="{{ asset('img/quality.svg') }}" alt="Detail">
-                        </span>
-                        <span>Rata-rata nilai dari sisi Kualitas:</span>
-                    </div>
-                </td>
-                <td class="w-1/4 text-center font-bold">Poin: 60</td>
             </tr>
         </tbody>
     </table>
+
+    <div class="border-2 border-black rounded-lg w-fit mx-auto my-6 px-6 py-4 bg-white shadow">
+    <p class="text-center font-bold text-lg">Nilai Final: {{ number_format($task->final_point, 2) }}</p>
+</div>
 
 </x-layout>

@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call([StatusSeeder::class]);
         $this->call([TaskSeeder::class]);
         $this->call([ProgressSeeder::class]);
+        $this->call([EvaluationSeeder::class]);
     }
 }

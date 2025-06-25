@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Task extends Model{
 
@@ -35,6 +36,10 @@ class Task extends Model{
 
     public function objection(): HasMany{
         return $this->hasMany(Objection::class, 'task_id');
+    }
+
+    public function evaluation(): HasOne{
+        return $this->hasOne(Evaluation::class, 'task_id');
     }
 
     // FUNGSI UNTUK SEARCH

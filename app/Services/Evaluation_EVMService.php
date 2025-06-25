@@ -21,7 +21,7 @@ class Evaluation_EVMService
                 'pv' => $pv,
                 'status' => 'Selesai',
                 'color' => 'blue', 
-                'poin' => 1.00
+                'poin' => 100
             ]; 
         }
         elseif (Carbon::parse($task_progress_date)->gt(Carbon::parse($task->activity->activity_end))) {
@@ -31,7 +31,7 @@ class Evaluation_EVMService
                 'pv' => $task->task_volume,
                 'status' => 'Terlambat',
                 'color' => 'black',
-                'poin' => 0.00
+                'poin' => 0
             ];
         }
         elseif ($spi < 1 && $ev < $task->task_volume) {
@@ -41,7 +41,7 @@ class Evaluation_EVMService
                 'pv' => $pv,
                 'status' => 'Progress Lambat',
                 'color' => 'red',
-                'poin' => 0.25
+                'poin' => 25
             ];
         } elseif ($spi == 1 && $ev < $task->task_volume) {
             return [
@@ -50,7 +50,7 @@ class Evaluation_EVMService
                 'pv' => $pv,
                 'status' => 'Progress On Time',
                 'color' => 'yellow',
-                'poin' => 0.50
+                'poin' => 50
             ];
         } elseif ($spi > 1 && $ev < $task->task_volume) {
             return [
@@ -59,7 +59,7 @@ class Evaluation_EVMService
                 'pv' => $pv,
                 'status' => 'Progress Cepat',
                 'color' => 'green',
-                'poin' => 0.75
+                'poin' => 75
             ];
         }
     }
@@ -89,4 +89,27 @@ class Evaluation_EVMService
         return ceil($plannedProgress * $task->task_volume);
     }
 
+    public static function comprehensivenessPoint($label)
+    {
+        $map = [
+            'Sangat Tidak Lengkap' => 0,
+            'Tidak Lengkap'        => 25,
+            'Cukup Lengkap'        => 50,
+            'Lengkap'              => 75,
+            'Sangat Lengkap'       => 100,
+        ];
+        return $map[$label];
+    }
+
+    public static function tidinessPoint($label)
+    {
+        $map = [
+            'Sangat Tidak Rapi' => 0,
+            'Tidak Rapi'        => 25,
+            'Cukup Rapi'        => 50,
+            'Rapi'              => 75,
+            'Sangat Rapi'       => 100,
+        ];
+        return $map[$label];
+    }
 }

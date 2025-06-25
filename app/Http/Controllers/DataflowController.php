@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\Activity;
+use App\Models\Evaluation;
 use App\Models\Progress;
 use App\Models\Objection;
 use App\Services\Evaluation_EVMService;
@@ -223,6 +224,7 @@ class DataflowController extends Controller
     // data view ('evaluation')
     public function evaluation(Task $task)
     {
+        $task = Task::with('evaluation')->findOrFail($task->id);
         $progresses = Progress::where('task_id', $task->id)->get();
         $evaluation_evmservice = new Evaluation_EVMService();
 
@@ -260,7 +262,13 @@ class DataflowController extends Controller
 
         $task->average_progress_point = $totalPoint / $count;
 
-        return view('evaluation', ['task' => $task, 'tasksbydate' => $taskbydate,]);
+        $task->comprehensiveness_point = Evaluation_EVMService::comprehensivenessPoint($task->evaluation->evaluation_comprehensiveness);
+        $task->tidiness_point = Evaluation_EVMService::tidinessPoint($task->evaluation->evaluation_tidiness);
+        $task->average_quality_point = ($task->comprehensiveness_point + $task->tidiness_point) / 2;
+
+        $task->final_point = ($task->average_progress_point * 0.6) + ($task->average_quality_point * 0.4);
+ 
+        return view('evaluation', ['task' => $task, 'tasksbydate' => $taskbydate]);
     }
 
     // data view('calendar')
