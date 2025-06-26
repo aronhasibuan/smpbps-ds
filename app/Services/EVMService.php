@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Models\Activity;
 use App\Models\Task;
 use Carbon\Carbon;
 
 class EVMService
 {
+    // Menghitung SPI Task
     public function calculateSPI($task)
     {
         $ev = $task->task_latest_progress; 
@@ -59,19 +61,12 @@ class EVMService
         }
     }
 
+    // Menghitung Planned Value Task
     public function calculatePlannedValue(Task $task)
     {
         $startDate = Carbon::parse($task->activity->activity_start);
         $endDate = Carbon::parse($task->activity->activity_end);
         $today = Carbon::today();
-
-        if ($endDate->lessThan($startDate)) {
-            return 0;
-        }
-
-        if ($today->lessThan($startDate)) {
-            return 0; 
-        }
 
         if ($today->greaterThan($endDate)) {
             return $task->task_volume; 
@@ -85,4 +80,62 @@ class EVMService
         return ceil($plannedProgress * $task->task_volume);
     }
 
+    // Menghitung SPI Activity
+    public function calculateActivitySPI(Activity $activity): array
+    {
+        $totalEV = 0;
+        $totalPV = 0;
+        $today = Carbon::today()->startOfDay();
+        $activityEnd = Carbon::parse($activity->activity_end)->endOfDay();
+
+        foreach($activity->tasks as $task){
+            $totalEV += $task->task_latest_progress;
+            $totalPV += $this->calculatePlannedValue($task);
+        }
+
+        $spi = ($totalEV / $totalPV);
+
+        if ($today->greaterThan($activityEnd)) {
+            return [
+                'spi' => $spi,
+                'ev' => $totalEV,
+                'pv' => $totalPV,
+                'status' => 'Terlambat',
+                'color' => 'black'
+            ];
+        }
+        elseif ($spi < 1) {
+            return [
+                'spi' => $spi,
+                'ev' => $totalEV,
+                'pv' => $totalPV,
+                'status' => 'Progress Lambat',
+                'color' => 'red'
+            ];
+        } elseif ($spi == 1) {
+            return [
+                'spi' => $spi,
+                'ev' => $totalEV,
+                'pv' => $totalPV,
+                'status' => 'Progress On Time',
+                'color' => 'yellow'
+            ];
+        } elseif ($spi > 1) {
+            return [
+                'spi' => $spi,
+                'ev' => $totalEV,
+                'pv' => $totalPV,
+                'status' => 'Progress Cepat',
+                'color' => 'green'
+            ];
+        }
+
+        return [
+            'spi' => $spi,
+            'ev' => $totalEV,
+            'pv' => $totalPV,
+            'status' => 'Tidak Diketahui',
+            'color' => 'gray'
+        ];
+    }
 }

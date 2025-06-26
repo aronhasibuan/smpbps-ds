@@ -44,6 +44,7 @@
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-t"> 
                         <tr>
+                            <th scope="col" class="px-4 py-3">Status Kegiatan</th>
                             <th scope="col" class="px-4 py-3">Nama Kegiatan</th>
                             <th scope="col" class="px-4 py-3">Tenggat Waktu</th>
                             <th scope="col" class="px-4 py-3">Total Persentase Progress</th>
@@ -53,6 +54,13 @@
                     <tbody class="bg-white border-t dark:border-gray-700 dark:bg-gray-800">
                         @forelse ($activities as $activity)
                             <tr class="border-t">
+                                @php
+                                    $color = $activity->spi_data['color'];
+                                    $backgroundColor = in_array($color, ['red', 'yellow', 'green', 'blue']) ? "bg-{$color}-500" : 'bg-black'; 
+                                @endphp
+                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <p class=" {{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $activity->spi_data['status'] }}</p>
+                                </th>
                                 <td class="px-4 py-3">{{ $activity->activity_name }}</td>
                                 <td class="px-4 py-3">{{ $activity->id_format_deadline }}</td>
                                 <td class="px-4 py-3">{{ $activity->total_progress }}%</td>

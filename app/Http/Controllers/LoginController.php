@@ -22,7 +22,7 @@ class LoginController extends Controller
             if(Auth::user()->user_role == 'kepalabps'){
                 return redirect('/kepalabps/daftarpegawai')->with('success', 'Login berhasil, selamat datang!');
             }elseif(Auth::user()->user_role == 'ketuatim'){
-                return redirect('/ketuatim/monitoringkegiatan')->with('success', 'Login berhasil, selamat datang!');
+                return redirect('/ketuatim/home')->with('success', 'Login berhasil, selamat datang!');
             }elseif(Auth::user()->user_role == 'anggotatim'){
                 return redirect('/anggotatim/beranda')->with('success', 'Login berhasil, selamat datang!');
             }else{

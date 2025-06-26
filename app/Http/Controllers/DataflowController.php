@@ -98,6 +98,54 @@ class DataflowController extends Controller
         return view('home', ['user' => $user, 'suggestions' => $suggestions, 'todayProgress' => $todayProgress, 'taskStats' => $taskStats, 'pieData' => $pieData, 'newtasks' => $newtasks]);
     }
 
+    // data view('home_leader')
+    public function home_leader()
+    {
+        $user = Auth::user();
+        $today = Carbon::today()->toDateString();
+        $EVMService = new EVMService();        
+
+        if ($user->user_role === 'kepalabps') {
+            $activities = Activity::with('tasks')->where('activity_active_status', true)->get();
+        } elseif ($user->user_role === 'ketuatim') {
+            $activities = Activity::with('tasks')->where('user_leader_id', $user->id)->where('activity_active_status', true)->get();
+        } else {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        }
+
+        $runningactivity = $activities->count();
+        $lateactivity = Activity::where('activity_active_status', true)->where('user_leader_id', $user->id)->where('activity_end', '<', $today)->count();
+        $completedactivity = Activity::where('activity_active_status', false)->where('user_leader_id', $user->id)->count();
+        $verifiedtask = Task::whereIn('status_id', [3, 4, 5])
+            ->whereHas('activity', function($query) use ($user) {
+                $query->where('user_leader_id', $user->id);
+            })
+            ->count();
+        
+        foreach($activities as $activity){
+            $activity->spi_data = $EVMService->calculateActivitySPI($activity);
+        }
+
+        $groupedTasks = $activities->groupBy(fn($activity) => $activity->spi_data['status'] ?? 'Unknown');
+        $pieData = $groupedTasks->map->count();
+
+        $activityStats = [
+            'running'   => $runningactivity,
+            'late'      => $lateactivity,
+            'verify'    => $verifiedtask,
+            'completed' => $completedactivity,
+        ];
+
+        $memberProgress = Progress::with(['task.activity'])
+            ->where('progress_date', $today)
+            ->whereHas('task.activity', function($query) use ($user) {
+                $query->where('user_leader_id', $user->id);
+            })
+            ->get();
+
+        return view('home_leader', ['user' => $user, 'activityStats' => $activityStats, 'memberProgress' => $memberProgress, 'pieData' => $pieData]);
+    }
+
     // data view('tasklist')
     public function tasklist(Request $request)
     {
@@ -311,8 +359,9 @@ class DataflowController extends Controller
     // data view('activitiesmonitoring')
     public function activitiesmonitoring(Request $request)
     {
+        $EVMService = new EVMService();
         $user = Auth::user();
-        $perPage = $request->get('perPage', 10);
+        $perPage = $request->get('perPage', 5);
 
         if ($user->user_role === 'kepalabps') {
             $activities = Activity::where('activity_active_status', true)
@@ -334,8 +383,12 @@ class DataflowController extends Controller
                 $query->where('activity_name', 'like', '%' . $search . '%');
             });
         }
-
+        
         $activities = $activities->paginate($perPage)->withQueryString();
+        
+        foreach($activities as $activity){
+            $activity->spi_data = $EVMService->calculateActivitySPI($activity);
+        }
 
         $actionUrl = Auth::user()->user_role === 'kepalabps'? '/kepalabps/monitoringkegiatan/': (Auth::user()->user_role === 'ketuatim'? '/ketuatim/monitoringkegiatan/': '#');
 

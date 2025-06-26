@@ -75,6 +75,9 @@
 
                     @if (Auth::check() && (Auth::user()->user_role == 'ketuatim' ))
                         <li>
+                            <x-nav-link href="/ketuatim/home" :active="request()->is('beranda')">Beranda</x-nav-link>
+                        </li>
+                        <li>
                             <x-nav-link href="/ketuatim/monitoringkegiatan" :active="request()->is('monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
                         </li>
                         <li>

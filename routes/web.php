@@ -93,7 +93,7 @@ Route::middleware(['auth'])->group(function(){
         // view evaluation
         Route::get('/arsip/penilaian/{task:task_slug}', [DataflowController::class, 'evaluation'])->name('evaluation');
     
-        // kepalaBPS
+    // kepalaBPS
         // view employeelist
         Route::get('/kepalabps/daftarpegawai', [DataflowController::class, 'employeelist'])->name('employeelist');
         Route::put('/kepalabps/updateuser/{user}', [UserController::class, 'update'])->name('updateuser');
@@ -151,6 +151,9 @@ Route::middleware(['auth'])->group(function(){
 
         // view verification
         Route::get('/ketuatim/verifikasi', [DataflowController::class, 'verification'])->name('verification');
+
+        // view home
+        Route::get('/ketuatim/home', [DataflowController::class, 'home_leader'])->name('home_leader');
 
     // anggota tim
 
