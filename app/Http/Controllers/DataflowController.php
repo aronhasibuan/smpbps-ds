@@ -503,10 +503,35 @@ class DataflowController extends Controller
     public function taskmonitoring($grouptask_slug, $slug)
     {
         $EVMService = new EVMService();
-        $task = Task::where('task_slug', $slug)->firstOrFail();
-        $progress = Progress::where('task_id', $task->id)->get();
+        $task = Task::where('task_slug', $slug)->with('activity')->firstOrFail();
+        $progresses = Progress::where('task_id', $task->id)->get();
         $task->spi_data = $EVMService->calculateSPI($task);
-        return view('task', ['task' => $task, 'progresses'=>$progress]);
+        $user = Auth::user();
+
+        $start = Carbon::parse($task->activity->activity_start);
+        $end = Carbon::parse($task->activity->activity_end);
+        $today = Carbon::today();
+
+        $lastDate = $today->lessThan($end) ? $today : $end;
+
+        $lastProgress = $progresses->sortByDesc('progress_date')->first();
+        if ($lastProgress && Carbon::parse($lastProgress->progress_date)->greaterThan($end)) {
+            $lastDate = Carbon::parse($lastProgress->progress_date);
+        }
+
+        $progressByDate = [];
+        foreach ($progresses as $progress) {
+            $progressByDate[$progress->progress_date] = $progress;
+        }
+
+        return view('task', [
+            'task' => $task,
+            'progresses' => $progresses,
+            'user' => $user,
+            'start' => $start,
+            'end' => $lastDate,
+            'progressByDate' => $progressByDate,
+        ]);
     }
 
     // data view('profile')
@@ -519,7 +544,13 @@ class DataflowController extends Controller
     // data view('verification)
     public function verification()
     {
-        $objections = Objection::all();
-        return view('verification', ['objections' => $objections] );
+        $user = Auth::user();
+        $completed_task = Task::where('status_id', 4)
+            ->whereHas('activity', function($query) use ($user) {
+            $query->where('user_leader_id', $user->id);
+        })
+        ->get();
+
+        return view('verification', ['user' => $user, 'completed_task' => $completed_task]);
     }
 }

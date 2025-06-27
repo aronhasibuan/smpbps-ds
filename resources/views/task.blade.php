@@ -167,7 +167,8 @@
             <div>
                 <div class="flex justify-center gap-4 mt-20">
 
-                    <button class="text-sm md:text-base bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200" id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button">
+                    <button class="text-sm md:text-base bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200 inline-flex items-center gap-2" id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button">
+                        <img class="w-5 h-5" src="{{ asset('img/edit-document.svg') }}" alt="">
                         Perbarui Tugas
                     </button>
 

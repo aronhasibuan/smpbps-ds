@@ -44,12 +44,12 @@
             <a href="" class="text-white bg-blue-600 p-4 rounded-2xl">Lihat Kegiatan Selengkapnya</a>
         </div>
 
-        <div class="flex-1 border-2 border-black rounded-lg p-8 mx-2 bg-white">
+        <div class="flex-1 border-2 border-black rounded-lg p-8 mx-2 bg-white flex flex-col items-center">
             @if ($activityStats['verify'] == 0)
                 <p class="text-3xl">Saat ini anda tidak memiliki tugas yang harus diverifikasi!</p>
             @else
-                <p class="text-3xl">Anda memiliki beberapa tugas yang harus segera diverifikasi!</p>
-                <a href="" class="text-blue-600 underline">Lihat Verifikasi Tugas</a>
+                <p class="text-3xl mb-8">Anda memiliki beberapa tugas yang harus segera diverifikasi!</p>
+                <a href="" class="text-white bg-blue-600 p-4 rounded-2xl">Lihat Verifikasi Tugas</a>
             @endif
         </div>
     </div>
@@ -67,7 +67,7 @@
                 @forelse($memberProgress as $progress)
                     <li class="mb-3">
                         <div>
-                            <span class="">Kamu memperbarui progress tugas {{ $progress->task->activity->activity_name }} menjadi {{ $progress->task->task_latest_progress }} dari {{ $progress->task->task_volume }} {{ $progress->task->activity->activity_unit }}</span>
+                            <span class="">{{ $progress->task->user->user_full_name }} memperbarui progress tugas {{ $progress->task->activity->activity_name }} menjadi {{ $progress->task->task_latest_progress }} dari {{ $progress->task->task_volume }} {{ $progress->task->activity->activity_unit }}</span>
                         </div>
                     </li>
                 @empty

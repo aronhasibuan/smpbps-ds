@@ -548,11 +548,11 @@ class TaskSeeder extends Seeder
         Task::create([
             'activity_id' => 27,
             'user_member_id' => 10,
-            'status_id' => 2,
+            'status_id' => 4,
             'task_slug' => '43_anggotaproduksi2',
             'task_description' => 'Cleaning',
             'task_volume' => 1,
-            'task_latest_progress' => 0,
+            'task_latest_progress' => 1,
             'task_attachment' => null,
         ]);
 

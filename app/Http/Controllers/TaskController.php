@@ -194,7 +194,7 @@ class TaskController extends Controller
         $task->task_latest_progress = $request->progress_amount;
     
         if ($task->task_volume == $request->progress_amount) {
-            $task->status_id = 1;
+            $task->status_id = 4;
             $task->save();
             return redirect('tasklist')->with('success', 'Tugas berhasil ditandai selesai!'); 
         } else{

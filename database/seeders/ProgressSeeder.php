@@ -728,6 +728,14 @@ class ProgressSeeder extends Seeder
         ]);
 
         Progress::create([
+            'task_id' => 43,
+            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_amount' => 1,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+        ]);
+
+        Progress::create([
             'task_id' => 44,
             'progress_date' => now()->subDays(1)->format('Y-m-d'),
             'progress_amount' => 1,
