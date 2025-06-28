@@ -223,6 +223,8 @@ class DataflowController extends Controller
     // data view('taskarchive')
     public function taskarchive(Request $request)
     {
+        \Carbon\Carbon::setLocale('id');
+        
         $search = $request->input('search');
         $user = Auth::user();
 

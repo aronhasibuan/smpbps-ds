@@ -1,152 +1,258 @@
 <x-layout>
-    <div class="text-center">
-        <p class="text-black font-bold text-xl mb-3">Halo. Selamat datang {{ $user->user_full_name }}!</p>
-    </div>
-
-    <div class="flex w-full gap-6 mt-4">
-
-        <div class="border p-4 rounded-lg flex flex-col items-center flex-1 bg-blue-500 shadow">
-            <div class="flex items-center justify-center w-full">
-                <img src="{{ asset('img/alarm-clock-plus.svg') }}" alt="Tugas Diterima" class="w-12 h-12 mr-10">
-                <span class="text-5xl font-bold text-white">{{ $taskStats['running'] }}</span>
-            </div>
-            <p class="mt-6 text-center text-white text-xl font-bold">Tugas Aktif</p>
-        </div>
-        
-        <div class="border p-4 rounded-lg flex flex-col items-center flex-1 bg-yellow-500 shadow">
-            <div class="flex items-center justify-center w-full">
-                <img src="{{ asset('img/alarm-clock.svg') }}" alt="Tugas Berlangsung" class="w-12 h-12 mr-10">
-                <span class="text-5xl font-bold text-white">{{ $taskStats['ontime'] }}</span>
-            </div>
-            <p class="mt-6 text-center text-white text-xl font-semibold">Dalam Progress</p>
-        </div>
-        
-        <div class="border p-4 rounded-lg flex flex-col items-center flex-1 bg-red-500 shadow">
-            <div class="flex items-center justify-center w-full">
-                <img src="{{ asset('img/alarm-clock-minus.svg') }}" alt="Tugas Terlambat" class="w-12 h-12 mr-10">
-                <span class="text-5xl font-bold text-white">{{ $taskStats['late'] }}</span>
-            </div>
-            <p class="mt-6 text-center text-white text-xl font-semibold">Tugas Terlambat</p>
-        </div>
-        
-        <div class="border p-4 rounded-lg flex flex-col items-center flex-1 bg-green-500 shadow">
-            <div class="flex items-center justify-center w-full">
-                <img src="{{ asset('img/alarm-clock-check.svg') }}" alt="Tugas Selesai" class="w-12 h-12 mr-12">
-                <span class="text-5xl font-bold text-white">{{ $taskStats['completed'] }}</span>
-            </div>
-            <p class="mt-6 text-center text-white text-xl font-semibold">Tugas Selesai</p>
-        </div>
-    </div>
-
-    <div class="text-center my-12">
-        <p class="text-2xl">Untuk melihat seluruh tugas anda, silahkan klik tombol di bawah ini</p>
-        <a href="{{ route('tasklist') }}" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition inline-block">
-            Lihat Tugas Selengkapnya &gt;
-        </a>
-    </div>
-
     <div class="container mx-auto px-4 py-8">
-        
-        <div class="flex flex-col md:flex-row gap-6">
-            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6 flex-1">
-                <div class="bg-blue-600 px-4 py-3 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-white">
-                        Saran Tugas Untuk dikerjakan Hari Ini:
+        <!-- Welcome Section -->
+        <section aria-labelledby="welcome-heading" class="text-center mb-8">
+            <h1 id="welcome-heading" class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+                Halo, Selamat datang {{ $user->user_full_name }}!
+            </h1>
+        </section>
+
+        <!-- Stats Cards -->
+        <section aria-labelledby="stats-heading" class="mb-12">
+            <h2 id="stats-heading" class="sr-only">Statistik Tugas</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Tugas Aktif -->
+                <a href="{{ route('tasklist') }}" 
+                   class="border p-6 rounded-lg flex flex-col items-center bg-blue-500 shadow-md transition-all hover:shadow-lg hover:bg-blue-600 hover:transform hover:-translate-y-1"
+                   aria-label="{{ $taskStats['running'] }} Tugas Aktif">
+                    <div class="flex items-center justify-between w-full">
+                        <img src="{{ asset('img/alarm-clock-plus.svg') }}" 
+                             alt="" 
+                             class="w-10 h-10"
+                             aria-hidden="true">
+                        <span class="text-4xl font-bold text-white">{{ $taskStats['running'] }}</span>
+                    </div>
+                    <p class="mt-4 text-center text-white text-lg font-semibold">Tugas Aktif</p>
+                </a>
+                
+                <!-- Dalam Progress -->
+                <a href="{{ route('tasklist') }}" 
+                   class="border p-6 rounded-lg flex flex-col items-center bg-yellow-500 shadow-md transition-all hover:shadow-lg hover:bg-yellow-600 hover:transform hover:-translate-y-1"
+                   aria-label="{{ $taskStats['ontime'] }} Tugas Dalam Progress">
+                    <div class="flex items-center justify-between w-full">
+                        <img src="{{ asset('img/alarm-clock.svg') }}" 
+                             alt="" 
+                             class="w-10 h-10"
+                             aria-hidden="true">
+                        <span class="text-4xl font-bold text-white">{{ $taskStats['ontime'] }}</span>
+                    </div>
+                    <p class="mt-4 text-center text-white text-lg font-semibold">Dalam Progress</p>
+                </a>
+                
+                <!-- Tugas Terlambat -->
+                <a href="/anggotatim/daftartugas?filter=Terlambat&page=1"
+                   class="border p-6 rounded-lg flex flex-col items-center bg-red-500 shadow-md transition-all hover:shadow-lg hover:bg-red-600 hover:transform hover:-translate-y-1"
+                   aria-label="{{ $taskStats['late'] }} Tugas Terlambat">
+                    <div class="flex items-center justify-between w-full">
+                        <img src="{{ asset('img/alarm-clock-minus.svg') }}" 
+                             alt="" 
+                             class="w-10 h-10"
+                             aria-hidden="true">
+                        <span class="text-4xl font-bold text-white">{{ $taskStats['late'] }}</span>
+                    </div>
+                    <p class="mt-4 text-center text-white text-lg font-semibold">Tugas Terlambat</p>
+                </a>
+                
+                <!-- Tugas Selesai -->
+                <a href="{{ route('taskarchive') }}" 
+                   class="border p-6 rounded-lg flex flex-col items-center bg-green-500 shadow-md transition-all hover:shadow-lg hover:bg-green-600 hover:transform hover:-translate-y-1"
+                   aria-label="{{ $taskStats['completed'] }} Tugas Selesai">
+                    <div class="flex items-center justify-between w-full">
+                        <img src="{{ asset('img/alarm-clock-check.svg') }}" 
+                             alt="" 
+                             class="w-10 h-10"
+                             aria-hidden="true">
+                        <span class="text-4xl font-bold text-white">{{ $taskStats['completed'] }}</span>
+                    </div>
+                    <p class="mt-4 text-center text-white text-lg font-semibold">Tugas Selesai</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section aria-labelledby="cta-heading" class="text-center my-12">
+            <h2 id="cta-heading" class="text-xl md:text-2xl text-gray-800 mb-4">
+                Untuk melihat seluruh tugas anda, silahkan klik tombol di bawah ini
+            </h2>
+            <a href="{{ route('tasklist') }}" 
+               class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center gap-2"
+               aria-label="Lihat tugas selengkapnya">
+                Lihat Tugas Selengkapnya 
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </section>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Suggested Tasks -->
+            <section aria-labelledby="suggested-tasks-heading" class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-blue-600 px-4 py-3">
+                    <h3 id="suggested-tasks-heading" class="text-lg font-semibold text-white">
+                        Saran Tugas Untuk dikerjakan Hari Ini
                     </h3>
                 </div>
                 <div class="p-4">
                     @if($suggestions->isEmpty())
-                        <p class="text-gray-500 italic">Tidak ada tugas untuk hari ini.</p>
+                        <p class="text-gray-500 italic py-4 text-center">Tidak ada tugas untuk hari ini.</p>
                     @else
-                        <ul class="space-y-2">
+                        <ul class="divide-y divide-gray-100">
                             @foreach($suggestions as $task)
-                                <a href="#" class="flex justify-between items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50">
-                                    <p class="font-medium text-gray-800">{{ $task->activity->activity_name }} - {{ $task->volumesuggestion }} {{ $task->activity->activity_unit }}</p>
-                                </a>
+                                <li class="py-3">
+                                    <a href="/anggotatim/daftartugas/{{ $task->task_slug }}" 
+                                       class="block p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                                       aria-label="Tugas {{ $task->activity->activity_name }}">
+                                        <p class="font-medium text-gray-800">
+                                            {{ $task->activity->activity_name }} - 
+                                            <span class="text-blue-600">{{ $task->volumesuggestion }} {{ $task->activity->activity_unit }}</span>
+                                        </p>
+                                    </a>
+                                </li>
                             @endforeach
                         </ul>
                     @endif
                 </div>
-            </div>
+            </section>
 
-            <div class="bg-white rounded-lg shadow-md p-6 mb-6 flex-1 flex flex-col items-center justify-center border">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Distribusi Tugas Aktif Berdasarkan Progress</h3>
-                <canvas id="taskPieChart"></canvas>
-            </div>
+            <!-- Task Distribution Chart -->
+            <section aria-labelledby="chart-heading" class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                <h3 id="chart-heading" class="text-lg font-semibold text-gray-800 mb-4 text-center">
+                    Distribusi Tugas Aktif Berdasarkan Progress
+                </h3>
+                <div class="flex-1 flex items-center justify-center min-h-[300px]">
+                    <div id="chart-loader" class="text-center py-8">
+                        <svg class="animate-spin h-8 w-8 text-blue-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <p class="mt-2 text-gray-600">Memuat data...</p>
+                    </div>
+                    <canvas id="taskPieChart" class="w-full h-auto" style="display: none;"></canvas>
+                </div>
+            </section>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const ctx = document.getElementById('taskPieChart').getContext('2d');
-                const data = {
-                    labels: @json($pieData->keys()),
-                    datasets: [{
-                        data: @json($pieData->values()),
-                        backgroundColor: [
-                            '#34d399', 
-                            '#ef4444', 
-                            '#6366f1', 
-                            '#fbbf24', 
-                        ],
-                    }]
-                };
-                new Chart(ctx, {
-                    type: 'pie',
-                    data: data,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'bottom' },
-                            title: { display: false }
-                        }
-                    }
-                });
-            });
-        </script>
-
-        <div class="flex flex-col md:flex-row gap-6">
-        
-            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6 flex-1">
-                <div class="bg-blue-600 px-4 py-3 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-white">
-                        Aktivitas Terbaru:
+        <!-- Activity and Notifications -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Recent Activity -->
+            <section aria-labelledby="activity-heading" class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-blue-600 px-4 py-3">
+                    <h3 id="activity-heading" class="text-lg font-semibold text-white">
+                        Aktivitas Terbaru
                     </h3>
                 </div>
-
-                <ul class="list-disc pl-6">
+                <div class="p-4">
                     @forelse($todayProgress as $progress)
-                        <li class="mb-3">
-                            <div>
-                                <span class="">Kamu memperbarui progress tugas {{ $progress->task->activity->activity_name }} menjadi {{ $progress->task->task_latest_progress }} dari {{ $progress->task->task_volume }} {{ $progress->task->activity->activity_unit }}</span>
-                            </div>
-                        </li>
+                        <div class="mb-3 last:mb-0">
+                            <a href="/anggotatim/daftartugas/{{ $progress->task->task_slug }}" 
+                               class="block p-3 text-blue-600 hover:underline font-medium rounded-lg hover:bg-gray-50 transition-colors"
+                               aria-label="Progress tugas {{ $progress->task->activity->activity_name }}">
+                                Kamu memperbarui progress tugas {{ $progress->task->activity->activity_name }} 
+                                menjadi {{ $progress->task->task_latest_progress }} dari {{ $progress->task->task_volume }} {{ $progress->task->activity->activity_unit }}
+                            </a>
+                        </div>
                     @empty
-                        <li class="text-center text-gray-500">Tidak ada progress hari ini.</li>
+                        <p class="text-center text-gray-500 py-4">Tidak ada progress hari ini.</p>
                     @endforelse
-                </ul>
-            </div>
+                </div>
+            </section>
 
-            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6 flex-1">
-                <div class="bg-blue-600 px-4 py-3 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-white">
-                        Notifikasi:
+            <!-- Notifications -->
+            <section aria-labelledby="notifications-heading" class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-blue-600 px-4 py-3">
+                    <h3 id="notifications-heading" class="text-lg font-semibold text-white">
+                        Notifikasi
                     </h3>
                 </div>
-
-                <ul class="list-disc pl-6">
+                <div class="p-4">
                     @forelse($newtasks as $newtask)
-                        <li class="mb-3">
-                            <div>
-                                <span class="">Kamu memiliki tugas baru - {{ $newtask->activity->activity_name }}</span>
-                            </div>
-                        </li>
+                        <div class="mb-3 last:mb-0">
+                            <a href="/anggotatim/daftartugas/{{ $newtask->task_slug }}" 
+                               class="block p-3 text-blue-600 hover:underline font-medium rounded-lg hover:bg-gray-50 transition-colors"
+                               aria-label="Tugas baru {{ $newtask->activity->activity_name }}">
+                                Kamu memiliki tugas baru - {{ $newtask->activity->activity_name }}
+                            </a>
+                        </div>
                     @empty
-                        <li class="text-center text-gray-500">Tidak ada progress hari ini.</li>
+                        <p class="text-center text-gray-500 py-4">Tidak ada notifikasi baru.</p>
                     @endforelse
-                </ul>
-                
-            </div>
+                </div>
+            </section>
         </div>
     </div>
+
+    <!-- Chart.js with Lazy Loading -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load Chart.js dynamically
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+            script.onload = initializeChart;
+            document.head.appendChild(script);
+
+            function initializeChart() {
+                const ctx = document.getElementById('taskPieChart');
+                if (!ctx) return;
+
+                const loader = document.getElementById('chart-loader');
+                const chartCanvas = document.getElementById('taskPieChart');
+                
+                try {
+                    const data = {
+                        labels: @json($pieData->keys()),
+                        datasets: [{
+                            data: @json($pieData->values()),
+                            backgroundColor: [
+                                '#34d399', // green
+                                '#fbbf24', // amber
+                                '#6366f1', // indigo
+                                '#ef4444', // red
+                            ],
+                            borderWidth: 1,
+                        }]
+                    };
+                    
+                    new Chart(ctx, {
+                        type: 'pie',
+                        data: data,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { 
+                                    position: 'bottom',
+                                    labels: {
+                                        padding: 20,
+                                        usePointStyle: true,
+                                        pointStyle: 'circle'
+                                    }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const label = context.label || '';
+                                            const value = context.raw || 0;
+                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                            const percentage = Math.round((value / total) * 100);
+                                            return `${label}: ${value} (${percentage}%)`;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    // Hide loader and show chart
+                    if (loader) loader.style.display = 'none';
+                    chartCanvas.style.display = 'block';
+                } catch (error) {
+                    console.error('Error initializing chart:', error);
+                    if (loader) {
+                        loader.innerHTML = '<p class="text-red-500">Gagal memuat data chart</p>';
+                    }
+                }
+            }
+        });
+    </script>
 </x-layout>

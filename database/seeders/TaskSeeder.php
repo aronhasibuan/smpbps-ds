@@ -985,7 +985,7 @@ class TaskSeeder extends Seeder
         Task::create([
             'activity_id' => 43,
             'user_member_id' => 10,
-            'status_id' => 1,
+            'status_id' => 4,
             'task_slug' => '78_anggotaproduksi2',
             'task_description' => 'Pencacahan',
             'task_volume' => 7,

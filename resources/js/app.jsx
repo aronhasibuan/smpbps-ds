@@ -37,17 +37,21 @@ const App = () => {
   const [events, setEvents] = useState([]);
   
   useEffect(() => {
-    fetch('/api/tasks/calendar')
-      .then(res => res.json())
-      .then(data => {
-        const formatted = data.map(ev => ({
-          ...ev,
-          start: new Date(ev.start),
-          end: new Date(ev.end),
-        }));
-        setEvents(formatted);
-      });
-  }, []);
+  fetch('/api/tasks/calendar')
+    .then(res => res.json())
+    .then(data => {
+      const formatted = data.map(ev => ({
+        ...ev,
+        start: new Date(ev.start),
+        end: new Date(ev.end),
+      }));
+      setEvents(formatted);
+    })
+    .catch(err => {
+      // Bisa tampilkan pesan error atau log
+      console.error('Gagal memuat data kalender:', err);
+    });
+}, []);
 
   return(
     <div className='App'>
@@ -57,8 +61,11 @@ const App = () => {
         startAccessor="start"
         endAccessor="end"
         style={{ height: 500, margin: "50px" }}
-        views={['month', 'week', 'day']}
+        views={['month']}
+        step={1440} 
+        timeslots={1}
         formats={formats}
+        culture='id'
       />
     </div>
   );
