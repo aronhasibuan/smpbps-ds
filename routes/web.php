@@ -19,7 +19,7 @@ use App\Http\Controllers\ObjectionController;
 Route::middleware(['guest'])->group(function(){
     // login
     Route::get('/', function () {return redirect('/login');});
-    Route::get('/login', [LoginController::class, 'loginForm'])->name('login');
+    Route::get('/login', [DataflowController::class, 'login'])->name('login');
     Route::post('/login', [LoginController::class, 'authenticate']);
 });
 
@@ -38,11 +38,10 @@ Route::middleware(['auth'])->group(function(){
             } else{
                 return response()->file(storage_path("app/public/{$path}"));
             }
-
         })->where('filename', '.*');
 
         // view profile
-        Route::get('{user:user_role}/profil', [DataflowController::class, 'profile'])->name('profile');
+        Route::get('profil', [DataflowController::class, 'profile'])->name('profile');
         Route::put('/profile/updatepassword/{user}', [UserController::class, 'updatepassword'])->name('updatepassword');
 
         // Calendar
@@ -91,7 +90,7 @@ Route::middleware(['auth'])->group(function(){
         })->middleware('auth');
 
         // view evaluation
-        Route::get('/arsip/penilaian/{task:task_slug}', [DataflowController::class, 'evaluation'])->name('evaluation');
+        Route::get('/penilaian/{task:task_slug}', [DataflowController::class, 'evaluation'])->name('evaluation');
     
     // kepalaBPS
         // view employeelist
@@ -158,7 +157,7 @@ Route::middleware(['auth'])->group(function(){
     // anggota tim
 
         // view home
-        Route::get('/anggotatim/beranda', [DataflowController::class, 'home'])->name('home');
+        Route::get('/beranda-anggota-tim', [DataflowController::class, 'home'])->name('home');
 
         // view tasklist
         Route::get('/anggotatim/daftartugas', [DataflowController::class, 'tasklist'])->name('tasklist');

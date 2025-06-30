@@ -40,6 +40,7 @@
                         <form method="GET" class="w-full md:w-auto">
                             <label for="month_year" class="sr-only">Filter Bulan/Tahun</label>
                             <select name="month_year" id="month_year" 
+                                    onchange="this.form.submit()"
                                     class="w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 transition-colors"
                                     aria-label="Filter berdasarkan bulan dan tahun">
                                 <option value="">Semua Periode</option>
@@ -83,13 +84,13 @@
                     </thead>
                     <tbody class="border-t text-gray-700 dark:text-gray-400">
                         @forelse ($tasks as $task)
-                        <tr>
+                        <tr class="border-t hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="px-4 py-3">{{ $task->activity->activity_name }}</td>
                             <td class="px-4 py-3">{{ $task->task_volume }} {{ $task->activity->activity_unit }}</td>
                             <td class="px-4 py-3">{{ $task->activity->id_format_start }}</td>
                             <td class="px-4 py-3">{{ $task->activity->id_format_deadline }}</td>
                             <td class="px-4 py-3 items-center justify-center hover:cursor-pointer">
-                                <a href="/arsip/penilaian/{{ $task->task_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none" aria-label="Lihat penilaian tugas {{ $task->activity->activity_name }}">
+                                <a href="/penilaian/{{ $task->task_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none" aria-label="Lihat penilaian tugas {{ $task->activity->activity_name }}">
                                     <img class="w-6 h-6" src="{{ asset('img/star.svg') }}" alt="Nilai">
                                 </a>
                             </td>

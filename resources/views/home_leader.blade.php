@@ -1,87 +1,153 @@
 <x-layout>
-    <div class="text-center">
-        <p class="text-black font-bold text-xl mb-3">Halo. Selamat datang {{ $user->user_full_name }}!</p>
-    </div>
+    <!-- Welcome Section -->
+    <section aria-labelledby="welcome-heading" class="text-center mb-8">
+        <h1 id="welcome-heading" class="text-2xl font-bold text-gray-800 dark:text-white">
+            Halo, Selamat datang {{ $user->user_full_name }}!
+        </h1>
+    </section>
 
-    <div class="flex w-full gap-6 mt-4">
+    <!-- Stats Cards -->
+    <section aria-labelledby="stats-heading" class="mb-8">
+        <h2 id="stats-heading" class="sr-only">Statistik Kegiatan</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Kegiatan Berjalan -->
+            <a href="{{ route('activitiesmonitoring_ketuatim') }}" 
+               class="border p-6 rounded-lg flex flex-col items-center bg-blue-500 shadow-md transition-all hover:shadow-lg hover:bg-blue-600 hover:transform hover:-translate-y-1"
+               aria-label="{{ $activityStats['running'] }} Kegiatan Berjalan">
+                <div class="flex items-center justify-between w-full">
+                    <img src="{{ asset('img/alarm-clock-plus.svg') }}" 
+                         alt="" 
+                         class="w-10 h-10"
+                         aria-hidden="true" 
+                         loading="lazy">
+                    <span class="text-4xl font-bold text-white">{{ $activityStats['running'] }}</span>
+                </div>
+                <p class="mt-4 text-center text-white text-lg font-semibold">Kegiatan Berjalan</p>
+            </a>
+            
+            <!-- Kegiatan Terlambat -->
+            <a href="{{ route('activitiesmonitoring_ketuatim') }}" 
+               class="border p-6 rounded-lg flex flex-col items-center bg-red-500 shadow-md transition-all hover:shadow-lg hover:bg-red-600 hover:transform hover:-translate-y-1"
+               aria-label="{{ $activityStats['late'] }} Kegiatan Terlambat">
+                <div class="flex items-center justify-between w-full">
+                    <img src="{{ asset('img/alarm-clock-minus.svg') }}" 
+                         alt="" 
+                         class="w-10 h-10"
+                         aria-hidden="true"
+                         loading="lazy">
+                    <span class="text-4xl font-bold text-white">{{ $activityStats['late'] }}</span>
+                </div>
+                <p class="mt-4 text-center text-white text-lg font-semibold">Kegiatan Terlambat</p>
+            </a>
+            
+            <!-- Kegiatan Selesai -->
+            <a href="{{ route('activitiesarchive') }}" 
+               class="border p-6 rounded-lg flex flex-col items-center bg-green-500 shadow-md transition-all hover:shadow-lg hover:bg-green-600 hover:transform hover:-translate-y-1"
+               aria-label="{{ $activityStats['completed'] }} Kegiatan Selesai">
+                <div class="flex items-center justify-between w-full">
+                    <img src="{{ asset('img/alarm-clock-check.svg') }}" 
+                         alt="" 
+                         class="w-10 h-10"
+                         aria-hidden="true"
+                         loading="lazy">
+                    <span class="text-4xl font-bold text-white">{{ $activityStats['completed'] }}</span>
+                </div>
+                <p class="mt-4 text-center text-white text-lg font-semibold">Kegiatan Selesai</p>
+            </a>
 
-        <div class="border p-4 rounded-lg flex flex-col items-center flex-1 bg-blue-500 shadow">
-            <div class="flex items-center justify-center w-full">
-                <img src="{{ asset('img/alarm-clock-plus.svg') }}" alt="" class="w-12 h-12 mr-10">
-                <span class="text-5xl font-bold text-white">{{ $activityStats['running'] }}</span>
+            <!-- Verifikasi Tugas -->
+            <a href="{{ route('verification') }}" 
+               class="border p-6 rounded-lg flex flex-col items-center bg-yellow-500 shadow-md transition-all hover:shadow-lg hover:bg-yellow-600 hover:transform hover:-translate-y-1"
+               aria-label="{{ $activityStats['verify'] }} Tugas Perlu Verifikasi">
+                <div class="flex items-center justify-between w-full">
+                    <img src="{{ asset('img/alarm-clock.svg') }}" 
+                         alt="" 
+                         class="w-10 h-10"
+                         aria-hidden="true"
+                         loading="lazy">
+                    <span class="text-4xl font-bold text-white">{{ $activityStats['verify'] }}</span>
+                </div>
+                <p class="mt-4 text-center text-white text-lg font-semibold">Verifikasi Tugas</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section aria-labelledby="cta-heading" class="mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- View All Activities -->
+            <div class="border-2 border-gray-200 rounded-lg p-6 bg-white shadow-sm flex flex-col items-center">
+                <h2 id="cta-heading" class="text-xl lg:text-2xl mb-6 text-center font-medium text-gray-800">
+                    Untuk melihat seluruh kegiatan anda, silahkan klik tombol di bawah ini
+                </h2>
+                <a href="{{ route('activitiesmonitoring_ketuatim') }}" 
+                   class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium"
+                   aria-label="Lihat semua kegiatan">
+                    Lihat Kegiatan Selengkapnya
+                </a>
             </div>
-            <p class="mt-6 text-center text-white text-xl font-bold">Kegiatan Berjalan</p>
-        </div>
-        
-        <div class="border p-4 rounded-lg flex flex-col items-center flex-1 bg-red-500 shadow">
-            <div class="flex items-center justify-center w-full">
-                <img src="{{ asset('img/alarm-clock-minus.svg') }}" alt="" class="w-12 h-12 mr-10">
-                <span class="text-5xl font-bold text-white">{{ $activityStats['late'] }}</span>
+
+            <!-- Verification CTA -->
+            <div class="border-2 border-gray-200 rounded-lg p-6 bg-white shadow-sm flex flex-col items-center">
+                @if ($activityStats['verify'] == 0)
+                    <p class="text-xl lg:text-2xl text-center text-gray-600">
+                        Saat ini anda tidak memiliki tugas yang harus diverifikasi!
+                    </p>
+                @else
+                    <h2 class="text-xl lg:text-2xl mb-6 text-center font-medium text-gray-800">
+                        Anda memiliki <span class="text-red-600 font-bold">{{ $activityStats['verify'] }}</span> tugas yang harus segera diverifikasi!
+                    </h2>
+                    <a href="{{ route('verification') }}" 
+                       class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium"
+                       aria-label="Verifikasi tugas sekarang">
+                        Verifikasi Sekarang
+                    </a>
+                @endif
             </div>
-            <p class="mt-6 text-center text-white text-xl font-semibold">Kegiatan Terlambat</p>
         </div>
-        
-        <div class="border p-4 rounded-lg flex flex-col items-center flex-1 bg-green-500 shadow">
-            <div class="flex items-center justify-center w-full">
-                <img src="{{ asset('img/alarm-clock-check.svg') }}" alt="Tugas Selesai" class="w-12 h-12 mr-12">
-                <span class="text-5xl font-bold text-white">{{ $activityStats['completed'] }}</span>
-            </div>
-            <p class="mt-6 text-center text-white text-xl font-semibold">Kegiatan Selesai</p>
-        </div>
+    </section>
 
-        <div class="border p-4 rounded-lg flex flex-col items-center flex-1 bg-yellow-500 shadow">
-            <div class="flex items-center justify-center w-full">
-                <img src="{{ asset('img/alarm-clock.svg') }}" alt="" class="w-12 h-12 mr-10">
-                <span class="text-5xl font-bold text-white">{{ $activityStats['verify'] }}</span>
-            </div>
-            <p class="mt-6 text-center text-white text-xl font-semibold">Verifikasi Tugas</p>
-        </div>
-    </div>
-
-    <div class="flex gap-4 my-6">
-        <div class="flex-1 border-2 border-black rounded-lg p-8 mx-2 bg-white flex flex-col items-center">
-            <p class="text-3xl mb-8 text-left">Untuk melihat seluruh kegiatan anda, silahkan klik tombol di bawah ini</p>
-            <a href="" class="text-white bg-blue-600 p-4 rounded-2xl">Lihat Kegiatan Selengkapnya</a>
-        </div>
-
-        <div class="flex-1 border-2 border-black rounded-lg p-8 mx-2 bg-white flex flex-col items-center">
-            @if ($activityStats['verify'] == 0)
-                <p class="text-3xl">Saat ini anda tidak memiliki tugas yang harus diverifikasi!</p>
-            @else
-                <p class="text-3xl mb-8">Anda memiliki beberapa tugas yang harus segera diverifikasi!</p>
-                <a href="" class="text-white bg-blue-600 p-4 rounded-2xl">Lihat Verifikasi Tugas</a>
-            @endif
-        </div>
-    </div>
-
-    <div class="flex flex-col md:flex-row gap-6">
-
-        <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6 flex-1 border-2 border-black">
-            <div class="bg-blue-600 px-4 py-3 flex justify-between items-center">
+    <!-- Dashboard Sections -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-gray-200">
+            <div class="bg-blue-600 px-4 py-3">
                 <h3 class="text-lg font-semibold text-white">
-                    Aktivitas Terbaru:
+                    Aktivitas Terbaru
                 </h3>
             </div>
-
-            <ul class="list-disc pl-6">
+            <div class="p-4">
                 @forelse($memberProgress as $progress)
-                    <li class="mb-3">
-                        <div>
-                            <span class="">{{ $progress->task->user->user_full_name }} memperbarui progress tugas {{ $progress->task->activity->activity_name }} menjadi {{ $progress->task->task_latest_progress }} dari {{ $progress->task->task_volume }} {{ $progress->task->activity->activity_unit }}</span>
-                        </div>
-                    </li>
+                    <article class="mb-4 pb-4 border-b border-gray-100 last:border-0 last:mb-0">
+                        <a href="/ketuatim/monitoringkegiatan/{{ $progress->task->activity->activity_slug }}/{{ $progress->task->task_slug }}" 
+                           class="block hover:bg-gray-50 p-2 rounded transition-colors"
+                           aria-label="Lihat detail progress {{ $progress->task->activity->activity_name }}">
+                            <p class="text-blue-600 hover:underline">
+                                <strong>{{ $progress->task->user->user_full_name }}</strong> memperbarui progress tugas 
+                                <strong>{{ $progress->task->activity->activity_name }}</strong> menjadi 
+                                {{ $progress->task->task_latest_progress }} dari {{ $progress->task->task_volume }} {{ $progress->task->activity->activity_unit }}
+                            </p>
+                            <time class="text-sm text-gray-500">
+                                {{ $progress->created_at->diffForHumans() }}
+                            </time>
+                        </a>
+                    </article>
                 @empty
-                    <li class="text-center text-gray-500">Tidak ada progress hari ini.</li>
+                    <p class="text-center text-gray-500 py-4">Tidak ada aktivitas terbaru</p>
                 @endforelse
-            </ul>
+            </div>
         </div>
         
-        <div class="bg-white rounded-lg shadow-md p-6 mb-6 flex-1 flex flex-col items-center justify-center border-2 border-black">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Distribusi Kegiatan Aktif Berdasarkan Progress</h3>
-            <canvas id="taskPieChart"></canvas>
+        <!-- Progress Chart -->
+        <div class="bg-white rounded-lg shadow-md p-6 border-2 border-gray-200 flex flex-col">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">
+                Distribusi Kegiatan Aktif Berdasarkan Progress
+            </h3>
+            <div class="flex-1 flex items-center justify-center min-h-[300px]">
+                <canvas id="taskPieChart" aria-label="Diagram distribusi kegiatan"></canvas>
+            </div>
         </div>
-
-    </div>
+    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -112,5 +178,4 @@
             });
         });
     </script>
-    
 </x-layout>

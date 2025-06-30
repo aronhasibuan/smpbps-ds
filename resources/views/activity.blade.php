@@ -1,167 +1,181 @@
 <x-layout>
-    <div>
-
-        <a href="{{ $actionUrl }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
-        
-        <div class="flex items-center mt-5 mb-2">
-            <p class="font-bold dark:text-white">{{ $activity->activity_name }}</p>
-            <button href="" class="ml-2" type="button" id="updatemodalbutton" data-modal-target="updatemodal" data-modal-toggle="updatemodal">
-                <img class="w-5 h-5" src="{{ asset('img/task-edit.svg') }}" alt="Detail">
-            </button>
-        </div>
-
-        {{-- create modal - update kegiatan --}}
-        <div id="updatemodal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-            <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-                <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                    <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Perbarui Kegiatan
-                        </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="updatemodal">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                    </div>
-                    <form action="{{ route('updatekegiatan', $activity->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                            <div>
-                                <label for="activity_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Kegiatan</label>
-                                <input type="text" name="activity_name" id="activity_name" value="{{ $activity->activity_name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
-                            </div>
-                            <div>
-                                <label for="tenggat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tenggat</label>
-                                <input type="date" name="tenggat" id="tenggat" value="{{ $tasks->first()->tenggat }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
-                            </div>
-                        </div>
-                        <button type="submit" class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                            <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                            Perbarui Kegiatan
-                        </button>
-                    </form>
+    <!-- Breadcrumb Navigation -->
+    <nav class="flex mb-4" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-2">
+            <li class="inline-flex items-center">
+                <a href="{{ $actionUrl }}" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800">
+                    <svg class="w-3 h-3 mr-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                    </svg>
+                    Kembali
+                </a>
+            </li>
+            <li aria-current="page">
+                <div class="flex items-center">
+                    <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    </svg>
+                    <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">{{ $activity->activity_name }}</span>
                 </div>
-            </div>
-        </div>
+            </li>
+        </ol>
+    </nav>
 
-
-        {{-- advanced table --}}    
-        <div class="overflow-auto max-h-screen">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-t"> 
-                    <tr>
-                        <th scope="col" class="px-4 py-3">Status</th>
-                        <th scope="col" class="px-4 py-3">Nama Anggota Tim</th>
-                        <th scope="col" class="px-4 py-3">Tugas Selesai</th>
-                        <th scope="col" class="px-4 py-3">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white border-t dark:border-gray-700 dark:bg-gray-800">
-                    @foreach ($tasks as $task)
-                    <tr class="border-t">
-                        @php
-                            $color = $task->spi_data['color'];
-                            $backgroundColor = in_array($color, ['red', 'yellow', 'green', 'blue']) ? "bg-{$color}-500" : 'bg-black'; 
-                        @endphp
-                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $task->spi_data['status'] }}</p>
-                        </th>
-                        <td class="px-4 py-3">{{ $task->user->user_full_name }}</td>
-                        <td class="px-4 py-3">{{ $task->task_latest_progress }} dari {{ $task->task_volume }} {{ $activity->activity_unit }}</td>
-                        <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                            @if($role === 'kepalabps')
-                                <a href="{{ route('taskmonitoring_kepalabps', ['activity_slug' => $activity->activity_slug, 'slug'=>$task->task_slug])}}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
-                                <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
-                            </a>
-                            @elseif($role === 'ketuatim')
-                                <a href="{{ route('taskmonitoring_ketuatim', ['activity_slug' => $activity->activity_slug, 'slug'=>$task->task_slug])}}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none">
-                                <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
-                            </a>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-        <hr>
-
-        {{-- progress --}}
-        <div class="flex justify-between mb-2 mt-20">
-            <span class="md:text-base text-sm font-bold text-gray-900 dark:text-white">Total Progress</span>
-            <span class="md:text-base text-sm font-bold text-gray-900 dark:text-white">Tenggat Pekerjaan: {{ $activity->id_format_deadline }}</span>
-        </div>
-        <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
-            <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-sm font-medium text-blue-100 text-center" style="width: {{ $activity->total_progress }}%">{{ $activity->total_progress }}%</div>
-        </div>
-
-        {{-- button - tambah penerima tugas --}}
-        <div class="flex justify-center gap-4 mt-20">            
-            <button type="submit" id="openObjection" class="bg-blue-600 inline-flex text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
-                <img class="w-5 h-5 mr-1 -ml-1" src="{{ asset('img/add-person.svg') }}" alt="Ajukan Keberatan">
-                Tambah Penerima Tugas
+    <!-- Activity Header -->
+    <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $activity->activity_name }}</h1>
+            @can('update', $activity)
+            <button type="button" id="updatemodalbutton" data-modal-target="updatemodal" data-modal-toggle="updatemodal" class="ml-2 p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                <img class="w-5 h-5" src="{{ asset('img/task-edit.svg') }}" alt="Edit Kegiatan">
             </button>
+            @endcan
         </div>
+        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+            Tenggat: {{ $activity->id_format_deadline }}
+        </span>
+    </div>
 
+    {{-- <!-- Update Activity Modal -->
+    @include('partials.activity-update-modal') --}}
 
-        {{-- button - tandai kegiatan selesai --}}
-        @if ( $activity->total_progress == 100)    
-            <div class="flex justify-center gap-4 mt-20">
-                <button type="button" onclick="openModal()" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
-                Tandai Kegiatan Selesai
-                </button>
-            </div>
+    <!-- Task Progress Summary -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 mb-6">
+        <div class="flex justify-between items-center mb-2">
+            <h3 class="font-semibold text-gray-900 dark:text-white">Total Progress Tim</h3>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ $activity->total_completed }}/{{ $activity->total_tasks }} tugas selesai
+            </span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+            <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $activity->total_progress }}%"></div>
+        </div>
+        <div class="flex justify-between mt-1">
+            <span class="text-xs text-gray-600 dark:text-gray-400">0%</span>
+            <span class="text-xs text-gray-600 dark:text-gray-400">100%</span>
+        </div>
+    </div>
+
+    <!-- Team Members Table -->
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-8">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Status</th>
+                    <th scope="col" class="px-6 py-3">Anggota Tim</th>
+                    <th scope="col" class="px-6 py-3">Progress</th>
+                    <th scope="col" class="px-6 py-3 text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($tasks as $task)
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td class="px-6 py-4">
+                        @php
+                            $statusColors = [
+                                'red' => 'bg-red-500',
+                                'yellow' => 'bg-yellow-500',
+                                'green' => 'bg-green-500',
+                                'blue' => 'bg-blue-500',
+                                'default' => 'bg-gray-500'
+                            ];
+                            $color = $task->spi_data['color'] ?? 'default';
+                            $bgColor = $statusColors[$color] ?? $statusColors['default'];
+                        @endphp
+                        <span class="{{ $bgColor }} text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
+                            {{ $task->spi_data['status'] ?? 'Belum Dimulai' }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                <span class="text-xs font-medium text-gray-600">
+                                    {{ substr($task->user->user_full_name, 0, 1) }}
+                                </span>
+                            </div>
+                            {{ $task->user->user_full_name }}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center">
+                            <div class="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700 mr-2">
+                                <div class="bg-blue-600 h-1.5 rounded-full" style="width: {{ ($task->task_latest_progress / $task->task_volume) * 100 }}%"></div>
+                            </div>
+                            <span class="text-xs font-medium">
+                                {{ $task->task_latest_progress }}/{{ $task->task_volume }} {{ $activity->activity_unit }}
+                            </span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <a href="/ketuatim/monitoringkegiatan/{{ $activity->activity_slug }}/{{ $task->task_slug }}" 
+                           class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                            Detail
+                        </a>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                        Belum ada anggota tim yang ditugaskan
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+        @can('assign', $activity)
+        <button type="button" id="openObjection" 
+                class="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200">
+            <img class="w-5 h-5 mr-2" src="{{ asset('img/add-person.svg') }}" alt="Tambah Penerima Tugas">
+            Tambah Penerima Tugas
+        </button>
+        @endcan
+
+        @if($activity->total_progress == 100 && auth()->user()->can('complete', $activity))
+        <button type="button" onclick="openModal()" 
+                class="px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition duration-200">
+            Tandai Kegiatan Selesai
+        </button>
+        @endif
+    </div>
+
+    <!-- Confirmation Modal -->
+    {{-- @include('partials.confirmation-modal', [
+        'modalId' => 'confirmationModal',
+        'title' => 'Konfirmasi Penyelesaian Kegiatan',
+        'message' => 'Apakah Anda yakin ingin menandai kegiatan ini sebagai selesai? Aksi ini tidak dapat dibatalkan.',
+        'confirmRoute' => route('markkegiatanasdone', ['activity' => $activity->activity_slug, 'id' => $activity->id]),
+        'confirmText' => 'Ya, Tandai Selesai'
+    ]) --}}
+
+    @push('scripts')
+    <script>
+        // Initialize date picker
+        flatpickr("#tenggat", {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            disableMobile: true
+        });
+
+        // Toast notifications
+        @if(session('updated'))
+            toastr.success("{{ session('updated') }}");
+        @endif
+        @if(session('error'))
+            toastr.error("{{ session('error') }}");
         @endif
 
-        <div id="confirmationModal" class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 hidden">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-96">
-                <h2 class="text-lg font-bold mb-4 dark:text-white">Konfirmasi</h2>
-                <p class="text-sm text-gray-700 mb-6 dark:text-gray-300">Apakah anda yakin menandai kegiatan ini selesai? Aksi ini tidak dapat dibatalkan.</p>
-                <div class="flex justify-end gap-4">
-                    <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 dark:text-black px-4 py-2 rounded hover:bg-gray-400 transition duration-200">
-                        Batal
-                    </button>
-                    <form action="{{ route('markkegiatanasdone', ['activity' => $activity->activity_slug, 'id' => $activity->id]) }}" method="POST">
-                        @csrf
-                        @method('POST')
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200">
-                            Ya, Tandai Selesai
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
+        // Modal functions
+        function openModal() {
+            document.getElementById('confirmationModal').classList.remove('hidden');
+        }
 
-        <script>
-            function openModal() {
-                const modal = document.getElementById('confirmationModal');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
-
-            function closeModal() {
-                const modal = document.getElementById('confirmationModal');
-                modal.classList.remove('flex')
-                modal.classList.add('hidden');
-            }
-
-            flatpickr("#tenggat", {
-                dateFormat: "Y-m-d",  
-                minDate: "today",      
-                disableMobile: true 
-            });
-        </script>
-
-        <script>
-            @if(session('updated'))
-                toastr.success("{{ session('updated') }}");
-            @endif
-            @if(session('error'))
-                toastr.error("{{ session('error') }}");
-            @endif
-        </script>
-
-    </div>
-</x-layout> 
+        function closeModal() {
+            document.getElementById('confirmationModal').classList.add('hidden');
+        }
+    </script>
+    @endpush
+</x-layout>

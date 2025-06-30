@@ -21,6 +21,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class DataflowController extends Controller
 {
+    // data view('login')
+    public function login(){
+        return view('login');
+    }
+
     // data view('employeelist')
     public function employeelist(Request $request)
     {        
@@ -330,32 +335,61 @@ class DataflowController extends Controller
     // data view('activitiesarchive')
     public function activitiesarchive(Request $request)
     {
+        \Carbon\Carbon::setLocale('id');
+        
+        $search = $request->input('search');
         $user = Auth::user();
 
-        $search = $request->input('search');
-        $perPage = $request->get('perPage', 10); 
-
-        if ($user->user_role === 'kepalabps'){
-            $activities = Activity::with('tasks')->where('activity_active_status', false);
-        } elseif ($user->user_role === 'ketuatim'){
-            $activities = Activity::with('tasks')->where('user_leader_id', $user->id)->where('activity_active_status', false);
-        }else {
+        // Ambil daftar bulan-tahun dari kegiatan yang sudah arsip
+        if ($user->user_role === 'kepalabps') {
+            $activitiesQuery = Activity::where('activity_active_status', false);
+        } elseif ($user->user_role === 'ketuatim') {
+            $activitiesQuery = Activity::where('user_leader_id', $user->id)
+                ->where('activity_active_status', false);
+        } else {
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
-        };
+        }
+
+        $activityDates = (clone $activitiesQuery)
+            ->pluck('activity_start')
+            ->filter()
+            ->map(function($date) {
+                return \Carbon\Carbon::parse($date)->format('Y-m');
+            })
+            ->unique()
+            ->sort()
+            ->values();
+
+        // Query utama untuk kegiatan arsip
+        $activities = $activitiesQuery->with('tasks');
+
+        $monthYear = $request->get('month_year');
+        if ($monthYear) {
+            $activities->whereRaw("DATE_FORMAT(activity_start, '%Y-%m') = ?", [$monthYear]);
+        }
 
         if ($search) {
             $activities->where(function ($query) use ($search) {
-                $query->where('activity_name', 'like', '%' . $search . '%');
+                $query->where('activity_name', 'like', '%' . $search . '%')
+                    ->orWhere('activity_unit', 'like', '%' . $search . '%');
             });
         }
-        
-        $activities = $activities->paginate($perPage)->appends($request->query());
 
-        foreach ($activities as $activity){
+        $perPage = $request->get('perPage', 5);
+        $activities = $activities->paginate($perPage)->withQueryString();
+
+        // Hitung total volume per kegiatan
+        foreach ($activities as $activity) {
             $activity->total_volume = $activity->tasks->sum('task_volume');
         }
-        
-        return view('activitiesarchive', ['activities' => $activities]);
+
+        $actionUrl = Auth::user()->user_role === 'kepalabps'? '/kepalabps/monitoringkegiatan/': (Auth::user()->user_role === 'ketuatim'? '/ketuatim/monitoringkegiatan/': '#');
+
+        return view('activitiesarchive', [
+            'activities' => $activities,
+            'activityDates' => $activityDates,
+            'actionUrl' => $actionUrl,
+        ]);
     }
 
     // data view('activitiesmonitoring')
@@ -400,7 +434,14 @@ class DataflowController extends Controller
     // data view('employeemonitoring')
     public function employeemonitoring()
     {
-        $tasks = Task::with(['user', 'status'])->get();
+
+        $auth = Auth::user();
+
+        $tasks = Task::with(['user', 'status'])
+            ->whereHas('user', function($query) use ($auth) {
+                $query->where('team_id', $auth->team_id);
+            })
+            ->get();
 
         $groupedByUser = $tasks->groupBy(function ($task) {
             return $task->user->user_full_name ?? 'Tidak diketahui';
@@ -537,7 +578,7 @@ class DataflowController extends Controller
     }
 
     // data view('profile')
-    public function profile($user_role)
+    public function profile()
     {
         $user = Auth::user();
         return view('profile', ['user' => $user]);

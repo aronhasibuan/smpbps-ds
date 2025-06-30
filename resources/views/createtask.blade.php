@@ -8,6 +8,15 @@
     
             <form id="createTaskForm" action="{{ route('task.create') }}" method="POST" enctype="multipart/form-data">
             @csrf
+                @if($errors->any())
+                    <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
+                        <ul class="list-disc pl-5">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
                 <div class="mb-4">
                     <label for="activity_name" class="block text-sm font-medium text-gray-900 dark:text-white">Nama Kegiatan</label>
@@ -28,7 +37,7 @@
                 </div>
 
                 <div id="taskContainer" class="w-full">
-                    <div class="task-item grid w-full md:grid-cols-5 gap-4 mb-2 md:border-none border md:p-0 p-5">
+                    <div class="task-item grid w-full md:grid-cols-5 grid-cols-1 gap-4 mb-6 md:border-none border md:p-0 p-4">
 
                         <div>
                             <label class="block text-sm font-medium text-gray-900 dark:text-white">Penerima Tugas</label>
@@ -61,7 +70,7 @@
                             <input type="file" name="task_attachment[]" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
                         </div>
 
-                        <button class="remove-task block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 invisible" type="button">
+                        <button class="remove-task md:mt-0 mt-2 block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 invisible" type="button">
                             Hapus Baris
                         </button>
 
@@ -69,7 +78,9 @@
                 </div>
                             
                 <div>
-                    <button type="button" id="addTask" class="my-4 bg-green-700 text-white p-2 rounded flex mx-auto">Tambah Penerima Tugas</button>
+                    <button type="button" id="addTask" class="my-4 bg-green-700 text-white p-2 rounded flex mx-auto" aria-label="Tambah penerima tugas baru">
+                        Tambah Penerima Tugas
+                    </button>
                 </div>         
             
                 <div>
@@ -106,6 +117,36 @@
 
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startDate = document.getElementById('activity_start');
+            const endDate = document.getElementById('activity_end');
+            
+            startDate.addEventListener('change', function() {
+                endDate.min = this.value;
+            });
+            
+            endDate.addEventListener('change', function() {
+                if (startDate.value && this.value < startDate.value) {
+                    alert('Tanggal akhir tidak boleh sebelum tanggal mulai');
+                    this.value = '';
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const fileSize = this.files[0]?.size / 1024 / 1024; // in MB
+                if (fileSize > 5) {
+                    alert('Ukuran file melebihi 5MB');
+                    this.value = '';
+                }
+            });
+        });
+    </script>
     
     <script>        
         document.getElementById("addTask").addEventListener("click", function () {
@@ -174,6 +215,27 @@
         });
     </script>
 
+    <script>
+        // Validasi lintas tim
+        document.getElementById('createTaskForm').addEventListener('submit', function(e) {
+            const crossTeamUsers = Array.from(document.querySelectorAll('.user_member_id option:checked[data-lintas-tim="1"]'));
+            
+            if (crossTeamUsers.length > 0) {
+                e.preventDefault();
+                document.getElementById('teamConfirmationModal').classList.remove('hidden');
+            }
+        });
+
+        // Handler untuk modal lintas tim
+        document.getElementById('teamConfirmSubmit').addEventListener('click', function() {
+            document.getElementById('createTaskForm').submit();
+        });
+
+        document.getElementById('teamCancelSubmit').addEventListener('click', function() {
+            document.getElementById('teamConfirmationModal').classList.add('hidden');
+        });
+    </script>
+
     <script type="text/javascript">
         @if(session('success'))
             toastr.success("{{ session('success') }}");
@@ -184,13 +246,10 @@
         @if(session('deleted'))
             toastr.info("{{ session('deleted') }}");
         @endif
-        if (window.location.pathname === "/tambahkegiatan") {
-            const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            if (isDarkMode) {
-                document.documentElement.style.backgroundColor = "#111827"; // bg-gray-900
-            } else {
-                document.documentElement.style.backgroundColor = "#FFFFFF"; // bg-gray-50
-            }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
         }
     </script>
 
