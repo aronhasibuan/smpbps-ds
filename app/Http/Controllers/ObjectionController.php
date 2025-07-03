@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ObjectionController extends Controller
 {
-    public function create(Request $request, $user_role, $task_slug, $id)
+    public function create(Request $request, $id)
     {
         $request->validate([
             'objection_reason' => 'required|string|max:1000',

@@ -17,17 +17,31 @@ use App\Http\Controllers\ObjectionController;
 // GET, POST, PUT, PATCH, DELETE
 
 Route::middleware(['guest'])->group(function(){
-    // login
-    Route::get('/', function () {return redirect('/login');});
-    Route::get('/login', [DataflowController::class, 'login'])->name('login');
-    Route::post('/login', [LoginController::class, 'authenticate']);
+
+    // Landing Page
+    Route::get('/', function () {
+        return redirect('/login');
+    })->name('landing-page');
+
+    // view ('login')
+    Route::get('/login', [DataflowController::class, 'login'])->name('login-page');
+    Route::post('/login', [LoginController::class, 'authenticate'])->name('authenticate');
+
 });
 
 Route::middleware(['auth'])->group(function(){
 
-    // all role
+    # all role
+
         // logout
         Route::post('/logout', LogoutController::class)->name('logout');
+
+        // view ('profile')
+        Route::get('profil', [DataflowController::class, 'profile'])->name('profile-page');
+        Route::put('/profil/update-password/{user}', [UserController::class, 'update_password'])->name('update-password');
+       
+        // view('task')
+        Route::get('/{task:task_slug}', [DataflowController::class, 'task'])->name('task-page');
 
         // attachment
         Route::get('/file/{filename}', function ($filename) {
@@ -40,11 +54,11 @@ Route::middleware(['auth'])->group(function(){
             }
         })->where('filename', '.*');
 
-        // view profile
-        Route::get('profil', [DataflowController::class, 'profile'])->name('profile');
-        Route::put('/profile/updatepassword/{user}', [UserController::class, 'updatepassword'])->name('updatepassword');
-
-        // Calendar
+        // view ('evaluation')
+        Route::get('/penilaian/{task:task_slug}', [DataflowController::class, 'evaluation'])->name('evaluation-page');
+    
+        // view ('calendar')
+        Route::get('/kalender', [DataflowController::class, 'calendar'])->name('calendar-page');
         Route::get('/api/tasks/calendar', function () {
             $user = Auth::user();
 
@@ -60,9 +74,7 @@ Route::middleware(['auth'])->group(function(){
                         ];
                     });
                 return response()->json($tasks);
-            }
-
-            if ($user->user_role === 'ketuatim') {
+            }elseif ($user->user_role === 'ketuatim') {
                 $activities = Activity::where('user_leader_id', $user->id)->get()
                     ->map(function ($activity) {
                         return [
@@ -72,9 +84,7 @@ Route::middleware(['auth'])->group(function(){
                         ];
                     });
                 return response()->json($activities);
-            }
-
-            if ($user->user_role === 'kepalabps') {
+            }elseif ($user->user_role === 'kepalabps') {
                 $activities = Activity::all()
                     ->map(function ($activity) {
                         return [
@@ -84,95 +94,70 @@ Route::middleware(['auth'])->group(function(){
                         ];
                     });
                 return response()->json($activities);
+            }else{
+                return response()->json([]);
             }
+        })->name('calendar-api');
 
-            return response()->json([]);
-        })->middleware('auth');
+    # Kepala BPS dan Ketua Tim
 
-        // view evaluation
-        Route::get('/penilaian/{task:task_slug}', [DataflowController::class, 'evaluation'])->name('evaluation');
+        // view ('activitiesmonitoring')
+        Route::get('/monitoring-kegiatan', [DataflowController::class, 'activities_monitoring'])->name('activities-monitoring-page');
+    
+        // view ('activity')
+        Route::get('/{activity:activity_slug}', [DataflowController::class, 'activity'])->name('activity-page');
+
+        // view ('employeemonitoring)
+        Route::get('/monitoring-pegawai', [DataflowController::class, 'employee_monitoring'])->name('employee-monitoring-page');
+
+        // view ('arsipkegiatan')
+        Route::get('/arsip-kegiatan', [DataflowController::class, 'activities_archive'])->name('activities-archive-page');
     
     // kepalaBPS
-        // view employeelist
-        Route::get('/kepalabps/daftarpegawai', [DataflowController::class, 'employeelist'])->name('employeelist');
-        Route::put('/kepalabps/updateuser/{user}', [UserController::class, 'update'])->name('updateuser');
-        Route::delete('/kepalabps/deleteuser/{user}', [UserController::class, 'delete'])->name('deleteuser');
+        // view ('employeelist')
+        Route::get('/daftar-pegawai', [DataflowController::class, 'employee_list'])->name('employee-list-page');
+        Route::put('/update-user/{user}', [UserController::class, 'update'])->name('update-user');
+        Route::delete('/delete-user/{user}', [UserController::class, 'delete'])->name('delete-user');
 
         // view createuser
-        Route::get('/kepalabps/tambahpegawai', [DataflowController::class, 'createemployee']);
-        Route::post('/kepalabps/tambahpegawai', [UserController::class, 'create'])->name('createemployee');
-
-        // view activitiesmonitoring
-        Route::get('/kepalabps/monitoringkegiatan', [DataflowController::class, 'activitiesmonitoring'])->name('activitiesmonitoring');
-
-        // view activity
-        Route::get('/kepalabps/monitoringkegiatan/{activity:activity_slug}', [DataflowController::class, 'activity'])->name('activity');
-
-        // view task
-        Route::get('/kepalabps/monitoringkegiatan/{activity_slug}/{slug}', [DataflowController::class, 'taskmonitoring'])->name('taskmonitoring_kepalabps');
-
-        // view employeemonitoring
-        Route::get('/kepalabps/monitoringpegawai', [DataflowController::class, 'employeemonitoring'])->name('employeemonitoring');
-        
-        // view arsipkegiatan
-        Route::get('/kepalabps/arsipkegiatan', [DataflowController::class, 'activitiesarchive'])->name('activitiesarchive');
-
-        // view calendar
-        Route::get('/kepalabps/kalender', [DataflowController::class, 'calendar'])->name('calendar');
+        Route::get('/tambah-pegawai', [DataflowController::class, 'create_employee'])->name('create-employee-page');
+        Route::post('/tambah-pegawai', [UserController::class, 'create'])->name('create-employee');
 
     // ketua tim
-
-        // view activitiesmonitoring
-        Route::get('/ketuatim/monitoringkegiatan', [DataflowController::class, 'activitiesmonitoring'])->name('activitiesmonitoring_ketuatim');
         
+        // view home
+        Route::get('/beranda-ketua-tim', [DataflowController::class, 'home_leader'])->name('team-leader-home-page');
+
         // view activity
-        Route::get('/ketuatim/monitoringkegiatan/{activity:activity_slug}', [DataflowController::class, 'activity'])->name('activity');
-        Route::post('/ketuatim/monitoringkegiatan/{activity:activity_slug}/{id}', [TaskController::class, 'markkegiatanasdone'])->name('markkegiatanasdone');
-        Route::put('/ketuatim/monitoringkegiatan/{activity}', [ActivityController::class, 'update'])->name('updatekegiatan');
+        Route::put('/{activity}', [ActivityController::class, 'update'])->name('update-activity');
+        Route::post('/{activity:activity_slug}/{id}', [ActivityController::class, 'mark_activity_as_done'])->name('mark-activity-as-done');
 
         // view task
-        Route::get('/ketuatim/monitoringkegiatan/{activity_slug}/{slug}', [DataflowController::class, 'taskmonitoring'])->name('taskmonitoring_ketuatim');
-        Route::put('/ketuatim/tasks/{task}', [TaskController::class, 'update'])->name('updatetask');
-        Route::delete('/ketuatim/tasks/{task}', [TaskController::class, 'destroy'])->name('deletetask');
-
-        // view monitoringpegawai
-        Route::get('/ketuatim/monitoringpegawai', [DataflowController::class, 'employeemonitoring'])->name('tasks.active');
-
-        // view arsipkegiatan
-        Route::get('/ketuatim/arsipkegiatan', [DataflowController::class, 'activitiesarchive'])->name('activitiesarchive');
+        Route::put('/{task}', [TaskController::class, 'update'])->name('update-task');
+        Route::delete('/{task}', [TaskController::class, 'destroy'])->name('delete-task');
 
         // view tambahkegiatan
-        Route::get('/ketuatim/tambahkegiatan', [DataflowController::class, 'createtask']);
-        Route::post('/ketuatim/monitoringkegiatan', [TaskController::class, 'create'])->name('task.create');
-
-        // view calendar
-        Route::get('/ketuatim/kalender', [DataflowController::class, 'calendar'])->name('calendar');
+        Route::get('/tambah-kegiatan', [DataflowController::class, 'create_task'])->name('create-task-page');
+        Route::post('/tambah-kegiatan', [TaskController::class, 'create'])->name('create-task');
 
         // view verification
-        Route::get('/ketuatim/verifikasi', [DataflowController::class, 'verification'])->name('verification');
-
-        // view home
-        Route::get('/ketuatim/home', [DataflowController::class, 'home_leader'])->name('home_leader');
+        Route::get('/verifikasi', [DataflowController::class, 'verification'])->name('verification-page');
 
     // anggota tim
 
         // view home
-        Route::get('/beranda-anggota-tim', [DataflowController::class, 'home'])->name('home');
+        Route::get('/beranda-anggota-tim', [DataflowController::class, 'home'])->name('team-member-home-page');
 
         // view tasklist
-        Route::get('/anggotatim/daftartugas', [DataflowController::class, 'tasklist'])->name('tasklist');
+        Route::get('/anggotatim/daftartugas', [DataflowController::class, 'tasklist'])->name('task-list-page');
 
         // view task
-        Route::get('/anggotatim/daftartugas/{task:task_slug}', [DataflowController::class, 'task']);
-        Route::post('/anggotatim/daftartugas/{task:task_slug}/{id}', [TaskController::class, 'updateprogress'])->name('updateprogress');
-        Route::post('{user:user_role}/daftartugas/{task:task_slug}/keberatan/{id}', [ObjectionController::class, 'create'])->name('createobjection');
+        Route::post('/{task:task_slug}/{id}', [TaskController::class, 'update_progress'])->name('update-progress');
+        Route::post('{id}', [ObjectionController::class, 'create'])->name('create-objection');
         
         // view taskarchive
-        Route::get('/anggotatim/arsiptugas', [DataflowController::class, 'taskarchive'])->name('taskarchive');
+        Route::get('/arsip-tugas', [DataflowController::class, 'task_archive'])->name('task-archive-page');
 
         // view nilai
         Route::get('/anggotatim/arsip/penilaian/{task:task_slug}', [DataflowController::class, 'penilaian'])->name('penilaian');
-
-        // view calendar
-        Route::get('/anggotatim/kalender', [DataflowController::class, 'calendar'])->name('calendar');
 });

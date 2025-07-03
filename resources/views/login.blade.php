@@ -34,7 +34,7 @@
                         </div>
 
                         {{-- Form login --}}
-                        <form class="space-y-4" action="{{ route('login') }}" method="POST" autocomplete="off">
+                        <form class="space-y-4" action="{{ route('authenticate') }}" method="POST" autocomplete="off">
                             @csrf
                             <div class="space-y-4">
                                 {{-- Email Field --}}

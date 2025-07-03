@@ -66,9 +66,7 @@ class UserController extends Controller
             'user_role' => 'required|string|in:administrator,ketuatim,anggotatim',
             'user_whatsapp_number' => 'required|string|max:15',
         ]);
-
         $user->update($validatedData);
-
         return redirect()->route('employeelist')->with('success', 'Pengguna berhasil diperbarui.');
     }
 
@@ -76,12 +74,11 @@ class UserController extends Controller
     public function delete(User $user)
     {
         $user->delete();
-
         return redirect()->route('employeelist')->with('success', 'Pengguna berhasil dihapus.');
     }
 
     // update password
-    public function updatepassword(Request $request, User $user)
+    public function update_password(Request $request, User $user)
     {
         $request->validate([
             'currentpassword'       => 'required',
@@ -90,11 +87,11 @@ class UserController extends Controller
         ]);
 
         if (!Hash::check($request->currentpassword, $user->password)) {
-            return redirect()->route('profile')->with('error', 'Password saat ini salah.');
+            return redirect()->route('profile-page')->with('error', 'Password saat ini salah.');
         } else{
             $user->password = Hash::make($request->newpassword);
             $user->save();  
-            return redirect()->route('profile')->with('success', 'Password berhasil diperbarui.');
+            return redirect()->route('profile-page')->with('success', 'Password berhasil diperbarui.');
         }
     }
 }

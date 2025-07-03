@@ -9,7 +9,7 @@
         {{-- Konten --}}
         <div class="w-full">
             {{-- Tab General --}}
-            <div id="generalTab" class="border rounded-lg overflow-hidden shadow-sm">
+            <div id="generalTab" class="border rounded-lg overflow-hidden shadow-sm my-4">
                 <div class="border rounded-lg p-4 bg-gray-50">
                     <p class="text-base lg:text-lg">Umum</p>
                     <p class="text-sm text-gray-500">Pengaturan umum yang terkait dengan profil anda.</p>
@@ -70,7 +70,7 @@
                 <div class="border rounded-lg p-4 bg-gray-50">
                     <p class="text-base lg:text-lg">Kata Sandi</p>
                     <p class="text-sm text-gray-500">Anda dapat mengubah kata sandi anda di sini.</p>
-                    <form action="{{ route('updatepassword', $user->id) }}" method="POST">
+                    <form action="{{ route('update-password', $user->id) }}" method="POST">
                         @csrf
                         @method('PUT') 
                         <div class="bg-white border rounded-t-lg p-4 mt-2">
