@@ -2,11 +2,11 @@
     <div class="bg-white dark:bg-gray-900">
         <div class="py-4 px-4 mx-auto">
 
-            <a href="/ketuatim/monitoringkegiatan" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+            <a href="{{ route('activities-monitoring-page') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
 
             <h2 class="mb-4 mt-4 text-xl font-bold text-gray-900 dark:text-white">Tambah Kegiatan</h2>
     
-            <form id="createTaskForm" action="{{ route('task.create') }}" method="POST" enctype="multipart/form-data">
+            <form id="createTaskForm" action="{{ route('create-task') }}" method="POST" enctype="multipart/form-data">
             @csrf
                 @if($errors->any())
                     <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
@@ -42,14 +42,28 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-900 dark:text-white">Penerima Tugas</label>
                             <p class="text-xs text-gray-400">Pilih Penerima Tugas</p>
-                            <select name="user_member_id[]" class="user_member_id bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <option selected disabled>Pilih Anggota Tim</option>
-                                @foreach ($anggotatim as $user)
-                                    <option value="{{ $user->id }}" data-lintas-tim="{{ $user->team_id != auth()->user()->team_id ? '1' : '0' }}">
-                                        {{ $user->user_full_name }}@if ($user->team_id != auth()->user()->team_id) - (Lintas Tim)@endif
-                                    </option>
-                                @endforeach
-                            </select>
+                            <div class="relative">
+                                <select name="user_member_id[]" 
+                                        class="user_member_id appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-8 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-200 hover:border-gray-400 cursor-pointer">
+                                    <option value="" selected disabled class="text-gray-400">Pilih Anggota Tim</option>
+                                    
+                                    @foreach($teams as $team)
+                                        <optgroup label="{{ $team->team_name }}" class="text-gray-900 dark:text-gray-300">
+                                            @foreach($team->users as $user)
+                                                <option value="{{ $user->id }}" 
+                                                        class="@if($team->id != auth()->user()->team_id) text-blue-600 dark:text-blue-400 @endif">
+                                                    {{ $user->user_full_name }}
+                                                </option>
+                                            @endforeach
+                                        </optgroup>
+                                    @endforeach
+                                </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
                         </div>
                             
                         <div>

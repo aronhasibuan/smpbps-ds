@@ -91,6 +91,7 @@ class TaskController extends Controller
                 'progress_amount' => 0,
                 'progress_notes' => 'Tugas ditambahkan',
                 'progress_documentation' => null,
+                'progress_acceptance' => 1,
             ]);
 
             if ($member && $member->user_whatsapp_number) {

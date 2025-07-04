@@ -492,5 +492,16 @@ class ActivitySeeder extends Seeder
             'activity_end' => today()->format('Y-m-d'),
             'activity_active_status' => 1,
         ]);
+        
+        #44
+        Activity::create([
+            'user_leader_id' => 4,
+            'activity_name' => 'Metropolitan Statistical Area (MSA)',
+            'activity_slug' => '44-metropolitan-statistical-area-msa',
+            'activity_unit' => 'Dokumen',
+            'activity_start' => now()->format('Y-m-d'),
+            'activity_end' => now()->addDays(6)->format('Y-m-d'),
+            'activity_active_status' => 1,
+        ]);
     }
 }

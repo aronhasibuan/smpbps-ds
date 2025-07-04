@@ -1,0 +1,135 @@
+<div id="addTaskModal" tabindex="-1" aria-hidden="true" 
+     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-4xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    Tambah Tugas Baru
+                </h3>
+                <button type="button" 
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" 
+                        data-modal-toggle="addTaskModal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            
+            <!-- Modal body -->
+            <form action="{{ route('create-task') }}" method="POST" enctype="multipart/form-data" class="p-4 md:p-5">
+                @csrf
+                <input type="hidden" name="activity_id" value="{{ $activity->id }}">
+                
+                <div class="task-container">
+                    <!-- Task item template -->
+                    <div class="task-item grid w-full md:grid-cols-5 grid-cols-1 gap-4 mb-6 md:border-none border md:p-0 p-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-900 dark:text-white">Penerima Tugas</label>
+                            <p class="text-xs text-gray-400">Pilih Penerima Tugas</p>
+                            <select name="user_member_id[]" required
+                                    class="user_member_id bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <option value="" selected disabled>Pilih Anggota Tim</option>
+                                @foreach ($anggotatim as $user)
+                                    <option value="{{ $user->id }}" data-lintas-tim="{{ $user->team_id != auth()->user()->team_id ? '1' : '0' }}">
+                                        {{ $user->user_full_name }}@if ($user->team_id != auth()->user()->team_id) - (Lintas Tim)@endif
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                            
+                        <div>
+                            <label class="block text-sm font-medium text-gray-900 dark:text-white">Deskripsi</label>
+                            <p class="text-xs text-gray-400">Deskripsi Pekerjaan</p>
+                            <textarea name="task_description[]" required
+                                      class="task_description bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full h-11 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" autocomplete="off"></textarea>
+                        </div>
+                            
+                        <div>
+                            <label class="block text-sm font-medium text-gray-900 dark:text-white">Volume</label>
+                            <p class="text-xs text-gray-400">Contoh: 10</p>
+                            <input type="number" name="task_volume[]" required min="1"
+                                   class="task_volume bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-900 dark:text-white">Upload Dokumen</label>
+                            <p class="text-xs text-gray-400">Maximum size 5 mb</p>
+                            <input type="file" name="task_attachment[]" 
+                                   class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                   accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png">
+                        </div>
+
+                        <button class="remove-task md:mt-0 mt-2 block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 invisible" type="button">
+                            Hapus Baris
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Add more task button -->
+                <button type="button" id="addMoreTask" 
+                        class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mb-4">
+                    <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                    </svg>
+                    Tambah Baris Tugas
+                </button>
+
+                <!-- Modal footer -->
+                <div class="flex justify-end pt-4">
+                    <button type="button" 
+                            data-modal-toggle="addTaskModal"
+                            class="mr-2 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                        Batal
+                    </button>
+                    <button type="submit" 
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Simpan Tugas
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript untuk menambah/menghapus baris tugas -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add more task
+        document.getElementById('addMoreTask').addEventListener('click', function() {
+            const taskContainer = document.querySelector('.task-container');
+            const firstTaskItem = document.querySelector('.task-item');
+            const newTaskItem = firstTaskItem.cloneNode(true);
+            
+            // Reset values in the new task item
+            newTaskItem.querySelectorAll('input, textarea, select').forEach(element => {
+                if (element.type !== 'button') {
+                    element.value = '';
+                }
+            });
+            
+            // Show remove button for all items except first one
+            const removeButtons = document.querySelectorAll('.remove-task');
+            removeButtons.forEach(button => button.classList.remove('invisible'));
+            
+            taskContainer.appendChild(newTaskItem);
+        });
+
+        // Remove task
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-task')) {
+                const taskItems = document.querySelectorAll('.task-item');
+                if (taskItems.length > 1) {
+                    e.target.closest('.task-item').remove();
+                    
+                    // Hide remove button if only one item left
+                    if (document.querySelectorAll('.task-item').length === 1) {
+                        document.querySelector('.remove-task').classList.add('invisible');
+                    }
+                }
+            }
+        });
+    });
+</script>

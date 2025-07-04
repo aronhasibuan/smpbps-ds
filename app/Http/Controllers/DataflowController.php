@@ -4,18 +4,19 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Task;
+use App\Models\Team;
 use App\Models\User;
 use App\Models\Activity;
-use App\Models\Evaluation;
 use App\Models\Progress;
 use App\Models\Objection;
-use App\Services\Evaluation_EVMService;
+use App\Models\Evaluation;
 use Illuminate\Support\Str;
 use App\Services\EVMService;
 use Illuminate\Http\Request;
 use App\Services\NotifyService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Evaluation_EVMService;
 use App\Services\TaskSuggestionService;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -160,12 +161,16 @@ class DataflowController extends Controller
     // data view('activity')
     public function activity(Activity $activity)
     {
+        $anggotatim = User::where('user_role', 'anggotatim')
+            ->withCount(['tasks' => function ($query) {
+                $query->where('status_id', 2);
+            }])->get();
         $EVMService = new EVMService;
         $tasks = Task::where('activity_id', $activity->id)->paginate(5);
         foreach ($tasks as $task){
             $task->spi_data = $EVMService->calculateSPI($task);
         }
-        return view('activity', ['tasks' => $tasks]);
+        return view('activity', ['tasks' => $tasks, 'activity' => $activity, 'anggotatim' => $anggotatim]);
     }
 
     // data view('employee_monitoring')
@@ -337,6 +342,13 @@ class DataflowController extends Controller
     // data view ('create_task')
     public function create_task()
     {
+        $teams = Team::with(['users' => function($query) {
+                $query->where('user_role', '!=', 'ketuatim');
+            }])
+            ->where('id', '!=', 1)
+            ->orderBy('team_name')
+            ->get();
+
         $anggotatim = User::where('user_role', 'anggotatim')
             ->withCount(['tasks' => function ($query) {
                 $query->where('status_id', 2);
@@ -345,7 +357,7 @@ class DataflowController extends Controller
         $busiestUser = $anggotatim->sortByDesc('tasks_count')->first();
         $maxTasks = $busiestUser ? $busiestUser->tasks_count : 0;
 
-        return view('create_task', ['anggotatim' => $anggotatim, 'busiestUser' => $busiestUser, 'maxTasks' => $maxTasks]);
+        return view('create_task', ['anggotatim' => $anggotatim, 'busiestUser' => $busiestUser, 'maxTasks' => $maxTasks, 'teams' => $teams]);
     }
 
      // data view('verification)
@@ -362,8 +374,13 @@ class DataflowController extends Controller
             ->whereHas('task.activity', function ($query) use ($user) {
                 $query->where('user_leader_id', $user->id);
             })->get();
-            
-        return view('verification', ['user' => $user, 'objection_task' => $objection_task, 'progress_need_verification' => $progress_need_verification]);
+        
+        $cross_team_task = Task::where('status_id', 3)
+            ->whereHas('user', function($query) use ($user) {
+                $query->where('team_id',  $user->team_id);
+            })->get(); 
+
+        return view('verification', ['user' => $user, 'objection_task' => $objection_task, 'progress_need_verification' => $progress_need_verification, 'cross_team_task' => $cross_team_task]);
     }
 
     // data view ('home')

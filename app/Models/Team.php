@@ -12,7 +12,7 @@ class Team extends Model
 
     protected $fillable = ['team_name', 'team_description'];
 
-    public function personel(): HasMany{
+    public function users(): HasMany{
         return $this->hasMany(User::class, 'team_id');
     }
 }

@@ -3,7 +3,7 @@
     <nav class="flex mb-4" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-2">
             <li class="inline-flex items-center">
-                <a href="{{ $actionUrl }}" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800">
+                <a href="{{ route('activities-monitoring-page') }}" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800">
                     <svg class="w-3 h-3 mr-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
                     </svg>
@@ -35,9 +35,6 @@
             Tenggat: {{ $activity->id_format_deadline }}
         </span>
     </div>
-
-    {{-- <!-- Update Activity Modal -->
-    @include('partials.activity-update-modal') --}}
 
     <!-- Task Progress Summary -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 mb-6">
@@ -77,7 +74,7 @@
                                 'yellow' => 'bg-yellow-500',
                                 'green' => 'bg-green-500',
                                 'blue' => 'bg-blue-500',
-                                'default' => 'bg-gray-500'
+                                'default' => 'bg-black'
                             ];
                             $color = $task->spi_data['color'] ?? 'default';
                             $bgColor = $statusColors[$color] ?? $statusColors['default'];
@@ -107,7 +104,7 @@
                         </div>
                     </td>
                     <td class="px-6 py-4 text-center">
-                        <a href="/ketuatim/monitoringkegiatan/{{ $activity->activity_slug }}/{{ $task->task_slug }}" 
+                        <a href="{{ route('task-page', $task->task_slug) }}" 
                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                             Detail
                         </a>
@@ -126,34 +123,44 @@
 
     <!-- Action Buttons -->
     <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-        @can('assign', $activity)
-        <button type="button" id="openObjection" 
-                class="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200">
-            <img class="w-5 h-5 mr-2" src="{{ asset('img/add-person.svg') }}" alt="Tambah Penerima Tugas">
-            Tambah Penerima Tugas
-        </button>
-        @endcan
 
-        @if($activity->total_progress == 100 && auth()->user()->can('complete', $activity))
-        <button type="button" onclick="openModal()" 
-                class="px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition duration-200">
-            Tandai Kegiatan Selesai
-        </button>
+        @if (Auth::user()->user_role == 'ketuatim')
+        
+            <x-update-activity-modal :activity="$activity" />
+            <button type="button" 
+                    data-modal-target="updatemodal{{ $activity->id }}" 
+                    data-modal-toggle="updatemodal{{ $activity->id }}" 
+                    class="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200">
+                <img class="w-5 h-5 mr-2" src="{{ asset('img/task-edit.svg') }}" alt="Edit Kegiatan">
+                Perbarui Kegiatan
+            </button>
+
+            <x-add-assignee-modal :activity="$activity" :anggotatim="$anggotatim" />
+            <button type="button" 
+                    id="openAddTaskModal" 
+                    data-modal-target="addTaskModal" 
+                    data-modal-toggle="addTaskModal"
+                    class="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200">
+                <img class="w-5 h-5 mr-2" src="{{ asset('img/add-person.svg') }}" alt="Tambah Tugas">
+                Tambah Tugas Baru
+            </button>
+                
+            @if($activity->total_progress == 100)
+                <x-mark-activity-as-done-modal :activity="$activity" />
+                <button type="button" 
+                        onclick="openModal()"
+                        class="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    Tandai Kegiatan Selesai
+                </button>
+            @endif 
+
         @endif
     </div>
 
-    <!-- Confirmation Modal -->
-    {{-- @include('partials.confirmation-modal', [
-        'modalId' => 'confirmationModal',
-        'title' => 'Konfirmasi Penyelesaian Kegiatan',
-        'message' => 'Apakah Anda yakin ingin menandai kegiatan ini sebagai selesai? Aksi ini tidak dapat dibatalkan.',
-        'confirmRoute' => route('markkegiatanasdone', ['activity' => $activity->activity_slug, 'id' => $activity->id]),
-        'confirmText' => 'Ya, Tandai Selesai'
-    ]) --}}
-
-    @push('scripts')
     <script>
-        // Initialize date picker
         flatpickr("#tenggat", {
             dateFormat: "Y-m-d",
             minDate: "today",
@@ -168,14 +175,15 @@
             toastr.error("{{ session('error') }}");
         @endif
 
-        // Modal functions
         function openModal() {
             document.getElementById('confirmationModal').classList.remove('hidden');
+            document.getElementById('confirmationModal').classList.add('flex');
         }
 
         function closeModal() {
+            document.getElementById('confirmationModal').classList.remove('flex');
             document.getElementById('confirmationModal').classList.add('hidden');
         }
     </script>
-    @endpush
+
 </x-layout>

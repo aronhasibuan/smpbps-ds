@@ -992,5 +992,18 @@ class TaskSeeder extends Seeder
             'task_latest_progress' => 7,
             'task_attachment' => null,
         ]);
+
+        // Metropolitan Statistcal Area (MSA)
+        #79
+        Task::create([
+            'activity_id' => 44,
+            'user_member_id' => 9,
+            'status_id' => 3,
+            'task_slug' => '79_anggotaproduksi1',
+            'task_description' => 'Pencacahan',
+            'task_volume' => 7,
+            'task_latest_progress' => 0,
+            'task_attachment' => null,
+        ]);
     }
 }

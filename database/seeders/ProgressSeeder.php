@@ -1494,5 +1494,15 @@ class ProgressSeeder extends Seeder
             'progress_documentation' => null,
             'progress_acceptance' => 0
         ]);
+
+        // Metropoltan Statistical Area
+        Progress::create([
+            'task_id' => 79,
+            'progress_date' => now()->format('Y-m-d'),
+            'progress_amount' => 0,
+            'progress_notes' => 'Progress dimulai',
+            'progress_documentation' => null,
+            'progress_acceptance' => 1
+        ]);
     }
 }
