@@ -13,7 +13,7 @@
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <!-- Search Form -->
                         <div class="w-full md:w-1/2">
-                            <form class="flex items-center gap-2" action="{{ $actionUrl }}" method="GET">
+                            <form class="flex items-center gap-2" action="{{ route('activities-monitoring-page') }}" method="GET">
                                 <label for="search" class="sr-only">Cari Kegiatan</label>
                                 <div class="relative flex-grow">
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -41,7 +41,7 @@
                         <!-- Add Activity Button -->
                         @if(Auth::check() && Auth::user()->user_role == 'ketuatim')
                             <div class="flex justify-end">
-                                <a href="/ketuatim/tambahkegiatan" 
+                                <a href="{{ route('create-task-page') }}" 
                                 class="flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
                                 aria-label="Tambah kegiatan baru">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -56,7 +56,7 @@
                     <!-- Clear Search Button -->
                     @if(request()->has('search') && request('search') != '')
                         <div class="mt-4">
-                            <a href="{{ route('activitiesmonitoring') }}" 
+                            <a href="{{ route('activities-monitoring-page') }}" 
                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors"
                             aria-label="Reset pencarian">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -124,7 +124,7 @@
 
                                         <!-- Actions -->
                                         <td class="px-6 py-4 text-center">
-                                            <a href="{{ $actionUrl }}{{ $activity->activity_slug }}" 
+                                            <a href="{{ route('activity-page', $activity->activity_slug) }}" 
                                             class="inline-flex items-center p-1.5 rounded-lg text-blue-600 hover:text-blue-800 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors"
                                             aria-label="Detail kegiatan {{ $activity->activity_name }}"
                                             title="Lihat detail">

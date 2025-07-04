@@ -11,7 +11,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border p-4">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <!-- Search Form -->
-                    <form class="flex-1 flex items-center gap-2" action="{{ route('activitiesarchive') }}" method="GET">
+                    <form class="flex-1 flex items-center gap-2" action="{{ route('activities-archive-page') }}" method="GET">
                         <label for="search" class="sr-only">Cari kegiatan</label>
                         <div class="relative flex-grow">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -53,7 +53,7 @@
 
                 @if(request()->has('search') || request()->has('month_year'))
                     <div class="mt-4">
-                        <a href="{{ route('activitiesarchive') }}" 
+                        <a href="{{ route('activities-archive-page') }}" 
                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors"
                            aria-label="Reset pencarian">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -92,7 +92,7 @@
                                         {{ $activity->activity_unit }}
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        <a href="{{ $actionUrl }}{{ $activity->activity_slug }}" 
+                                        <a href="{{ route('activity-page',$activity->activity_slug) }}" 
                                            class="inline-flex items-center justify-center p-1.5 rounded-lg text-blue-600 hover:text-blue-800 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors"
                                            aria-label="Detail kegiatan {{ $activity->activity_name }}"
                                            title="Lihat detail">
@@ -113,7 +113,7 @@
                                                 Tidak ada kegiatan yang ditemukan
                                             </p>
                                             @if(request()->has('search') || request()->has('month_year'))
-                                                <a href="{{ route('activitiesarchive') }}" class="mt-2 text-sm text-blue-600 hover:underline">
+                                                <a href="{{ route('activities-archive-page') }}" class="mt-2 text-sm text-blue-600 hover:underline">
                                                     Tampilkan semua kegiatan
                                                 </a>
                                             @endif

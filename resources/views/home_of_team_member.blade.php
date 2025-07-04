@@ -12,7 +12,7 @@
             <h2 id="stats-heading" class="sr-only">Statistik Tugas</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <!-- Tugas Aktif -->
-                <a href="{{ route('tasklist') }}" 
+                <a href="{{ route('task-list-page') }}" 
                    class="border p-6 rounded-lg flex flex-col items-center bg-blue-500 shadow-md transition-all hover:shadow-lg hover:bg-blue-600 hover:transform hover:-translate-y-1"
                    aria-label="{{ $taskStats['running'] }} Tugas Aktif">
                     <div class="flex items-center justify-between w-full">
@@ -26,7 +26,7 @@
                 </a>
                 
                 <!-- Dalam Progress -->
-                <a href="{{ route('tasklist') }}" 
+                <a href="{{ route('task-list-page') }}" 
                    class="border p-6 rounded-lg flex flex-col items-center bg-yellow-500 shadow-md transition-all hover:shadow-lg hover:bg-yellow-600 hover:transform hover:-translate-y-1"
                    aria-label="{{ $taskStats['ontime'] }} Tugas Dalam Progress">
                     <div class="flex items-center justify-between w-full">
@@ -40,7 +40,7 @@
                 </a>
                 
                 <!-- Tugas Terlambat -->
-                <a href="/anggotatim/daftartugas?filter=Terlambat&page=1"
+                <a href="{{ route('task-list-page', ['filter' => 'Terlambat', 'page' => 1]) }}"
                    class="border p-6 rounded-lg flex flex-col items-center bg-red-500 shadow-md transition-all hover:shadow-lg hover:bg-red-600 hover:transform hover:-translate-y-1"
                    aria-label="{{ $taskStats['late'] }} Tugas Terlambat">
                     <div class="flex items-center justify-between w-full">
@@ -54,7 +54,7 @@
                 </a>
                 
                 <!-- Tugas Selesai -->
-                <a href="{{ route('taskarchive') }}" 
+                <a href="{{ route('task-archive-page') }}" 
                    class="border p-6 rounded-lg flex flex-col items-center bg-green-500 shadow-md transition-all hover:shadow-lg hover:bg-green-600 hover:transform hover:-translate-y-1"
                    aria-label="{{ $taskStats['completed'] }} Tugas Selesai">
                     <div class="flex items-center justify-between w-full">
@@ -74,7 +74,7 @@
             <h2 id="cta-heading" class="text-xl md:text-2xl text-gray-800 mb-4">
                 Untuk melihat seluruh tugas anda, silahkan klik tombol di bawah ini
             </h2>
-            <a href="{{ route('tasklist') }}" 
+            <a href="{{ route('task-list-page') }}" 
                class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center gap-2"
                aria-label="Lihat tugas selengkapnya">
                 Lihat Tugas Selengkapnya 
@@ -100,7 +100,7 @@
                         <ul class="divide-y divide-gray-100">
                             @foreach($suggestions as $task)
                                 <li class="py-3">
-                                    <a href="/anggotatim/daftartugas/{{ $task->task_slug }}" 
+                                    <a href="{{ route('task-page', $task->task_slug) }}" 
                                        class="block p-3 rounded-lg hover:bg-gray-50 transition-colors"
                                        aria-label="Tugas {{ $task->activity->activity_name }}">
                                         <p class="font-medium text-gray-800">
@@ -145,7 +145,7 @@
                 <div class="p-4">
                     @forelse($todayProgress as $progress)
                         <div class="mb-3 last:mb-0">
-                            <a href="/anggotatim/daftartugas/{{ $progress->task->task_slug }}" 
+                            <a href="{{ route('task-page', $progress->task->task_slug) }}" 
                                class="block p-3 text-blue-600 hover:underline font-medium rounded-lg hover:bg-gray-50 transition-colors"
                                aria-label="Progress tugas {{ $progress->task->activity->activity_name }}">
                                 Kamu memperbarui progress tugas {{ $progress->task->activity->activity_name }} 
@@ -168,7 +168,7 @@
                 <div class="p-4">
                     @forelse($newtasks as $newtask)
                         <div class="mb-3 last:mb-0">
-                            <a href="/anggotatim/daftartugas/{{ $newtask->task_slug }}" 
+                            <a href="{{ route('task-page', $newtask->task_slug) }}" 
                                class="block p-3 text-blue-600 hover:underline font-medium rounded-lg hover:bg-gray-50 transition-colors"
                                aria-label="Tugas baru {{ $newtask->activity->activity_name }}">
                                 Kamu memiliki tugas baru - {{ $newtask->activity->activity_name }}

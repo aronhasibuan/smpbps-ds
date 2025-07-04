@@ -25,17 +25,12 @@ class StatusSeeder extends Seeder
         
         #3
         Status::create([
-            'status_description' => 'Tugas Belum Dimulai, Menunggu Persetujuan Dari Ketua Tim Lain'
-        ]);
-        
-        #4
-        Status::create([
-            'status_description' => 'Tugas Menunggu Persetujuan Dari Ketua Tim Bahwa Tugas Sudah Selesai'
+            'status_description' => 'Tugas Menunggu Persetujuan Dari Ketua Tim Lain'
         ]);
 
-        #5
+        #4
         Status::create([
-            'status_description' => 'Tugas Dalam Masa Sanggah, Menunggu Persetujuan Dari Ketua Tim'
+            'status_description' => 'Tugas Dalam Masa Sanggah'
         ]);
     }
 }

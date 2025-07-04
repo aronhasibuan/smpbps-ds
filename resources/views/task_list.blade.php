@@ -67,7 +67,7 @@
                     <!-- Clear Search Button -->
                     @if(request()->has('search') && request('search') != '')
                         <div class="mt-4">
-                            <a href="{{ route('tasklist') }}" 
+                            <a href="{{ route('task-list-page') }}" 
                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors"
                             aria-label="Kembali ke semua tugas">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -106,7 +106,7 @@
                                 <td class="px-4 py-3">{{ $task->task_volume }} {{ $task->activity->activity_unit }}</td>
                                 <td class="px-4 py-3">{{ $task->formatted_tenggat }}</td>
                                 <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
-                                    <a href="/anggotatim/daftartugas/{{ $task->task_slug }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none" aria-label="Detail tugas {{ $task->activity->activity_name }}">
+                                    <a href="{{ route('task-page', $task->task_slug) }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none" aria-label="Detail tugas {{ $task->activity->activity_name }}">
                                         <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                                     </a>
                                 </td>

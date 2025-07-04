@@ -11,7 +11,7 @@ class progress extends Model
 {
     use HasFactory;
 
-    protected $fillable=['task_id','progress_date','progress_amount', 'progress_notes','progress_documentation'];
+    protected $fillable=['task_id','progress_date','progress_amount', 'progress_notes','progress_documentation', 'progress_acceptance'];
 
     public function task(): BelongsTo{
         return $this->belongsTo(Task::class);

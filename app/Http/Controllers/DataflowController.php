@@ -119,7 +119,7 @@ class DataflowController extends Controller
         return view('calendar');
     }
 
-    // data view('activitiesmonitoring')
+    // data view('activities_monitoring')
     public function activities_monitoring(Request $request)
     {
         $EVMService = new EVMService();
@@ -154,7 +154,7 @@ class DataflowController extends Controller
             $activity->spi_data = $EVMService->calculateActivitySPI($activity);
         }
 
-        return view('activitiesmonitoring', ['activities' => $activities]);
+        return view('activities_monitoring', ['activities' => $activities]);
     }
 
     // data view('activity')
@@ -168,7 +168,7 @@ class DataflowController extends Controller
         return view('activity', ['tasks' => $tasks]);
     }
 
-    // data view('employeemonitoring')
+    // data view('employee_monitoring')
     public function employee_monitoring()
     {
         $auth = Auth::user();
@@ -198,14 +198,14 @@ class DataflowController extends Controller
             }
         }
 
-        return view('employeemonitoring', [
+        return view('employee_monitoring', [
             'userNames' => $groupedByUser->keys(),
             'statusDescriptions' => $statusDescriptions,
             'chartData' => $chartData,
         ]);
     }
 
-    // data view('activitiesarchive')
+    // data view('activities_archive')
     public function activities_archive(Request $request)
     {
         \Carbon\Carbon::setLocale('id');
@@ -252,13 +252,13 @@ class DataflowController extends Controller
             $activity->total_volume = $activity->tasks->sum('task_volume');
         }
 
-        return view('activitiesarchive', [
+        return view('activities_archive', [
             'activities' => $activities,
             'activityDates' => $activityDates,
         ]);
     }
 
-    // data view('employeelist')
+    // data view('employee_list')
     public function employee_list(Request $request)
     {        
         $usersQuery = User::query();
@@ -280,10 +280,10 @@ class DataflowController extends Controller
         $users = $usersQuery->paginate($perPage)->appends($request->query());
         $teams = DB::table('teams')->where('team_name', '!=', 'Kepala BPS')->get();
 
-        return view('employeelist', ['users' => $users, 'teams' => $teams]);
+        return view('employee_list', ['users' => $users, 'teams' => $teams]);
     }
 
-    // data view ('createemployee')
+    // data view ('create_employee')
     public function create_employee()
     {
         $teams = DB::table('teams')->where('team_name', '!=', 'Kepala BPS')->get();
@@ -291,7 +291,7 @@ class DataflowController extends Controller
     }
 
     // data view('home_leader')
-    public function home_leader()
+    public function team_leader_home_page()
     {
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
@@ -331,10 +331,10 @@ class DataflowController extends Controller
                 $query->where('user_leader_id', $user->id);
             })->get();
 
-        return view('home_leader', ['user' => $user, 'activityStats' => $activityStats, 'memberProgress' => $memberProgress, 'pieData' => $pieData]);
+        return view('home_of_team_leader', ['user' => $user, 'activityStats' => $activityStats, 'memberProgress' => $memberProgress, 'pieData' => $pieData]);
     }
 
-    // data view ('createtask')
+    // data view ('create_task')
     public function create_task()
     {
         $anggotatim = User::where('user_role', 'anggotatim')
@@ -345,23 +345,29 @@ class DataflowController extends Controller
         $busiestUser = $anggotatim->sortByDesc('tasks_count')->first();
         $maxTasks = $busiestUser ? $busiestUser->tasks_count : 0;
 
-        return view('createtask', ['anggotatim' => $anggotatim, 'busiestUser' => $busiestUser, 'maxTasks' => $maxTasks]);
+        return view('create_task', ['anggotatim' => $anggotatim, 'busiestUser' => $busiestUser, 'maxTasks' => $maxTasks]);
     }
 
      // data view('verification)
     public function verification()
     {
         $user = Auth::user();
-        $completed_task = Task::where('status_id', 4)
+        $objection_task = Task::where('status_id', 4)
             ->whereHas('activity', function($query) use ($user) {
             $query->where('user_leader_id', $user->id);
         })->get();
 
-        return view('verification', ['user' => $user, 'completed_task' => $completed_task]);
+        $progress_need_verification = Progress::with('task.activity')
+            ->where('progress_acceptance', 0)
+            ->whereHas('task.activity', function ($query) use ($user) {
+                $query->where('user_leader_id', $user->id);
+            })->get();
+            
+        return view('verification', ['user' => $user, 'objection_task' => $objection_task, 'progress_need_verification' => $progress_need_verification]);
     }
 
     // data view ('home')
-    public function home(Request $request)
+    public function team_member_home_page()
     {
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
@@ -404,11 +410,11 @@ class DataflowController extends Controller
                 $query->whereDate('activity_start', $today);
             })->where('user_member_id', $user->id)->get();
         
-        return view('home', ['user' => $user, 'suggestions' => $suggestions, 'todayProgress' => $todayProgress, 'taskStats' => $taskStats, 'pieData' => $pieData, 'newtasks' => $newtasks]);
+        return view('home_of_team_member', ['user' => $user, 'suggestions' => $suggestions, 'todayProgress' => $todayProgress, 'taskStats' => $taskStats, 'pieData' => $pieData, 'newtasks' => $newtasks]);
     }
 
-    // data view('tasklist')
-    public function tasklist(Request $request)
+    // data view('task_list')
+    public function task_list(Request $request)
     {
         $EVMService = new EVMService();
         $user = Auth::user();
@@ -478,10 +484,10 @@ class DataflowController extends Controller
             ['path' => $request->url(), 'query' => $request->query()]
         );
 
-        return view('tasklist', ['tasks' => $tasks]);
+        return view('task_list', ['tasks' => $tasks]);
     }
 
-    // data view('taskarchive')
+    // data view('task_archive')
     public function task_archive(Request $request)
     {
         \Carbon\Carbon::setLocale('id');
@@ -526,7 +532,7 @@ class DataflowController extends Controller
 
         $tasks = $tasks->paginate($perPage)->withQueryString();
 
-        return view('taskarchive', [
+        return view('task_archive', [
             'tasks' => $tasks,
             'activityDates' => $activityDates,
         ]);

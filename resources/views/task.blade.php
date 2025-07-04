@@ -3,19 +3,15 @@
         <div class="px-4 mx-auto max-w-screen-xl">
 
             <div class="mb-4">
-                @auth
-                    @php
-                        $backUrl = match(Auth::user()->user_role) {
-                            'kepalabps' => "/kepalabps/monitoringkegiatan/{$task->activity->activity_slug}",
-                            'ketuatim' => "/ketuatim/monitoringkegiatan/{$task->activity->activity_slug}",
-                            'anggotatim' => "/anggotatim/daftartugas",
-                            default => '/'
-                        };
-                    @endphp
-                    <a href="{{ $backUrl }}" class="font-medium text-base text-blue-600 hover:underline" aria-label="Kembali ke halaman sebelumnya">
-                        &laquo; Kembali
+                @if (Auth::check() && Auth::user()->user_role == 'anggotatim')
+                    <a href="{{ route('task-list-page') }}" class="font-medium text-base text-blue-600 hover:underline" aria-label="Kembali ke daftar tugas">
+                        &laquo; Kembali ke Daftar Tugas
                     </a>
-                @endauth
+                @else
+                    <a href="{{ route('activities-monitoring-page') }}" class="font-medium text-base text-blue-600 hover:underline" aria-label="Kembali ke beranda ketua tim">
+                        &laquo; Kembali ke Monitoring Kegiatan
+                    </a>
+                @endif
             </div>
 
             <div class="flex justify-between items-center mb-5">
@@ -90,9 +86,9 @@
                         </span>
                         <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">
                             {{ $progress->progress_amount }} {{ $task->activity->activity_unit }}
-                            @if($date->eq($end))
+                            @if($progress->progress_acceptance == 0)
                             <span class="bg-blue-100 text-blue-800 text-sm font-medium ms-3 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                                Terbaru
+                                Menunggu Persetujuan
                             </span>
                             @endif
                         </h3>
@@ -135,7 +131,7 @@
                 <div id="popupModal" class="fixed inset-0 items-center justify-center bg-opacity-50 hidden">
                     <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl border">
                         <h2 class="text-lg font-semibold mb-4 text-black dark:text-white">Masukkan Progress Terbaru</h2>
-                        <form action="{{ route('updateprogress', [$task->task_slug, $task->id]) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('update-progress', [$task->task_slug, $task->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                             <label for="progress_amount">Jumlah Progress Terbaru <span class="text-red-500">*</span></label>
                             <input type="number" id="progress_amount" name="progress_amount" min="{{ $task->task_latest_progress + 1}}" value="{{ $task->task_latest_progress + 1 }}" max="{{ $task->task_volume }}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full">
@@ -166,7 +162,7 @@
                 <div id="objectionModal" class="fixed inset-0 items-center justify-center bg-opacity-50 hidden">
                     <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl border">
                         <h2 class="text-lg font-semibold mb-4 text-black dark:text-white">Ajukan Keberatan</h2>
-                        <form action="{{ route('createobjection', [$user->user_role, $task->task_slug, $task->id]) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('create-objection', [$user->user_role, $task->task_slug, $task->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                             <label for="task_progress">Jumlah Progress yang Ditugaskan </label>
                             <input type="number" id="task_progress" name="taks_progress" value="{{ $task->task_latest_progress}}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full" readonly>
@@ -215,7 +211,7 @@
                                 <button data-modal-toggle="deleteModal" type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                     Tidak, Batalkan
                                 </button>
-                                <form action="{{ route('deletetask', $task->id) }}" method="POST">
+                                <form action="{{ route('delete-task', $task->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
@@ -243,7 +239,7 @@
                                 </button>
                             </div>
 
-                            <form action="{{ route('updatetask', $task->id) }}" method="POST">
+                            <form action="{{ route('update-task', $task->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                                 <div>

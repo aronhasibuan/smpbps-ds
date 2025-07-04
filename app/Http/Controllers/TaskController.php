@@ -166,23 +166,28 @@ class TaskController extends Controller
 
         $attachmentPath = $request->hasFile('progress_documentation') ? $request->file('progress_documentation')->store('attachments', 'public') : null;
 
-        Progress::create([
-            'task_id' => $id,
-            'progress_date' => Carbon::now()->format('Y-m-d'),
-            'progress_amount' => $request->progress_amount,
-            'progress_notes' => $request->progress_notes,
-            'progress_documentation' => $attachmentPath,
-        ]);
+        $latestProgress = Progress::where('task_id', $task->id)
+            ->orderBy('progress_date', 'desc')
+            ->first();
 
-        $task->task_latest_progress = $request->progress_amount;
-    
-        if ($task->task_volume == $request->progress_amount) {
-            $task->status_id = 4;
-            $task->save();
-            return redirect('tasklist')->with('success', 'Tugas berhasil ditandai selesai!'); 
-        } else{
-            $task->save();
-            return redirect()->back()->with('updated', 'Progress Berhasil Diperbarui!');
+        if ($latestProgress->progress_date == Carbon::now()->format('Y-m-d')) {
+            $latestProgress->progress_date = Carbon::now()->format('Y-m-d');
+            $latestProgress->progress_amount = $request->progress_amount;
+            $latestProgress->progress_notes = $request->progress_notes;
+            $latestProgress->progress_documentation = $attachmentPath;
+            $latestProgress->progress_acceptance = 0;
+            $latestProgress->save();
+            return redirect()->back()->with('updated', 'Progress berhasil diperbarui!');
+        }else {
+            Progress::create([
+                'task_id' => $task->id,
+                'progress_date' => Carbon::now()->format('Y-m-d'),
+                'progress_amount' => $request->progress_amount,
+                'progress_notes' => $request->progress_notes,
+                'progress_documentation' => $attachmentPath,
+                'progress_acceptance' => 0,
+            ]);
+            return redirect()->back()->with('updated', 'Progress Berhasil Diperbarui! Menunggu Persetujuan dari ketua tim.');
         }
     }
 }

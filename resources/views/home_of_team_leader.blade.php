@@ -11,7 +11,7 @@
         <h2 id="stats-heading" class="sr-only">Statistik Kegiatan</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <!-- Kegiatan Berjalan -->
-            <a href="{{ route('activitiesmonitoring_ketuatim') }}" 
+            <a href="{{ route('activities-monitoring-page') }}" 
                class="border p-6 rounded-lg flex flex-col items-center bg-blue-500 shadow-md transition-all hover:shadow-lg hover:bg-blue-600 hover:transform hover:-translate-y-1"
                aria-label="{{ $activityStats['running'] }} Kegiatan Berjalan">
                 <div class="flex items-center justify-between w-full">
@@ -26,7 +26,7 @@
             </a>
             
             <!-- Kegiatan Terlambat -->
-            <a href="{{ route('activitiesmonitoring_ketuatim') }}" 
+            <a href="{{ route('activities-monitoring-page') }}" 
                class="border p-6 rounded-lg flex flex-col items-center bg-red-500 shadow-md transition-all hover:shadow-lg hover:bg-red-600 hover:transform hover:-translate-y-1"
                aria-label="{{ $activityStats['late'] }} Kegiatan Terlambat">
                 <div class="flex items-center justify-between w-full">
@@ -41,7 +41,7 @@
             </a>
             
             <!-- Kegiatan Selesai -->
-            <a href="{{ route('activitiesarchive') }}" 
+            <a href="{{ route('activities-archive-page') }}" 
                class="border p-6 rounded-lg flex flex-col items-center bg-green-500 shadow-md transition-all hover:shadow-lg hover:bg-green-600 hover:transform hover:-translate-y-1"
                aria-label="{{ $activityStats['completed'] }} Kegiatan Selesai">
                 <div class="flex items-center justify-between w-full">
@@ -56,7 +56,7 @@
             </a>
 
             <!-- Verifikasi Tugas -->
-            <a href="{{ route('verification') }}" 
+            <a href="{{ route('verification-page') }}" 
                class="border p-6 rounded-lg flex flex-col items-center bg-yellow-500 shadow-md transition-all hover:shadow-lg hover:bg-yellow-600 hover:transform hover:-translate-y-1"
                aria-label="{{ $activityStats['verify'] }} Tugas Perlu Verifikasi">
                 <div class="flex items-center justify-between w-full">
@@ -80,7 +80,7 @@
                 <h2 id="cta-heading" class="text-xl lg:text-2xl mb-6 text-center font-medium text-gray-800">
                     Untuk melihat seluruh kegiatan anda, silahkan klik tombol di bawah ini
                 </h2>
-                <a href="{{ route('activitiesmonitoring_ketuatim') }}" 
+                <a href="{{ route('activities-monitoring-page') }}" 
                    class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium"
                    aria-label="Lihat semua kegiatan">
                     Lihat Kegiatan Selengkapnya
@@ -97,7 +97,7 @@
                     <h2 class="text-xl lg:text-2xl mb-6 text-center font-medium text-gray-800">
                         Anda memiliki <span class="text-red-600 font-bold">{{ $activityStats['verify'] }}</span> tugas yang harus segera diverifikasi!
                     </h2>
-                    <a href="{{ route('verification') }}" 
+                    <a href="{{ route('verification-page') }}" 
                        class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium"
                        aria-label="Verifikasi tugas sekarang">
                         Verifikasi Sekarang
@@ -119,7 +119,7 @@
             <div class="p-4">
                 @forelse($memberProgress as $progress)
                     <article class="mb-4 pb-4 border-b border-gray-100 last:border-0 last:mb-0">
-                        <a href="/ketuatim/monitoringkegiatan/{{ $progress->task->activity->activity_slug }}/{{ $progress->task->task_slug }}" 
+                        <a href="{{ route('task-page', $progress->task->task_slug) }}" 
                            class="block hover:bg-gray-50 p-2 rounded transition-colors"
                            aria-label="Lihat detail progress {{ $progress->task->activity->activity_name }}">
                             <p class="text-blue-600 hover:underline">

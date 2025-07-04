@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('progress_notes')->nullable();
             $table->string('progress_documentation')->nullable();
             $table->timestamps();
+            $table->boolean('progress_acceptance')->default(false);
         });
     }
 

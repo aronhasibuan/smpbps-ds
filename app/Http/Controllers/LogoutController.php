@@ -12,6 +12,6 @@ class LogoutController extends Controller
      */
     public function __invoke(){
         Auth::logout();
-        return to_route('login');
+        return to_route('login-page');
     }
 }

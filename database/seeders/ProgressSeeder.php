@@ -20,6 +20,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -28,6 +29,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Hortikultura Dan Indikator Pertanian Januari 2025
@@ -37,6 +39,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -45,6 +48,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Pertanian Tanaman Pangan/Ubinan Januari 2025
@@ -54,6 +58,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -62,6 +67,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Perusahaan Perkebunan Januari 2025
@@ -71,6 +77,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -79,6 +86,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Perusahaan Kehutanan Januari 2025
@@ -88,6 +96,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -96,6 +105,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Perusahaan Perikanan Januari 2025
@@ -105,6 +115,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -113,6 +124,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Perusahaan Peternakan Januari 2025
@@ -122,6 +134,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -130,6 +143,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Triwulanan Kegiatan Usaha Terintegrasi (STKUT) Januari 2025
@@ -139,6 +153,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -147,6 +162,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Waktu Tunggu (Dwelling Time) Januari 2025
@@ -156,6 +172,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -164,6 +181,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Kegiatan Harga Konsumen dan Survei Volume Penjualan Eceran Beras Januari 2025
@@ -173,6 +191,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -181,6 +200,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Harga Perdagangan Besar Januari 2025
@@ -190,6 +210,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -198,6 +219,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Harga Perdesaan Januari 2025
@@ -207,6 +229,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -215,6 +238,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Statistik Harga Produsen Januari 2025
@@ -224,6 +248,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -232,6 +257,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Pendataan Statistik E-Commerce Januari 2025
@@ -241,6 +267,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -249,6 +276,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pencacahan selesai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei KSA Februari 2025
@@ -258,6 +286,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -266,6 +295,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Progres pencacahan',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Hortikultura Dan Indikator Pertanian Februari 2025
@@ -275,6 +305,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -283,6 +314,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Progres pencacahan',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Pertanian Tanaman Pangan/Ubinan Februari 2025
@@ -292,6 +324,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -300,6 +333,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Progres pencacahan',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Perusahaan Perkebunan Februari 2025
@@ -309,6 +343,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -317,6 +352,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Progres pencacahan',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Perusahaan Kehutanan Februari 2025
@@ -326,6 +362,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -334,6 +371,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Progres pencacahan',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Perusahaan Perikanan Februari 2025
@@ -343,6 +381,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -351,6 +390,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Progres pencacahan',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Perusahaan Peternakan Februari 2025
@@ -360,6 +400,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
         Progress::create([
             'task_id' => 21,
@@ -367,6 +408,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Progres pencacahan',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Sensus Pertanian
@@ -376,6 +418,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -384,6 +427,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -392,6 +436,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -400,6 +445,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -408,6 +454,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -416,6 +463,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 7,
             'progress_notes' => 'Pengerjaan Berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -424,6 +472,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 5,
             'progress_notes' => 'Pengerjaan Berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -432,6 +481,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 4,
             'progress_notes' => 'Pengerjaan Berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -440,6 +490,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan Berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -448,6 +499,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan Berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei KSA
@@ -457,6 +509,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -465,6 +518,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -473,6 +527,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -481,6 +536,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -489,6 +545,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Tugas dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -497,6 +554,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -505,6 +563,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -513,6 +572,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 10,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -521,6 +581,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -529,6 +590,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 4,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Ubinan
@@ -538,6 +600,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -546,6 +609,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -554,6 +618,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -562,6 +627,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 9,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -570,6 +636,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Industri Besar Sedang
@@ -579,6 +646,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',  
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -587,6 +655,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',  
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -595,6 +664,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai', 
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -603,6 +673,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 6,
             'progress_notes' => 'Pengerjaan berlangsung', 
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -611,6 +682,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',  
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -619,6 +691,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',  
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Konversi Gabah Beras
@@ -628,6 +701,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -636,6 +710,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -644,6 +719,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -652,6 +728,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -660,6 +737,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -668,6 +746,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 5,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
         
         Progress::create([
@@ -676,6 +755,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 7,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -684,6 +764,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -692,6 +773,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 4,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Industri Mikro dan Kecil
@@ -701,6 +783,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -709,6 +792,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -717,6 +801,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -725,6 +810,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 4,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -733,6 +819,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 0
         ]);
 
         Progress::create([
@@ -741,6 +828,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Pertanian Antar Sensus
@@ -750,6 +838,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -758,6 +847,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -766,6 +856,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -774,6 +865,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -782,6 +874,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -790,6 +883,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 5,
             'progress_notes' => 'Responden sulit untuk ditemui',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -798,6 +892,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -806,6 +901,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -814,6 +910,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Matriks Arus Komoditas
@@ -823,6 +920,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -831,6 +929,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai', 
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -839,6 +938,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Harga Konsumen
@@ -848,6 +948,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -856,6 +957,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -864,6 +966,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -872,6 +975,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -880,6 +984,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -888,6 +993,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 5,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Harga Produsen
@@ -897,6 +1003,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -905,6 +1012,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -913,6 +1021,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -921,6 +1030,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -929,6 +1039,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 6,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -937,6 +1048,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 5,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Angkatan Kerja Nasional
@@ -946,6 +1058,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -954,6 +1067,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -962,6 +1076,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -970,6 +1085,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 4,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Sensus Ekonomi
@@ -979,6 +1095,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -987,6 +1104,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -995,6 +1113,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1003,6 +1122,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1011,6 +1131,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1019,6 +1140,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 3,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1027,6 +1149,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1035,6 +1158,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1043,6 +1167,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 6,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1051,6 +1176,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Sosial Ekonomi Nasional
@@ -1060,6 +1186,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1068,6 +1195,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Perilaku Anti Korupsi
@@ -1077,6 +1205,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1085,6 +1214,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1093,6 +1223,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 6,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1101,6 +1232,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 5,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Demografi dan Kependudukan Indonesia
@@ -1110,6 +1242,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1118,6 +1251,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1126,6 +1260,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1134,6 +1269,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1142,6 +1278,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1150,6 +1287,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1158,6 +1296,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1166,6 +1305,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 4,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Tendensi Konsumen
@@ -1175,6 +1315,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1183,6 +1324,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1191,6 +1333,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 5,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1199,6 +1342,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Sensus Penduduk
@@ -1208,6 +1352,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1216,6 +1361,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Hortikultura dan Indikator Pertanian
@@ -1225,6 +1371,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1233,6 +1380,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1241,6 +1389,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 0
         ]);
 
         // Survei Pertanian Tanaman Pangan/Ubinan
@@ -1250,6 +1399,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1258,6 +1408,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1266,6 +1417,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 6,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Perusahaan Perkebunan
@@ -1275,6 +1427,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1283,6 +1436,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 2,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1291,6 +1445,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 5,
             'progress_notes' => 'Pengerjaan berlangsung',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Perusahaan Kehutanan
@@ -1300,6 +1455,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         // Survei Perusahaan Perikanan
@@ -1309,6 +1465,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 1,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1317,6 +1474,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 3,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1325,6 +1483,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 5,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 1
         ]);
 
         Progress::create([
@@ -1333,6 +1492,7 @@ class ProgressSeeder extends Seeder
             'progress_amount' => 7,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
+            'progress_acceptance' => 0
         ]);
     }
 }

@@ -937,7 +937,7 @@ class TaskSeeder extends Seeder
             'task_slug' => '74_anggotaproduksi1',
             'task_description' => 'Pencacahan',
             'task_volume' => 10,
-            'task_latest_progress' => 2,
+            'task_latest_progress' => 1,
             'task_attachment' => null,
         ]);
 
