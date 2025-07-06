@@ -38,6 +38,34 @@
                             </form>
                         </div>
 
+                        <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                            <div class="relative">
+                                <label for="sort" class="sr-only">Urutkan berdasarkan</label>
+                                <select id="sort" name="sort" 
+                                        class="w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 transition-colors"
+                                        aria-label="Urutkan Kegiatan">
+                                    <option value="priority" {{ request('sort') == 'priority' ? 'selected' : '' }}>Status Progress</option>
+                                    <option value="id" {{ request('sort') == 'id' ? 'selected' : '' }}>Kegiatan Diberikan</option>
+                                    <option value="tenggat" {{ request('sort') == 'tenggat' ? 'selected' : '' }}>Tenggat Kegiatan</option>
+                                    <option value="progress" {{ request('sort') == 'progress' ? 'selected' : '' }}>Persentase Progress</option>
+                                </select>
+                            </div>
+
+                            <div class="relative">
+                                <label for="filter" class="sr-only">Filter status</label>
+                                <select id="filter" name="filter" 
+                                        class="w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 transition-colors"
+                                        aria-label="Filter tugas">
+                                    <option value="" {{ request('filter') == '' ? 'selected' : '' }}>Semua Status</option>
+                                    <option value="Terlambat" {{ request('filter') == 'Terlambat' ? 'selected' : '' }}>Terlambat</option>
+                                    <option value="Progress Lambat" {{ request('filter') == 'Progress Lambat' ? 'selected' : '' }}>Progress Lambat</option>
+                                    <option value="Progress On Time" {{ request('filter') == 'Progress On Time' ? 'selected' : '' }}>Progress On Time</option>
+                                    <option value="Progress Cepat" {{ request('filter') == 'Progress Cepat' ? 'selected' : '' }}>Progress Cepat</option>
+                                    <option value="Selesai" {{ request('filter') == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <!-- Add Activity Button -->
                         @if(Auth::check() && Auth::user()->user_role == 'ketuatim')
                             <div class="flex justify-end">
@@ -170,6 +198,19 @@
         </div>
 
          <script>
+            document.getElementById('sort').addEventListener('change', function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set('sort', this.value);
+                window.location.href = window.location.pathname + '?' + urlParams.toString();
+            });
+
+            document.getElementById('filter').addEventListener('change', function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set('filter', this.value);
+                urlParams.set('page', 1);
+                window.location.href = window.location.pathname + '?' + urlParams.toString();
+            });
+
             document.getElementById('perPage').addEventListener('change', function() {
                 const urlParams = new URLSearchParams(window.location.search);
                 urlParams.set('perPage', this.value);

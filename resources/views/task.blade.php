@@ -162,7 +162,7 @@
                 <div id="objectionModal" class="fixed inset-0 items-center justify-center bg-opacity-50 hidden">
                     <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl border">
                         <h2 class="text-lg font-semibold mb-4 text-black dark:text-white">Ajukan Keberatan</h2>
-                        <form action="{{ route('create-objection', [$user->user_role, $task->task_slug, $task->id]) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('create-objection', [$task->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                             <label for="task_progress">Jumlah Progress yang Ditugaskan </label>
                             <input type="number" id="task_progress" name="taks_progress" value="{{ $task->task_latest_progress}}" class="text-gray-900 border border-gray-300 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 p-3 rounded-md w-full" readonly>

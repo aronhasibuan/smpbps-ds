@@ -51,7 +51,7 @@
                     </form>
                 </div>
 
-                @if(request()->has('search') || request()->has('month_year'))
+                @if(request()->has('search'))
                     <div class="mt-4">
                         <a href="{{ route('activities-archive-page') }}" 
                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors"

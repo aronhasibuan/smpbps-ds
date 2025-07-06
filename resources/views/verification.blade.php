@@ -8,19 +8,22 @@
             </div>
         @else
             <div class="space-y-4">
-                @foreach ($objection_task as $task)
+                @foreach ($objection_task as $objection)
                 <div class="border border-gray-300 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
                             <h2 class="text-lg font-semibold">
-                                {{ $task->user->user_full_name ?? 'N/A' }}
+                                {{ $objection->task->user->user_full_name ?? 'N/A' }}
                                 <span class="font-normal">Mengajukan Keberatan Pada Tugas</span>
-                                {{ $task->activity->activity_name ?? 'aktivitas' }}
+                                {{ $objection->task->activity->activity_name ?? 'aktivitas' }}
                             </h2>
                             <p class="text-gray-600 mt-1">
+                                Alasan Keberatan: {{ $objection->objection_reason ?? 'N/A' }}
+                            </p>
+                            <p class="text-gray-600 mt-1">
                                 Diajukan pada: 
-                                @if($task->updated_at)
-                                    {{ \Carbon\Carbon::parse($task->updated_at)->format('d M Y H:i') }}
+                                @if($objection->updated_at)
+                                    {{ \Carbon\Carbon::parse($objection->updated_at)->format('d M Y H:i') }}
                                 @else
                                     Waktu tidak tersedia
                                 @endif
@@ -28,15 +31,11 @@
                         </div>
                         
                         <div class="flex flex-col sm:flex-row gap-3">
+                            <x-objection-action-modal :objection="$objection"/>
                             <button 
-                                onclick="verifyTask({{ $task->id }}, 'approved')"
-                                class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition-colors">
-                                Setuju
-                            </button>
-                            <button 
-                                onclick="verifyTask({{ $task->id }}, 'rejected')"
-                                class="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg transition-colors">
-                                Tolak
+                                onclick="openObjectionModal({{ $objection->id }})"
+                                class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition-colors">
+                                Aksi
                             </button>
                         </div>
                     </div>
@@ -78,16 +77,31 @@
                         </div>
                         
                         <div class="flex flex-col sm:flex-row gap-3">
-                            <button 
-                                onclick="verifyTask({{ $progress->id }}, 'approved')"
-                                class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition-colors">
-                                Setuju
-                            </button>
-                            <button 
-                                onclick="verifyTask({{ $progress->id }}, 'rejected')"
-                                class="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg transition-colors">
-                                Tolak
-                            </button>
+                            @if ($progress->progress_amount == $progress->task->task_volume)
+                                <x-evaluation-modal :progress="$progress" />
+                                <button type="button"
+                                    onclick="openEvaluationModal()"
+                                    class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition-colors">
+                                    Setuju
+                                </button>
+                            @else    
+                                <form action="{{ route('approve-progress', $progress->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit"
+                                        class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition-colors">
+                                        Setuju
+                                    </button>
+                                </form>
+                            @endif
+                            <form action="{{ route('reject-progress', $progress->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE') 
+                                <button
+                                    type="submit"
+                                    class="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg transition-colors">
+                                    Tolak
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -127,16 +141,23 @@
                         </div>
                         
                         <div class="flex flex-col sm:flex-row gap-3">
-                            <button 
-                                onclick="verifyTask({{ $task->id }}, 'approved')"
-                                class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition-colors">
-                                Setuju
-                            </button>
-                            <button 
-                                onclick="verifyTask({{ $task->id }}, 'rejected')"
-                                class="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg transition-colors">
-                                Tolak
-                            </button>
+                            <form action="{{ route('cross-team-approve', $task->id) }}" method="POST">
+                            @csrf
+                                <button 
+                                    type="submit"
+                                    class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition-colors">
+                                    Setuju
+                                </button>
+                            </form>
+                            <form action="{{ route('cross-team-reject', $task->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button 
+                                    type="submit"
+                                    class="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg transition-colors">
+                                    Tolak
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -144,5 +165,4 @@
             </div>
         @endif
     </div>
-
 </x-layout>

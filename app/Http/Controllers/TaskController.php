@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\Evaluation;
+use App\Models\Objection;
 use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\User;
@@ -146,7 +148,8 @@ class TaskController extends Controller
     // delete task
     public function destroy(Task $task)
     {
-        $task->progress()->delete();            
+        $task->progress()->delete();
+        $task->objection()->delete();            
         if ($task->attachment) {
             Storage::delete($task->attachment);
         }
@@ -190,5 +193,79 @@ class TaskController extends Controller
             ]);
             return redirect()->back()->with('updated', 'Progress Berhasil Diperbarui! Menunggu Persetujuan dari ketua tim.');
         }
+    }
+
+    // update volume
+    public function update_volume(Request $request, $id)
+    {
+        $objection = Objection::findOrFail($id);
+        $task = $objection->task;
+
+        $request->validate([
+            'new_volume' => 'required|integer|min:' . ($task->task_latest_progress + 1) . '|max:' . ($task->task_volume - 1),
+        ]);
+
+        $task->task_volume = $request->new_volume;
+        $task->save();
+
+        $objection->objection_status = 'diterima';
+        $objection->save();
+        return redirect()->back()->with('updated', 'Volume pekerjaan berhasil diperbarui!');
+    }
+
+    // mark task as done from objection
+    public function mark_done(Request $request, $id){
+
+        $request->validate([
+            'evaluation_tidiness' => 'required',
+            'evaluation_comprehensiveness' => 'required',
+        ]);
+
+        $objection = Objection::findOrFail($id);
+        $task = $objection->task;
+
+        $task->task_volume = $task->task_latest_progress;
+        $task->status_id = 1;
+        $task->save();
+
+        $objection->objection_status = 'diterima';
+        $objection->save();
+
+        Evaluation::create([
+            'task_id' => $task->id,
+            'evaluation_tidiness' => $request->evaluation_tidiness,
+            'evaluation_comprehensiveness' => $request->evaluation_comprehensiveness,
+        ]);
+
+        return redirect()->back()->with('success', 'Tugas berhasil ditandai sebagai selesai!');
+    }
+
+    // delete task from objection
+    public function delete_task($id){
+        $objection = Objection::findOrFail($id);
+        $task = $objection->task;
+        $task->progress()->delete();
+        $task->objection()->delete();
+        if ($task->task_attachment) {
+            Storage::delete($task->task_attachment);
+        }
+        $task->delete();
+        return redirect()->back()->with('success', 'Tugas berhasil dihapus!');
+    }
+
+    public function cross_team_approve($id)
+    {
+        $task = Task::findOrFail($id);
+        $task->status_id = 2;
+        $task->save();
+        return redirect()->back()->with('success', 'Tugas berhasil disetujui!');
+    }
+
+    public function cross_team_reject($id)
+    {
+        $task = Task::findOrFail($id);
+        $task->progress()->delete();
+        $task->delete();
+        return redirect()->back()->with('success', 'Tugas berhasil ditolak!');
     }
 }

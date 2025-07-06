@@ -26,7 +26,7 @@
             </a>
             
             <!-- Kegiatan Terlambat -->
-            <a href="{{ route('activities-monitoring-page') }}" 
+            <a href="{{ route('activities-monitoring-page', ['filter' => 'Terlambat', 'page' => 1]) }}" 
                class="border p-6 rounded-lg flex flex-col items-center bg-red-500 shadow-md transition-all hover:shadow-lg hover:bg-red-600 hover:transform hover:-translate-y-1"
                aria-label="{{ $activityStats['late'] }} Kegiatan Terlambat">
                 <div class="flex items-center justify-between w-full">
@@ -150,6 +150,16 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @php
+    $statusColors = [
+        'Selesai' => '#3b82f6',
+        'Terlambat' => '#000000',
+        'Progress Lambat' => '#ef4444',
+        'Progress On Time' => '#fbbf24',
+        'Progress Cepat' => '#34d399',
+    ];
+    $pieColors = $pieData->keys()->map(fn($status) => $statusColors[$status]);
+@endphp
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const ctx = document.getElementById('taskPieChart').getContext('2d');
@@ -157,12 +167,7 @@
                 labels: @json($pieData->keys()),
                 datasets: [{
                     data: @json($pieData->values()),
-                    backgroundColor: [
-                        '#34d399', 
-                        '#ef4444', 
-                        '#6366f1', 
-                        '#fbbf24', 
-                    ],
+                    backgroundColor: @json($pieColors->values()),
                 }]
             };
             new Chart(ctx, {

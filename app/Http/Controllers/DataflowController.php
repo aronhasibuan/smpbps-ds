@@ -126,37 +126,93 @@ class DataflowController extends Controller
         $EVMService = new EVMService();
         $user = Auth::user();
         
+        $search = $request->input('search');
+        $filter = $request->get('filter', '');
+        $perPage = $request->get('perPage', 5);
+        $currentPage = $request->get('page', 1);
+
+        // Base Query
         if ($user->user_role === 'kepalabps') {
             $activities = Activity::where('activity_active_status', true)
-            ->with(['tasks' => function ($query) {
-                $query->select('activity_id', 'task_latest_progress', 'task_volume');
-            }]);
+                ->with(['tasks' => function ($query) {
+                    $query->select('activity_id', 'task_latest_progress', 'task_volume');
+                }]);
         } elseif ($user->user_role === 'ketuatim') {
-            $activities = Activity::where('user_leader_id', $user->id)->where('activity_active_status', true)
-            ->with(['tasks' => function ($query) {
-                $query->select('activity_id', 'task_latest_progress', 'task_volume');
-            }]);
+            $activities = Activity::where('user_leader_id', $user->id)
+                ->where('activity_active_status', true)
+                ->with(['tasks' => function ($query) {
+                    $query->select('activity_id', 'task_latest_progress', 'task_volume');
+                }]);
         } else {
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
-            
-        $perPage = $request->get('perPage', 5);
-        $search = $request->input('search');
-
+        
+        // Filter Search
         if ($search) {
             $activities->where(function ($query) use ($search) {
-                $query->where('activity_name', 'like', '%' . $search . '%');
+                $query->where('activity_name', 'like', '%' . $search . '%')
+                    ->orWhere('activity_unit', 'like', '%' . $search . '%');
             });
         }
         
-        $activities = $activities->paginate($perPage)->withQueryString();
-        
-        foreach($activities as $activity){
+        // Ambil data
+        $activities = $activities->get();
+
+        // Hitung SPI tiap activity
+        foreach ($activities as $activity) {
             $activity->spi_data = $EVMService->calculateActivitySPI($activity);
         }
 
+        // Filter berdasarkan status SPI
+        if ($filter) {
+            $activities = $activities->filter(function ($activity) use ($filter) {
+                return isset($activity->spi_data['status']) && $activity->spi_data['status'] === $filter;
+            })->values();
+        }
+
+        // Sorting
+        $sort = $request->get('sort', 'priority');
+        if ($sort == 'priority') {
+            $statusOrder = [
+                'Terlambat'        => 1,
+                'Progress Lambat'  => 2,
+                'Progress On Time' => 3,
+                'Progress Cepat'   => 4,
+                'Selesai'          => 5,
+            ];
+            $activities = $activities->sort(function ($a, $b) use ($statusOrder) {
+                $statusA = $statusOrder[$a->spi_data['status']] ?? 99;
+                $statusB = $statusOrder[$b->spi_data['status']] ?? 99;
+                return $statusA <=> $statusB;
+            })->values();
+        } elseif ($sort == 'tenggat') {
+            $activities = $activities->sortBy(function ($activity) {
+                return $activity->activity_end;
+            })->values();
+        } elseif ($sort == 'id') {
+            $activities = $activities->sortBy(function ($activity) {
+                return $activity->id;
+            })->values();
+        } elseif ($sort == 'progress') {
+            $activities = $activities->sortBy(function ($activity) {
+                return $activity->spi_data['progressPercentage'] ?? 0;
+            })->values();
+        }
+
+        // Pagination Manual
+        $pagedActivities = $activities->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        $activities = new LengthAwarePaginator(
+            $pagedActivities,
+            $activities->count(),
+            $perPage,
+            $currentPage,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
         return view('activities_monitoring', ['activities' => $activities]);
     }
+
 
     // data view('activity')
     public function activity(Activity $activity)
@@ -174,32 +230,96 @@ class DataflowController extends Controller
     }
 
     // data view('employee_monitoring')
-    public function employee_monitoring()
+    public function employee_monitoring(Request $request)
     {
         $auth = Auth::user();
         $chartData = [];
+        $chartDataProgress = [];
+        $EVMService = new EVMService();
 
-        $tasks = Task::with(['user', 'status'])
+        $monthYear = $request->get('month_year');
+
+        // Stacked Bar Chart Status Data
+        $activityDates = Task::with('activity')
             ->whereHas('user', function($query) use ($auth) {
                 $query->where('team_id', $auth->team_id);
             })
-            ->get();
+            ->get()
+            ->pluck('activity.activity_start')
+            ->filter()
+            ->map(function($date) {
+                return \Carbon\Carbon::parse($date)->format('Y-m');
+            })
+            ->unique()
+            ->sort()
+            ->values();
+
+        $tasksQuery = Task::with(['user', 'status'])
+            ->whereHas('user', function($query) use ($auth) {
+                $query->where('team_id', $auth->team_id);
+            });
+
+        if ($monthYear) {
+            $tasksQuery->whereHas('activity', function($query) use ($monthYear) {
+                $query->whereRaw("DATE_FORMAT(activity_start, '%Y-%m') = ?", [$monthYear]);
+            });
+        }
+
+        $tasks = $tasksQuery->get();
 
         $groupedByUser = $tasks->groupBy(function ($task) {
+                return $task->user->user_full_name ?? 'Tidak diketahui';
+            });
+
+            $statusDescriptions = $tasks->pluck('status.status_description')->unique()->values();
+            foreach ($statusDescriptions as $desc) {
+                $chartData[$desc] = [];
+            }
+
+            foreach ($groupedByUser as $userName => $userTasks) {
+                foreach ($statusDescriptions as $desc) {
+                    $count = $userTasks->filter(function ($task) use ($desc) {
+                        return $task->status->status_description === $desc;
+                    })->count();
+                    $chartData[$desc][] = $count;
+                }
+            }
+        
+        // Stacked Bar Chart Progress Data
+        $taskProgressQuery = Task::with(['user', 'status', 'activity'])
+            ->where('status_id', 2
+            )->whereHas('user', function($query) use ($auth) {
+                $query->where('team_id', $auth->team_id);
+            });
+
+        if ($monthYear) {
+            $taskProgressQuery->whereHas('activity', function($query) use ($monthYear) {
+                $query->whereRaw("DATE_FORMAT(activity_start, '%Y-%m') = ?", [$monthYear]);
+            });
+        }
+
+        $taskProgress = $taskProgressQuery->get();
+
+        foreach($taskProgress as $task) {
+            $task->spi_data = $EVMService->calculateSPI($task);
+        }
+
+        $groupedByUserProgress = $taskProgress->groupBy(function ($task) {
             return $task->user->user_full_name ?? 'Tidak diketahui';
         });
 
-        $statusDescriptions = $tasks->pluck('status.status_description')->unique()->values();
-        foreach ($statusDescriptions as $desc) {
-            $chartData[$desc] = [];
+        $spiStatuses = $taskProgress->pluck('spi_data.status')->unique()->values();
+
+        foreach ($spiStatuses as $status) {
+            $chartDataProgress[$status] = [];
         }
 
-        foreach ($groupedByUser as $userName => $userTasks) {
-            foreach ($statusDescriptions as $desc) {
-                $count = $userTasks->filter(function ($task) use ($desc) {
-                    return $task->status->status_description === $desc;
+        foreach ($groupedByUserProgress as $userName => $userTasks) {
+            foreach ($spiStatuses as $status) {
+                $count = $userTasks->filter(function ($task) use ($status) {
+                    return $task->spi_data['status'] === $status;
                 })->count();
-                $chartData[$desc][] = $count;
+                $chartDataProgress[$status][] = $count;
             }
         }
 
@@ -207,6 +327,9 @@ class DataflowController extends Controller
             'userNames' => $groupedByUser->keys(),
             'statusDescriptions' => $statusDescriptions,
             'chartData' => $chartData,
+            'activityDates' => $activityDates,
+            'chartDataProgress' => $chartDataProgress,
+            'spiStatuses' => $spiStatuses,
         ]);
     }
 
@@ -309,12 +432,44 @@ class DataflowController extends Controller
         }
 
         $runningactivity = $activities->count();
-        $lateactivity = Activity::where('activity_active_status', true)->where('user_leader_id', $user->id)->where('activity_end', '<', $today)->count();
+
+        $lateActivities = Activity::with('tasks')
+            ->where('activity_active_status', true)
+            ->where('user_leader_id', $user->id)
+            ->where('activity_end', '<', $today)
+            ->get();
+        $lateActivitiesFiltered = $lateActivities->filter(function ($activity) {
+            return $activity->total_progress != 100;
+        })->values();
+        $lateactivity = $lateActivitiesFiltered->count();
+
         $completedactivity = Activity::where('activity_active_status', false)->where('user_leader_id', $user->id)->count();
-        $verifiedtask = Task::whereIn('status_id', [3, 4, 5])
-            ->whereHas('activity', function($query) use ($user) {
+        
+        $objection_task = Objection::with(['task.user'])
+            ->where('objection_status', 'tertunda')
+            ->whereHas('task.user', function($query) use ($user) {
+                $query->where('team_id', $user->team_id);
+            })
+            ->get();
+
+        $progress_need_verification = Progress::with('task.activity')
+            ->where('progress_acceptance', 0)
+            ->whereHas('task.activity', function ($query) use ($user) {
                 $query->where('user_leader_id', $user->id);
-            })->count();
+            })->get();
+
+        $cross_team_task = Task::where('status_id', 3)
+            ->whereHas('user', function($query) use ($user) {
+                $query->where('team_id',  $user->team_id);
+            })->get();
+
+        // Hitung jumlah masing-masing
+        $countObjection = $objection_task->count();
+        $countProgressNeedVerification = $progress_need_verification->count();
+        $countCrossTeam = $cross_team_task->count();
+
+        // Hitung total keseluruhan
+        $verifiedtask = $countObjection + $countProgressNeedVerification + $countCrossTeam;
         
         foreach($activities as $activity){
             $activity->spi_data = $EVMService->calculateActivitySPI($activity);
@@ -322,7 +477,7 @@ class DataflowController extends Controller
 
         $groupedTasks = $activities->groupBy(fn($activity) => $activity->spi_data['status'] ?? 'Unknown');
         $pieData = $groupedTasks->map->count();
-
+        
         $activityStats = [
             'running'   => $runningactivity,
             'late'      => $lateactivity,
@@ -364,10 +519,13 @@ class DataflowController extends Controller
     public function verification()
     {
         $user = Auth::user();
-        $objection_task = Task::where('status_id', 4)
-            ->whereHas('activity', function($query) use ($user) {
-            $query->where('user_leader_id', $user->id);
-        })->get();
+
+        $objection_task = Objection::with(['task.user'])
+            ->where('objection_status', 'tertunda')
+            ->whereHas('task.user', function($query) use ($user) {
+                $query->where('team_id', $user->team_id);
+            })
+            ->get();
 
         $progress_need_verification = Progress::with('task.activity')
             ->where('progress_acceptance', 0)

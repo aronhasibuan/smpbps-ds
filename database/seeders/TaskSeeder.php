@@ -548,7 +548,7 @@ class TaskSeeder extends Seeder
         Task::create([
             'activity_id' => 27,
             'user_member_id' => 10,
-            'status_id' => 4,
+            'status_id' => 1,
             'task_slug' => '43_anggotaproduksi2',
             'task_description' => 'Cleaning',
             'task_volume' => 1,
@@ -985,7 +985,7 @@ class TaskSeeder extends Seeder
         Task::create([
             'activity_id' => 43,
             'user_member_id' => 10,
-            'status_id' => 4,
+            'status_id' => 1,
             'task_slug' => '78_anggotaproduksi2',
             'task_description' => 'Pencacahan',
             'task_volume' => 7,
@@ -1000,6 +1000,31 @@ class TaskSeeder extends Seeder
             'user_member_id' => 9,
             'status_id' => 3,
             'task_slug' => '79_anggotaproduksi1',
+            'task_description' => 'Pencacahan',
+            'task_volume' => 7,
+            'task_latest_progress' => 0,
+            'task_attachment' => null,
+        ]);
+
+        // Survei Perusahaan Perikanan
+        #80
+        Task::create([
+            'activity_id' => 43,
+            'user_member_id' => 9,
+            'status_id' => 2,
+            'task_slug' => '80_anggotaproduksi1',
+            'task_description' => 'Pencacahan',
+            'task_volume' => 7,
+            'task_latest_progress' => 1,
+            'task_attachment' => null,
+        ]);
+
+        #81
+        Task::create([
+            'activity_id' => 43,
+            'user_member_id' => 11,
+            'status_id' => 2,
+            'task_slug' => '83_anggotaproduksi3',
             'task_description' => 'Pencacahan',
             'task_volume' => 7,
             'task_latest_progress' => 0,

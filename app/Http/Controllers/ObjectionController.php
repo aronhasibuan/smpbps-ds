@@ -21,4 +21,13 @@ class ObjectionController extends Controller
 
         return redirect()->back()->with('updated', 'Keberatan berhasil diajukan!');
     }
+
+    public function reject_objection($id)
+    {
+        $objection = Objection::findOrFail($id);
+        $objection->objection_status = 'ditolak';
+        $objection->save();
+
+        return redirect()->back()->with('updated', 'Sanggahan berhasil ditolak!');
+    }
 }

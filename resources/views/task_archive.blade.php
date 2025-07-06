@@ -76,8 +76,7 @@
                         <tr>
                             <th scope="col" class="px-4 py-3">Nama Kegiatan</th>
                             <th scope="col" class="px-4 py-3">Volume/Satuan</th>
-                            <th scope="col" class="px-4 py-3">Mulai</th>
-                            <th scope="col" class="px-4 py-3">Tenggat</th>
+                            <th scope="col" class="px-4 py-3">Periode Tugas</th>
                             <th scope="col" class="px-4 py-3">Nilai</th>
                             <th scope="col" class="px-4 py-3">Aksi</th>
                         </tr>
@@ -87,8 +86,7 @@
                         <tr class="border-t hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="px-4 py-3">{{ $task->activity->activity_name }}</td>
                             <td class="px-4 py-3">{{ $task->task_volume }} {{ $task->activity->activity_unit }}</td>
-                            <td class="px-4 py-3">{{ $task->activity->id_format_start }}</td>
-                            <td class="px-4 py-3">{{ $task->activity->id_format_deadline }}</td>
+                            <td class="px-4 py-3">{{ $task->activity->id_format_start }} - {{ $task->activity->id_format_deadline }}</td>
                             <td class="px-4 py-3 items-center justify-center hover:cursor-pointer">
                                 <a href="{{ route('evaluation-page', $task->task_slug) }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none" aria-label="Lihat penilaian tugas {{ $task->activity->activity_name }}">
                                     <img class="w-6 h-6" src="{{ asset('img/star.svg') }}" alt="Nilai">

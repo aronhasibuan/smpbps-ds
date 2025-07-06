@@ -12,6 +12,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\DataflowController;
+use App\Http\Controllers\EvaluationController;
+use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ObjectionController;
 
 // GET, POST, PUT, PATCH, DELETE
@@ -114,6 +116,7 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/arsip-kegiatan', [DataflowController::class, 'activities_archive'])->name('activities-archive-page');
     
     // kepalaBPS
+
         // view ('employeelist')
         Route::get('/daftar-pegawai', [DataflowController::class, 'employee_list'])->name('employee-list-page');
         Route::put('/update-user/{user}', [UserController::class, 'update'])->name('update-user');
@@ -142,6 +145,15 @@ Route::middleware(['auth'])->group(function(){
 
         // view verification
         Route::get('/verifikasi', [DataflowController::class, 'verification'])->name('verification-page');
+        Route::put('/verifikasi/perbarui-volume-pekerjaan/{id}', [TaskController::class, 'update_volume'])->name('update-volume');
+        Route::post('/verifikasi/setuju-progress/{id}', [ProgressController::class, 'approve_progress'])->name('approve-progress');
+        Route::delete('/verifikasi/tolak-progress/{id}', [ProgressController::class, 'reject_progress'])->name('reject-progress');
+        Route::post('/verifikasi/tandai-tugas-selesai/{id}', [TaskController::class, 'mark_done'])->name('mark-done');
+        Route::delete('/verifikasi/hapus-tugas/{id}', [TaskController::class, 'delete_task'])->name('delete-task-from-verification');
+        Route::post('/verifikasi/tolak-sanggahan/{id}', [ObjectionController::class, 'reject_objection'])->name('reject-objection');
+        Route::post('/verifikasi/tugas-selesai/{id}', [EvaluationController::class, 'create'])->name('create-evaluation');
+        Route::post('/verifikasi/setujui-tugas-lintas-tim/{id}', [TaskController::class, 'cross_team_approve'])->name('cross-team-approve');
+        Route::delete('/verifikasi/tolak-tugas-lintas-tim/{id}', [TaskController::class, 'cross_team_reject'])->name('cross-team-reject');
 
     // anggota tim
 

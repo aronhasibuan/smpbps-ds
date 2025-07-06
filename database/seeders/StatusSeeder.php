@@ -15,7 +15,7 @@ class StatusSeeder extends Seeder
     {
         #1
         Status::create([
-            'status_description' => 'Tugas Tidak Aktif'
+            'status_description' => 'Tugas Selesai'
         ]);
 
         #2
@@ -26,11 +26,6 @@ class StatusSeeder extends Seeder
         #3
         Status::create([
             'status_description' => 'Tugas Menunggu Persetujuan Dari Ketua Tim Lain'
-        ]);
-
-        #4
-        Status::create([
-            'status_description' => 'Tugas Dalam Masa Sanggah'
         ]);
     }
 }

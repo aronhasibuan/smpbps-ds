@@ -94,21 +94,32 @@ class EVMService
         }
 
         $spi = ($totalEV / $totalPV);
+        $progressPercentage = $activity->total_progress;
 
-        if ($today->greaterThan($activityEnd)) {
+        if ($totalEV == $activity->tasks->sum('task_volume')) {
+            return [
+                'spi' => 1,
+                'ev' => $totalEV,
+                'pv' => $totalPV,
+                'progressPercentage' => $progressPercentage,
+                'status' => 'Selesai',
+                'color' => 'blue'
+            ];
+        } elseif ($today->greaterThan($activityEnd)) {
             return [
                 'spi' => $spi,
                 'ev' => $totalEV,
                 'pv' => $totalPV,
+                'progressPercentage' => $progressPercentage,
                 'status' => 'Terlambat',
                 'color' => 'black'
             ];
-        }
-        elseif ($spi < 1) {
+        } elseif ($spi < 1) {
             return [
                 'spi' => $spi,
                 'ev' => $totalEV,
                 'pv' => $totalPV,
+                'progressPercentage' => $progressPercentage,
                 'status' => 'Progress Lambat',
                 'color' => 'red'
             ];
@@ -117,6 +128,7 @@ class EVMService
                 'spi' => $spi,
                 'ev' => $totalEV,
                 'pv' => $totalPV,
+                'progressPercentage' => $progressPercentage,
                 'status' => 'Progress On Time',
                 'color' => 'yellow'
             ];
@@ -125,6 +137,7 @@ class EVMService
                 'spi' => $spi,
                 'ev' => $totalEV,
                 'pv' => $totalPV,
+                'progressPercentage' => $progressPercentage,
                 'status' => 'Progress Cepat',
                 'color' => 'green'
             ];
