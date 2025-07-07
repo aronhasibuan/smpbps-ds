@@ -118,18 +118,18 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $validatedData = $request->validate([
-            'deskripsi' => 'required|string',
-            'volume' => ['required','integer', function ($attribute, $value, $fail) use ($task) {
-                                if ($value <= $task->progress) {
+            'task_volume' => ['required','integer', function ($value, $fail) use ($task) {
+                                if ($value <= $task->task_latest_progress) {
                                     $fail('Volume harus lebih besar dari progress saat ini');
                                 }
                             }
                         ],
+            'task_description' => 'required|string',
             'attachment.*' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120'
         ]);
 
-        $task->volume = $validatedData['volume'];
-        $task->deskripsi = $validatedData['deskripsi'];
+        $task->task_volume = $validatedData['task_volume'];
+        $task->task_description = $validatedData['task_description'];
 
         if ($request->hasFile('attachment')) {
             if ($task->attachment) {
@@ -149,7 +149,9 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $task->progress()->delete();
-        $task->objection()->delete();            
+        $task->objection()->delete();
+        $task->evaluation()->delete(); 
+        
         if ($task->attachment) {
             Storage::delete($task->attachment);
         }
@@ -267,5 +269,54 @@ class TaskController extends Controller
         $task->progress()->delete();
         $task->delete();
         return redirect()->back()->with('success', 'Tugas berhasil ditolak!');
+    }
+
+    public function add_assignee(Request $request, $id)
+    {
+        $activity = Activity::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'user_member_id' => 'required|exists:users,id',
+            'task_description' => 'required|string|max:1000',
+            'task_volume' => 'required|integer|min:1',
+            'task_attachment' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120',
+        ]);
+
+        $member = User::find($validatedData['user_member_id']);
+        $team_leader = User::find(Auth::id());
+        
+        $status_id = ($member->team_id == $team_leader->team_id) ? 2 : 3;
+
+        $file = $request->file('task_attachment');
+        $path = $file ? $file->store('attachments', 'public') : null;
+
+        $task = Task::create([
+            'activity_id' => $activity->id,
+            'user_member_id' => $validatedData['user_member_id'],
+            'status_id' => $status_id,
+            'task_slug' => '-',
+            'task_description' => $validatedData['task_description'],
+            'task_volume' => $validatedData['task_volume'],
+            'task_attachment' => $path ? Storage::url($path) : null,
+        ]);
+
+        $task->task_slug = "{$task->id}_{$member->user_nickname}";
+        $task->save();
+
+        if ($member && $member->user_whatsapp_number) {
+            $massage = "Halo {$member->user_full_name} 👋\n";
+            $massage .= "Anda telah menerima *tugas baru* dari {$team_leader->user_full_name}.\n\n";
+            $massage .= "📌 *Nama Kegiatan*: {$activity->activity_name}\n";
+            $massage .= "📝 *Deskripsi Pekerjaan*: {$validatedData['task_description']}\n";
+            $massage .= "📆 *Tenggat Waktu*: {$activity->activity_end}\n";
+            $massage .= "📦 *Jumlah Pekerjaan*: {$validatedData['task_volume']} {$activity->activity_unit}\n\n";
+            $massage .= "Silakan cek detail tugas dan mulai pengerjaan melalui sistem:\n";
+            $massage .= "🌐 http://smpbps-ds.test/login\n\n";
+            $massage .= "Jika ada pertanyaan, silakan hubungi pemberi tugas.\n";
+            $massage .= "Semangat menjalankan tugas! 💪";
+            $this->notifyService->sendFonnteNotification($member->user_whatsapp_number, $massage);
+        }
+
+        return redirect()->back()->with('success', 'Penerima tugas berhasil ditambahkan.');
     }
 }

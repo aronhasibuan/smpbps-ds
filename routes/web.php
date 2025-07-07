@@ -132,8 +132,9 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/beranda-ketua-tim', [DataflowController::class, 'team_leader_home_page'])->name('team-leader-home-page');
 
         // view activity
-        Route::put('kegiatan/{activity}', [ActivityController::class, 'update'])->name('update-activity');
-        Route::post('kegiatan/{activity:activity_slug}/{id}', [ActivityController::class, 'mark_activity_as_done'])->name('mark-activity-as-done');
+        Route::put('kegiatan/{id}', [ActivityController::class, 'update'])->name('update-activity');
+        Route::post('kegiatan/tandai-kegiatan-selesai/{id}', [ActivityController::class, 'mark_activity_as_done'])->name('mark-activity-as-done');
+        Route::post('kegiatan/{id}', [TaskController::class, 'add_assignee'])->name('add-assignee');
 
         // view task
         Route::put('tugas/{task}', [TaskController::class, 'update'])->name('update-task');

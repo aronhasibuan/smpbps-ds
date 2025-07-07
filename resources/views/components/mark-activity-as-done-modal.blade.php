@@ -8,7 +8,7 @@
             <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 dark:text-black px-4 py-2 rounded hover:bg-gray-400 transition duration-200">
                 Batal
             </button>
-            <form action="{{ route('mark-activity-as-done', ['activity' => $activity->activity_slug, 'id' => $activity->id]) }}" method="POST">
+            <form action="{{ route('mark-activity-as-done', ['id' => $activity->id]) }}" method="POST">
                 @csrf
                 @method('POST')
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200">

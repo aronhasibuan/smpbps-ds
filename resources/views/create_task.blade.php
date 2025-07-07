@@ -2,8 +2,12 @@
     <div class="bg-white dark:bg-gray-900">
         <div class="py-4 px-4 mx-auto">
 
-            <a href="{{ route('activities-monitoring-page') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+            <div class="flex justify-between items-center mb-4">
+                <a href="{{ route('activities-monitoring-page') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
 
+                <x-active-task-modal :chartDataProgress="$chartDataProgress" :spiStatuses="$spiStatuses" :userNames="$userNames"/>
+            </div>
+            
             <h2 class="mb-4 mt-4 text-xl font-bold text-gray-900 dark:text-white">Tambah Kegiatan</h2>
     
             <form id="createTaskForm" action="{{ route('create-task') }}" method="POST" enctype="multipart/form-data">

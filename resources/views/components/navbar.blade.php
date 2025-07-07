@@ -57,19 +57,19 @@
 
                     @if (Auth::check() && (Auth::user()->user_role == 'kepalabps'))
                         <li>
-                            <x-nav-link href="/kepalabps/daftarpegawai" :active="request()->is('kepalabps/daftarpegawai')">Daftar Pegawai</x-nav-link>
+                            <x-nav-link href="{{ route('employee-list-page') }}" :active="request()->is('daftarpegawai')">Daftar Pegawai</x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link href="/kepalabps/monitoringkegiatan" :active="request()->is('kepalabps/monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
+                            <x-nav-link href="{{ route('activities-monitoring-page') }}" :active="request()->is('monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link href="/kepalabps/monitoringpegawai" :active="request()->is('kepalabps/monitoringpegawai')">Monitoring Pegawai</x-nav-link>
+                            <x-nav-link href="{{ route('employee-monitoring-page') }}" :active="request()->is('monitoringpegawai')">Monitoring Pegawai</x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link href="/kepalabps/arsipkegiatan" :active="request()->is('kepalabps/arsipkegiatan')">Arsip Kegiatan</x-nav-link>
+                            <x-nav-link href="{{ route('activities-archive-page') }}" :active="request()->is('arsipkegiatan')">Arsip Kegiatan</x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link href="/kepalabps/kalender" :active="request()->is('kepalabps/kalender')">Kalender</x-nav-link>
+                            <x-nav-link href="{{ route('calendar-page') }}" :active="request()->is('kalender')">Kalender</x-nav-link>
                         </li>                            
                     @endif
 

@@ -43,4 +43,14 @@ class Activity extends Model
         $totalVolume = $this->tasks->sum('task_volume');
         return $totalVolume > 0 ? round(($totalProgress / $totalVolume) * 100, 2) : 0;
     }
+
+    public function getTotalVolumeAttribute()
+    {
+        return $this->tasks->sum('task_volume');
+    }
+
+    public function getTotalCompletedAttribute()
+    {
+        return $this->tasks->sum('task_latest_progress');
+    }
 }

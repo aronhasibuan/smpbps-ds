@@ -41,7 +41,7 @@
         <div class="flex justify-between items-center mb-2">
             <h3 class="font-semibold text-gray-900 dark:text-white">Total Progress Tim</h3>
             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {{ $activity->total_completed }}/{{ $activity->total_tasks }} tugas selesai
+                {{ $activity->total_completed }}/{{ $activity->total_volume }} tugas selesai
             </span>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
@@ -61,6 +61,9 @@
                     <th scope="col" class="px-6 py-3">Status</th>
                     <th scope="col" class="px-6 py-3">Anggota Tim</th>
                     <th scope="col" class="px-6 py-3">Progress</th>
+                    @if ($activity->activity_active_status == '0')
+                        <th scope="col" class="px-6 py-3 text-center">Nilai Tugas</th>
+                    @endif
                     <th scope="col" class="px-6 py-3 text-center">Aksi</th>
                 </tr>
             </thead>
@@ -103,6 +106,14 @@
                             </span>
                         </div>
                     </td>
+                    @if ($activity->activity_active_status == '0')    
+                        <td class="px-6 py-4 text-center">
+                            <a href="{{ route('evaluation-page', $task->task_slug) }}"
+                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                Evaluasi
+                            </a>
+                        </td>
+                    @endif
                     <td class="px-6 py-4 text-center">
                         <a href="{{ route('task-page', $task->task_slug) }}" 
                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
@@ -124,25 +135,24 @@
     <!-- Action Buttons -->
     <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
 
-        @if (Auth::user()->user_role == 'ketuatim')
+        @if (Auth::user()->user_role == 'ketuatim' && $activity->activity_active_status == '1')
         
             <x-update-activity-modal :activity="$activity" />
             <button type="button" 
-                    data-modal-target="updatemodal{{ $activity->id }}" 
-                    data-modal-toggle="updatemodal{{ $activity->id }}" 
+                    onclick="openactivityModal()" 
                     class="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200">
                 <img class="w-5 h-5 mr-2" src="{{ asset('img/task-edit.svg') }}" alt="Edit Kegiatan">
                 Perbarui Kegiatan
             </button>
 
-            <x-add-assignee-modal :activity="$activity" :anggotatim="$anggotatim" />
+            <x-add-assignee-modal :activity="$activity" :teams="$teams" :anggotatim="$anggotatim" />
             <button type="button" 
                     id="openAddTaskModal" 
                     data-modal-target="addTaskModal" 
                     data-modal-toggle="addTaskModal"
                     class="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200">
                 <img class="w-5 h-5 mr-2" src="{{ asset('img/add-person.svg') }}" alt="Tambah Tugas">
-                Tambah Tugas Baru
+                Tambah Penerima Tugas Baru
             </button>
                 
             @if($activity->total_progress == 100)

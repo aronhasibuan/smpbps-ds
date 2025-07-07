@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 
 class ActivityController extends Controller
 {
-    public function update(Request $request, Activity $activity){
+    public function update(Request $request, $id){
         $validatedData = $request->validate([
             'activity_name' => 'required|string',
             'activity_end' => 'required|date',
         ]);
 
+        $activity = Activity::findOrFail($id);
         $activity->activity_name = $validatedData['activity_name'];
         $activity->activity_end = $validatedData['activity_end'];
         $activity->save();
@@ -38,6 +39,6 @@ class ActivityController extends Controller
         $activity->activity_active_status = false;
         $activity->save();
 
-        return redirect()->route('monitoringkegiatan')->with('success', 'Kegiatan berhasil ditandai selesai!');
+        return redirect()->route('activities-monitoring-page')->with('success', 'Kegiatan berhasil ditandai selesai!');
     }
 }

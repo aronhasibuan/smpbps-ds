@@ -53,8 +53,8 @@
                             <td class="px-4 py-3">{{ $user->user_whatsapp_number }}</td>
                             <td class="px-4 py-3 flex items-center justify-between hover:cursor-pointer">
                                 @if ($user->user_role !== 'kepalabps')
-                                <img class="w-5 h-5" src="{{ asset('img/user-update.svg') }}" alt="Update Pengguna" onclick="openUpdateModal('{{ route('updateuser', $user->id) }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->role }}', '{{ $user->no_hp }}')">                                    
-                                <img class="w-5 h-5" src="{{ asset('img/user-delete.svg') }}" alt="Hapus Pengguna" onclick="openDeleteModal('{{ route('deleteuser', $user->id) }}')">
+                                <img class="w-5 h-5" src="{{ asset('img/user-update.svg') }}" alt="Update Pengguna" onclick="openUpdateModal('{{ route('update-user', $user->id) }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->role }}', '{{ $user->no_hp }}')">                                    
+                                <img class="w-5 h-5" src="{{ asset('img/user-delete.svg') }}" alt="Hapus Pengguna" onclick="openDeleteModal('{{ route('delete-user', $user->id) }}')">
                                 @endif
                             </td>
                         </tr>

@@ -217,16 +217,24 @@ class DataflowController extends Controller
     // data view('activity')
     public function activity(Activity $activity)
     {
+        $teams = Team::with(['users' => function($query) {
+                $query->where('user_role', '!=', 'ketuatim');
+            }])
+            ->where('id', '!=', 1)
+            ->orderBy('team_name')
+            ->get();
+
         $anggotatim = User::where('user_role', 'anggotatim')
             ->withCount(['tasks' => function ($query) {
                 $query->where('status_id', 2);
             }])->get();
+
         $EVMService = new EVMService;
         $tasks = Task::where('activity_id', $activity->id)->paginate(5);
         foreach ($tasks as $task){
             $task->spi_data = $EVMService->calculateSPI($task);
         }
-        return view('activity', ['tasks' => $tasks, 'activity' => $activity, 'anggotatim' => $anggotatim]);
+        return view('activity', ['tasks' => $tasks, 'activity' => $activity, 'anggotatim' => $anggotatim, 'teams' => $teams]);
     }
 
     // data view('employee_monitoring')
@@ -287,8 +295,8 @@ class DataflowController extends Controller
         
         // Stacked Bar Chart Progress Data
         $taskProgressQuery = Task::with(['user', 'status', 'activity'])
-            ->where('status_id', 2
-            )->whereHas('user', function($query) use ($auth) {
+            ->where('status_id', 2)
+            ->whereHas('user', function($query) use ($auth) {
                 $query->where('team_id', $auth->team_id);
             });
 
@@ -491,12 +499,53 @@ class DataflowController extends Controller
                 $query->where('user_leader_id', $user->id);
             })->get();
 
-        return view('home_of_team_leader', ['user' => $user, 'activityStats' => $activityStats, 'memberProgress' => $memberProgress, 'pieData' => $pieData]);
+        return view('home_of_team_leader', [
+                    'user' => $user, 
+                    'activityStats' => $activityStats, 
+                    'memberProgress' => $memberProgress, 
+                    'pieData' => $pieData
+                ]);
     }
 
     // data view ('create_task')
     public function create_task()
     {
+        $auth = Auth::user();
+        $chartDataProgress = [];
+        $EVMService = new EVMService();
+
+        // Stacked Bar Chart Progress Data
+        $taskProgressQuery = Task::with(['user', 'status', 'activity'])
+            ->where('status_id', 2)
+            ->whereHas('user', function($query) use ($auth) {
+                $query->where('team_id', $auth->team_id);
+            });
+
+        $taskProgress = $taskProgressQuery->get();
+
+        foreach($taskProgress as $task) {
+            $task->spi_data = $EVMService->calculateSPI($task);
+        }
+
+        $groupedByUserProgress = $taskProgress->groupBy(function ($task) {
+            return $task->user->user_full_name ?? 'Tidak diketahui';
+        });
+
+        $spiStatuses = $taskProgress->pluck('spi_data.status')->unique()->values();
+
+        foreach ($spiStatuses as $status) {
+            $chartDataProgress[$status] = [];
+        }
+
+        foreach ($groupedByUserProgress as $userName => $userTasks) {
+            foreach ($spiStatuses as $status) {
+                $count = $userTasks->filter(function ($task) use ($status) {
+                    return $task->spi_data['status'] === $status;
+                })->count();
+                $chartDataProgress[$status][] = $count;
+            }
+        }
+
         $teams = Team::with(['users' => function($query) {
                 $query->where('user_role', '!=', 'ketuatim');
             }])
@@ -512,7 +561,15 @@ class DataflowController extends Controller
         $busiestUser = $anggotatim->sortByDesc('tasks_count')->first();
         $maxTasks = $busiestUser ? $busiestUser->tasks_count : 0;
 
-        return view('create_task', ['anggotatim' => $anggotatim, 'busiestUser' => $busiestUser, 'maxTasks' => $maxTasks, 'teams' => $teams]);
+        return view('create_task', [
+                    'anggotatim' => $anggotatim, 
+                    'busiestUser' => $busiestUser, 
+                    'maxTasks' => $maxTasks, 
+                    'teams' => $teams,
+                    'chartDataProgress' => $chartDataProgress,
+                    'spiStatuses' => $spiStatuses,
+                    'userNames' => $groupedByUserProgress->keys(),
+                ]);
     }
 
      // data view('verification)
