@@ -57,16 +57,22 @@
 
                     @if (Auth::check() && (Auth::user()->user_role == 'kepalabps'))
                         <li>
-                            <x-nav-link href="{{ route('employee-list-page') }}" :active="request()->is('daftarpegawai')">Daftar Pegawai</x-nav-link>
+                            <x-nav-link href="{{ route('head-bps-home-page') }}" :active="request()->is('beranda-kepala-bps')">Beranda</x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link href="{{ route('activities-monitoring-page') }}" :active="request()->is('monitoringkegiatan')">Monitoring Kegiatan</x-nav-link>
+                            <x-nav-link href="{{ route('team-list-page') }}" :active="request()->is('daftar-tim')">Daftar Tim</x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link href="{{ route('employee-monitoring-page') }}" :active="request()->is('monitoringpegawai')">Monitoring Pegawai</x-nav-link>
+                            <x-nav-link href="{{ route('employee-list-page') }}" :active="request()->is('daftar-pegawai')">Daftar Pegawai</x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link href="{{ route('activities-archive-page') }}" :active="request()->is('arsipkegiatan')">Arsip Kegiatan</x-nav-link>
+                            <x-nav-link href="{{ route('activities-monitoring-page') }}" :active="request()->is('monitoring-kegiatan')">Monitoring Kegiatan</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('employee-monitoring-page') }}" :active="request()->is('monitoring-pegawai')">Monitoring Pegawai</x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('activities-archive-page') }}" :active="request()->is('arsip-kegiatan')">Arsip Kegiatan</x-nav-link>
                         </li>
                         <li>
                             <x-nav-link href="{{ route('calendar-page') }}" :active="request()->is('kalender')">Kalender</x-nav-link>
@@ -75,7 +81,7 @@
 
                     @if (Auth::check() && (Auth::user()->user_role == 'ketuatim' ))
                         <li>
-                            <x-nav-link href="{{ route('team-leader-home-page') }}" :active="request()->is('beranda')">Beranda</x-nav-link>
+                            <x-nav-link href="{{ route('team-leader-home-page') }}" :active="request()->is('beranda-ketua-tim')">Beranda</x-nav-link>
                         </li>
                         <li>
                             <x-nav-link href="{{ route('activities-monitoring-page') }}" :active="request()->is('monitoring-kegiatan')">Monitoring Kegiatan</x-nav-link>

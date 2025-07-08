@@ -1,6 +1,6 @@
 <x-layout>
 
-    <p class="text-sm text-gray-600 mt-3 mb-5">Pegawai Terdaftar Pada SMPBPS-DS</p>
+    <p class="text-sm text-gray-600 mt-3 mb-5">Daftar Pegawai BPS Kabupaten Deli Serdang</p>
 
     <div class="border shadow-lg sm:rounded-t-lg">
         {{-- table headers --}}
@@ -8,7 +8,7 @@
             <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                 
                 <div class="w-full md:w-1/2">
-                    <form class="flex items-center" action="/kepalabps/daftarpegawai" method="GET">
+                    <form class="flex items-center" action="{{ route('employee-list-page') }}" method="GET">
                         <label for="search" class="sr-only"></label>
                         <div class="relative w-full">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -24,7 +24,7 @@
                 {{-- button --}}
                 @if (Auth::check() && Auth::user()->user_role == 'kepalabps')
                     <div class="flex mt-2">
-                        <a href="/kepalabps/tambahpegawai" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                        <a href="{{ route('create-employee-page') }}" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                             + Tambah Pegawai
                         </a>
                     </div>
@@ -53,7 +53,8 @@
                             <td class="px-4 py-3">{{ $user->user_whatsapp_number }}</td>
                             <td class="px-4 py-3 flex items-center justify-between hover:cursor-pointer">
                                 @if ($user->user_role !== 'kepalabps')
-                                <img class="w-5 h-5" src="{{ asset('img/user-update.svg') }}" alt="Update Pengguna" onclick="openUpdateModal('{{ route('update-user', $user->id) }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->role }}', '{{ $user->no_hp }}')">                                    
+                                <x-update-user-modal :teams="$teams" :user="$user" />
+                                <img class="w-5 h-5" src="{{ asset('img/user-update.svg') }}" alt="Update Pengguna" onclick="openUpdateModal('{{ route('update-user', $user->id) }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->role }}', '{{ $user->no_hp }}')">
                                 <img class="w-5 h-5" src="{{ asset('img/user-delete.svg') }}" alt="Hapus Pengguna" onclick="openDeleteModal('{{ route('delete-user', $user->id) }}')">
                                 @endif
                             </td>
@@ -65,7 +66,7 @@
                         @if(request()->has('search'))
                             <tr class="text-center">
                                 <td colspan="5">
-                                    <a href="{{ route('employeelist') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+                                    <a href="{{ route('employee-list-page') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
                                 </td>
                             </tr>
                         @endif
@@ -85,97 +86,11 @@
             </div>
         </div>
 
-        {{-- Modal Update User --}}
-        <div id="updateUserModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
-                <h2 class="text-lg font-bold mb-4">Update Pengguna</h2>
-                <form id="updateUserForm" method="POST" action="">
-                    @csrf
-                    @method('PUT')
-                    <div class="mb-4">
-                        <label for="user_full_name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                        <input type="text" id="user_full_name" name="user_full_name" class="block w-full p-2 border rounded-lg" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="team_id" class="block text-sm font-medium text-gray-700">Tim</label>
-                        <select name="team_id" id="team_id" class="block w-full p-2 border rounded-lg"> 
-                            <option selected disabled>Pilih Tim</option>
-                            @foreach($teams as $team)
-                                <option value="{{ $team->id }}">{{ $team->team_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" id="email" name="email" class="block w-full p-2 border rounded-lg" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="user_role" class="block text-sm font-medium text-gray-700">Role</label>
-                        <select id="user_role" name="user_role" class="block w-full p-2 border rounded-lg">
-                            <option value="ketuatim">Ketua Tim</option>
-                            <option value="anggotatim">Anggota Tim</option>
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="user_whatsapp_number" class="block text-sm font-medium text-gray-700">Nomor WhatsApp</label>
-                        <input type="text" id="user_whatsapp_number" name="user_whatsapp_number" class="block w-full p-2 border rounded-lg" required>
-                    </div>
-                    <div class="flex justify-end">
-                        <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2" onclick="closeUpdateModal()">Batal</button>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Simpan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    
-    <div id="deleteUserModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
-            <h2 class="text-lg font-bold mb-4">Hapus Pengguna</h2>
-            <p>Apakah Anda yakin ingin menghapus pengguna ini?</p>
-            <form id="deleteUserForm" method="POST" action="">
-                @csrf
-                @method('DELETE')
-                <div class="flex justify-end mt-4">
-                    <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2" onclick="closeDeleteModal()">Batal</button>
-                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg">Hapus</button>
-                </div>
-            </form>
-        </div>
+        
+        <x-delete-user-modal />
     </div>
 
     <script>
-        function openUpdateModal(actionUrl, name, email, role, no_hp) {
-            const modal = document.getElementById('updateUserModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            const form = document.getElementById('updateUserForm');
-            form.action = actionUrl;
-            form.querySelector('#name').value = name;
-            form.querySelector('#email').value = email;
-            form.querySelector('#role').value = role;
-            form.querySelector('#no_hp').value = no_hp;
-        }
-
-        function closeUpdateModal() {
-            const modal = document.getElementById('updateUserModal');
-            modal.classList.add('hidden');
-        }
-
-        function openDeleteModal(actionUrl) {
-            const modal = document.getElementById('deleteUserModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            const form = document.getElementById('deleteUserForm');
-            form.action = actionUrl;
-            modal.classList.remove('hidden');
-        }
-
-        function closeDeleteModal() {
-            const modal = document.getElementById('deleteUserModal');
-            modal.classList.add('hidden');
-        }
-
         document.getElementById('perPage').addEventListener('change', function() {
             const urlParams = new URLSearchParams(window.location.search);
             urlParams.set('perPage', this.value);

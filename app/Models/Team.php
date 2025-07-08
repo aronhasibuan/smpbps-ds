@@ -15,4 +15,8 @@ class Team extends Model
     public function users(): HasMany{
         return $this->hasMany(User::class, 'team_id');
     }
+    
+    public function getTeamLeadersAttribute(){
+        return $this->users()->where('user_role', 'ketuatim')->get();
+    }
 }

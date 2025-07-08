@@ -70,6 +70,7 @@ class DataflowController extends Controller
     // data view ('evaluation')
     public function evaluation(Task $task)
     {
+        $user = Auth::user();
         $evaluation_evmservice = new Evaluation_EVMService();
         $taskbydate = [];
         $progressbydate = [];
@@ -111,7 +112,11 @@ class DataflowController extends Controller
         $task->average_quality_point = ($task->comprehensiveness_point + $task->tidiness_point) / 2;
         $task->final_point = ($task->average_progress_point * 0.6) + ($task->average_quality_point * 0.4);
  
-        return view('evaluation', ['task' => $task, 'tasksbydate' => $taskbydate]);
+        return view('evaluation', [
+                    'task' => $task, 
+                    'tasksbydate' => $taskbydate,
+                    'user' => $user,
+                ]);
     }
 
     // data view('calendar')
@@ -394,6 +399,53 @@ class DataflowController extends Controller
         ]);
     }
 
+    // data view('head_bps_home_page')
+    public function head_bps_home_page()
+    {
+        $user = Auth::user();
+
+        if ($user->user_role !== 'kepalabps') {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        }
+
+        $recentcompletedActivities = Activity::with('user')
+            ->where('activity_active_status', false)
+            ->orderBy('updated_at', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('home_of_head_bps', [
+            'totalPegawai' => User::count(),
+            'totalTim' => Team::count(),
+            'totalKegiatanAktif' => Activity::where('activity_active_status', true)->count(),
+            'totalKegiatanSelesai' => Activity::where('activity_active_status', false)->count(),
+            'recentcompletedActivities' => $recentcompletedActivities,
+        ]);
+    }
+
+    // data view('team_list')
+    public function team_list(Request $request)
+    {
+        $user = Auth::user();
+        $teamsQuery = Team::with('users')->where('team_name', '!=', 'Kepala BPS');
+        $search = $request->input('search');
+        $perPage = $request->get('perPage', 10);
+        if ($search) {
+            $teamsQuery->where('team_name', 'like', '%' . $search . '%');
+        }
+        $teams = $teamsQuery->paginate($perPage)->appends($request->query());
+        return view('team_list', ['teams' => $teams, 'user' => $user]);
+    }
+
+    public function create_team()
+    {
+        $user = Auth::user();
+        if ($user->user_role !== 'kepalabps') {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        }
+        return view('create_team');
+    }
+    
     // data view('employee_list')
     public function employee_list(Request $request)
     {        
@@ -423,7 +475,7 @@ class DataflowController extends Controller
     public function create_employee()
     {
         $teams = DB::table('teams')->where('team_name', '!=', 'Kepala BPS')->get();
-        return view('createemployee', ['teams' => $teams]);
+        return view('create_employee', ['teams' => $teams]);
     }
 
     // data view('home_leader')

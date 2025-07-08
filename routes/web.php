@@ -1,20 +1,22 @@
 <?php
 
 use App\Models\Task;
+use App\Models\Team;
 use App\Models\User;
 use App\Models\Activity;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\DataflowController;
-use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ObjectionController;
+use App\Http\Controllers\EvaluationController;
 
 // GET, POST, PUT, PATCH, DELETE
 
@@ -117,7 +119,17 @@ Route::middleware(['auth'])->group(function(){
     
     // kepalaBPS
 
-        // view ('employeelist')
+        // view ('home_of_head_bps')
+        Route::get('beranda-kepala-bps', [DataflowController::class, 'head_bps_home_page'])->name('head-bps-home-page');
+
+        // view ('team_list')
+        Route::get('/daftar-tim', [DataflowController::class, 'team_list'])->name('team-list-page');
+
+        // view ('create_team')
+        Route::get('/tambah-tim', [DataflowController::class, 'create_team'])->name('create-team-page');
+        Route::post('/tambah-tim', [TeamController::class, 'create'])->name('create-team');
+
+        // view ('employee_list')
         Route::get('/daftar-pegawai', [DataflowController::class, 'employee_list'])->name('employee-list-page');
         Route::put('/update-user/{user}', [UserController::class, 'update'])->name('update-user');
         Route::delete('/delete-user/{user}', [UserController::class, 'delete'])->name('delete-user');

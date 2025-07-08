@@ -53,7 +53,7 @@ class UserController extends Controller
         $pesan .= "Terima kasih! 😊";
 
         $this->notifyService->sendFonnteNotification($validatedData['user_whatsapp_number'], $pesan);
-        return redirect()->route('employeelist')->with('success', 'Berhasil Menambahkan Pengguna.');
+        return redirect()->route('employee-list-page')->with('success', 'Berhasil Menambahkan Pengguna.');
     }
 
     // update employee
