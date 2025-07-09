@@ -9,19 +9,54 @@
         <!-- Chart Section -->
         <section aria-labelledby="chart-heading" class="mb-8">
 
-            <form method="GET" class="w-full md:w-auto mb-4">
-                <label for="month_year" class="sr-only">Filter Bulan/Tahun</label>
-                <select name="month_year" id="month_year"
-                    class="w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 transition-colors"
-                    aria-label="Filter berdasarkan bulan dan tahun">
-                    <option value="">Semua Periode</option>
-                    @foreach($activityDates as $date)
-                        <option value="{{ $date }}" {{ request('month_year') == $date ? 'selected' : '' }}>
-                            {{ \Carbon\Carbon::createFromFormat('Y-m', $date)->translatedFormat('F Y') }}
-                        </option>
-                    @endforeach
-                </select>
-            </form>
+            @if ($auth->user_role === 'ketuatim')    
+                <form method="GET" class="w-full md:w-auto mb-4">
+                    <label for="month_year" class="sr-only">Filter Bulan/Tahun</label>
+                    <select name="month_year" id="month_year"
+                        class="w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 transition-colors"
+                        aria-label="Filter berdasarkan bulan dan tahun">
+                        <option value="">Semua Periode</option>
+                        @foreach($activityDates as $date)
+                            <option value="{{ $date }}" {{ request('month_year') == $date ? 'selected' : '' }}>
+                                {{ \Carbon\Carbon::createFromFormat('Y-m', $date)->translatedFormat('F Y') }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
+            @endif
+
+            @if ($auth->user_role === 'kepalabps')                
+                <form method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label for="team_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter Tim</label>
+                        <select name="team_id" id="team_id"
+                            class="w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 transition-colors">
+                            @foreach($teams as $team)
+                                <option value="{{ $team->id }}" {{ request('team_id') == $team->id ? 'selected' : '' }}>
+                                    {{ $team->team_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="month_year" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter Bulan/Tahun</label>
+                        <select name="month_year" id="month_year"
+                            class="w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 transition-colors">
+                            <option value="">Semua Periode</option>
+                            @foreach($activityDates as $date)
+                                <option value="{{ $date }}" {{ request('month_year') == $date ? 'selected' : '' }}>
+                                    {{ \Carbon\Carbon::createFromFormat('Y-m', $date)->translatedFormat('F Y') }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            Terapkan Filter
+                        </button>
+                    </div>
+                </form>
+            @endif
 
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-5">
                 <!-- Chart Container -->
@@ -284,5 +319,21 @@
         document.getElementById('month_year')?.addEventListener('change', function() {
             this.form.submit();
         });
+
+        document.getElementById('team_id')?.addEventListener('change', function() {
+            updateUrlParams('team_id', this.value);
+        });
+
+        document.getElementById('month_year')?.addEventListener('change', function() {
+            updateUrlParams('month_year', this.value);
+        });
+
+        function updateUrlParams(key, value) {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set(key, value);
+            urlParams.set('page', 1); 
+            window.location.href = window.location.pathname + '?' + urlParams.toString();
+        }
     </script>
+
 </x-layout>

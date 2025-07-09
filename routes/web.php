@@ -124,6 +124,7 @@ Route::middleware(['auth'])->group(function(){
 
         // view ('team_list')
         Route::get('/daftar-tim', [DataflowController::class, 'team_list'])->name('team-list-page');
+        Route::put('/update-tim/{team}', [TeamController::class, 'update'])->name('update-team');
 
         // view ('create_team')
         Route::get('/tambah-tim', [DataflowController::class, 'create_team'])->name('create-team-page');

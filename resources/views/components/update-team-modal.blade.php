@@ -32,7 +32,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                             </svg>
                         </div>
-                        <input type="text" id="team_name" name="team_name" value="{{ $team->team_name }}" class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        <input type="text" id="team_name" name="team_name" class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@
                 <div>
                     <label for="team_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deskripsi Tim</label>
                     <div class="relative">
-                        <textarea id="team_description" name="team_description" rows="4" class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">{{ $team->team_description }}</textarea>
+                        <textarea id="team_description" name="team_description" rows="4" class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
                     </div>
                 </div>
             </div>
@@ -62,10 +62,13 @@
 </div>
 
 <script>
-    function openUpdateTeamModal(teamId, teamName, teamDescription) {
+    function openUpdateTeamModal($actionUrl, teamName, teamDescription) {
         const modal = document.getElementById('updateTeamModal');
         const content = document.getElementById('updateTeamContent');
-        
+        const form = document.getElementById('updateTeamForm');
+        form.action = $actionUrl;
+        document.getElementById('team_name').value = teamName;
+        document.getElementById('team_description').value = teamDescription;
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         setTimeout(() => {

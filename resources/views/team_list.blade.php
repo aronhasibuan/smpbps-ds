@@ -91,7 +91,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex items-center justify-end space-x-2">
                                         <x-update-team-modal :team="$team" />
-                                        <button onclick="openUpdateTeamModal()" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 p-1 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors">
+                                        <button onclick="openUpdateTeamModal('{{ route('update-team', $team->id) }}', '{{ $team->team_name }}', '{{ $team->team_description }}')" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 p-1 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                             </svg>
@@ -130,6 +130,7 @@
                 <div class="flex items-center space-x-2">
                     <span class="text-sm text-gray-700 dark:text-gray-400">Data per halaman:</span>
                     <select id="perPage" onchange="window.location.href = window.location.pathname + '?perPage=' + this.value + '&page=1'" class="text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                        <option value="5" {{ request('perPage', 5) == 5 ? 'selected' : '' }}>5</option>
                         <option value="10" {{ request('perPage', 10) == 10 ? 'selected' : '' }}>10</option>
                         <option value="15" {{ request('perPage', 10) == 15 ? 'selected' : '' }}>15</option>
                         <option value="20" {{ request('perPage', 10) == 20 ? 'selected' : '' }}>20</option>

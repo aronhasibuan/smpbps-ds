@@ -247,30 +247,51 @@ class DataflowController extends Controller
     {
         $auth = Auth::user();
         $chartData = [];
+        $userNames = [];
         $chartDataProgress = [];
         $EVMService = new EVMService();
 
         $monthYear = $request->get('month_year');
+        $teamId = $request->get('team_id');
+
+        if ($auth->user_role === 'kepalabps' && !$teamId) {
+            $teamId = 2; 
+        }
+
+        // Dapatkan daftar tim untuk dropdown filter
+        $teams = Team::where('id', '!=', 1)->get();
 
         // Stacked Bar Chart Status Data
-        $activityDates = Task::with('activity')
-            ->whereHas('user', function($query) use ($auth) {
-                $query->where('team_id', $auth->team_id);
-            })
-            ->get()
-            ->pluck('activity.activity_start')
-            ->filter()
-            ->map(function($date) {
-                return \Carbon\Carbon::parse($date)->format('Y-m');
-            })
-            ->unique()
-            ->sort()
-            ->values();
-
-        $tasksQuery = Task::with(['user', 'status'])
-            ->whereHas('user', function($query) use ($auth) {
-                $query->where('team_id', $auth->team_id);
+        $activityDates = Task::with('activity');
+        if ($auth->user_role === 'ketuatim') {
+            $activityDates->whereHas('user', function($q) use ($auth) {
+                $q->where('team_id', $auth->team_id);
+        });
+        } elseif ($auth->user_role === 'kepalabps' && $teamId) {
+            $activityDates->whereHas('user', function($q) use ($teamId) {
+                $q->where('team_id', $teamId);
             });
+        }
+
+        $activityDates = $activityDates->get()
+        ->pluck('activity.activity_start')
+        ->filter()
+        ->map(function($date) {return \Carbon\Carbon::parse($date)->format('Y-m');})
+        ->unique()
+        ->sort()
+        ->values();
+    
+        $tasksQuery = Task::with(['user', 'status', 'user.team']);
+
+        if ($auth->user_role === 'ketuatim') {
+            $tasksQuery->whereHas('user', function($q) use ($auth) {
+                $q->where('team_id', $auth->team_id);
+            });
+        } elseif ($auth->user_role === 'kepalabps' && $teamId) {
+            $tasksQuery->whereHas('user', function($q) use ($teamId) {
+                $q->where('team_id', $teamId);
+            });
+        }
 
         if ($monthYear) {
             $tasksQuery->whereHas('activity', function($query) use ($monthYear) {
@@ -280,30 +301,37 @@ class DataflowController extends Controller
 
         $tasks = $tasksQuery->get();
 
-        $groupedByUser = $tasks->groupBy(function ($task) {
-                return $task->user->user_full_name ?? 'Tidak diketahui';
-            });
+        // Group by team first, then by user
+        $groupedByTeam = $tasks->groupBy(function ($task) {
+            return $task->user->team->team_name ?? 'Tim Tidak Diketahui';
+        });
 
-            $statusDescriptions = $tasks->pluck('status.status_description')->unique()->values();
+        $statusDescriptions = $tasks->pluck('status.status_description')->unique()->values();
+    
+        // Prepare chart data structure
+        foreach ($tasks->groupBy('user.id') as $userId => $userTasks) {
+            $user = $userTasks->first()->user;
+            $userName = $user->user_full_name ?? 'Tidak diketahui';
+            $userNames[] = $userName;
+
             foreach ($statusDescriptions as $desc) {
-                $chartData[$desc] = [];
+                $chartData[$desc][] = $userTasks->where('status.status_description', $desc)->count();
             }
+        }
 
-            foreach ($groupedByUser as $userName => $userTasks) {
-                foreach ($statusDescriptions as $desc) {
-                    $count = $userTasks->filter(function ($task) use ($desc) {
-                        return $task->status->status_description === $desc;
-                    })->count();
-                    $chartData[$desc][] = $count;
-                }
-            }
-        
         // Stacked Bar Chart Progress Data
-        $taskProgressQuery = Task::with(['user', 'status', 'activity'])
-            ->where('status_id', 2)
-            ->whereHas('user', function($query) use ($auth) {
-                $query->where('team_id', $auth->team_id);
+        $taskProgressQuery = Task::with(['user', 'status', 'activity', 'user.team'])
+            ->where('status_id', 2);
+
+        if ($auth->user_role === 'ketuatim') {
+            $taskProgressQuery->whereHas('user', function($q) use ($auth) {
+                $q->where('team_id', $auth->team_id);
             });
+        } elseif ($auth->user_role === 'kepalabps' && $teamId) {
+            $taskProgressQuery->whereHas('user', function($q) use ($teamId) {
+                $q->where('team_id', $teamId);
+            });
+        }
 
         if ($monthYear) {
             $taskProgressQuery->whereHas('activity', function($query) use ($monthYear) {
@@ -317,32 +345,34 @@ class DataflowController extends Controller
             $task->spi_data = $EVMService->calculateSPI($task);
         }
 
-        $groupedByUserProgress = $taskProgress->groupBy(function ($task) {
-            return $task->user->user_full_name ?? 'Tidak diketahui';
+        // Group progress data by team
+        $groupedByTeamProgress = $taskProgress->groupBy(function ($task) {
+            return $task->user->team->team_name ?? 'Tim Tidak Diketahui';
         });
 
         $spiStatuses = $taskProgress->pluck('spi_data.status')->unique()->values();
 
-        foreach ($spiStatuses as $status) {
-            $chartDataProgress[$status] = [];
-        }
+        foreach ($taskProgress->groupBy('user.id') as $userId => $userTasks) {
+            $user = $userTasks->first()->user;
+            $userName = $user->user_full_name ?? 'Tidak diketahui';
 
-        foreach ($groupedByUserProgress as $userName => $userTasks) {
             foreach ($spiStatuses as $status) {
-                $count = $userTasks->filter(function ($task) use ($status) {
+                $chartDataProgress[$status][] = $userTasks->filter(function ($task) use ($status) {
                     return $task->spi_data['status'] === $status;
                 })->count();
-                $chartDataProgress[$status][] = $count;
             }
         }
 
         return view('employee_monitoring', [
-            'userNames' => $groupedByUser->keys(),
+            'teams' => $teams,
+            'selectedTeam' => $teamId,
+            'userNames' => $userNames, // hasil dari langkah 1
             'statusDescriptions' => $statusDescriptions,
             'chartData' => $chartData,
             'activityDates' => $activityDates,
             'chartDataProgress' => $chartDataProgress,
             'spiStatuses' => $spiStatuses,
+            'auth' => $auth,
         ]);
     }
 
@@ -427,9 +457,9 @@ class DataflowController extends Controller
     public function team_list(Request $request)
     {
         $user = Auth::user();
-        $teamsQuery = Team::with('users')->where('team_name', '!=', 'Kepala BPS');
+        $teamsQuery = Team::with('users')->where('team_name', '!=', 'Kepala BPS')->distinct();
         $search = $request->input('search');
-        $perPage = $request->get('perPage', 10);
+        $perPage = $request->get('perPage', 5);
         if ($search) {
             $teamsQuery->where('team_name', 'like', '%' . $search . '%');
         }
@@ -452,7 +482,7 @@ class DataflowController extends Controller
         $usersQuery = User::query();
         
         $search = $request->input('search');
-        $perPage = $request->get('perPage', 10);
+        $perPage = $request->get('perPage', 5);
         
         if ($search) {
             $usersQuery->where(function ($query) use ($search) {
