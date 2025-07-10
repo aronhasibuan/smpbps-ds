@@ -25,7 +25,7 @@
             <!-- Modal Body -->
             <div class="mb-6">
                 <p class="text-gray-700 dark:text-gray-300 break-words whitespace-normal overflow-hidden">
-                    Anda akan menghapus tim <span class="font-semibold text-gray-900 dark:text-white break-words whitespace-normal">{{ $team->team_name }}</span> beserta seluruh anggotanya.
+                    Anda akan menghapus tim <span class="font-semibold text-gray-900 dark:text-white break-words whitespace-normal">{{ $team->team_name }}</span> beserta data yang terkait.
                 </p>
                 <p class="text-red-500 dark:text-red-400 font-medium mt-2 break-words">
                     Data yang dihapus tidak dapat dikembalikan.
@@ -55,9 +55,11 @@
 </div>
 
 <script>
-    function openDeleteTeamModal(teamId, teamName) {
+    function openDeleteTeamModal(actionUrl) {
         const modal = document.getElementById('deleteTeamModal');
-        const content = document.getElementById('deleteTeamContent');        
+        const content = document.getElementById('deleteTeamContent'); 
+        const form = document.getElementById('deleteTeamForm');
+        form.action = actionUrl;
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         setTimeout(() => {

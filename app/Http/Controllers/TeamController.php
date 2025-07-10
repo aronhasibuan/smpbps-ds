@@ -38,4 +38,15 @@ class TeamController extends Controller
 
         return redirect()->route('team-list-page')->with('success', 'Berhasil Memperbarui Tim.');
     }
+
+    public function delete($id)
+    {
+        $targetTeamId = 1;
+        $team = Team::findOrFail($id);
+        $team->users()->update(['team_id' => $targetTeamId]);
+        $team->delete();
+
+        return redirect()->route('team-list-page')->with('success', 'Berhasil Menghapus Tim.');
+    }
+
 }

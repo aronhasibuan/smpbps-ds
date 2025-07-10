@@ -16,8 +16,8 @@ class TeamSeeder extends Seeder
         // Kepala BPS
         #1
         Team::create([
-            'team_name' => 'Kepala BPS',
-            'team_description' => 'Kepala BPS adalah seseorang yang memiliki wewenang tertinggi dalam kantor BPS.'
+            'team_name' => 'Tidak Memiliki Tim',
+            'team_description' => 'Daftar pengguna yang saat ini tidak atau belum memiliki tim.'
         ]);
         // Tim Statistik Produksi
         #2
