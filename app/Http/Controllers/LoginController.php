@@ -19,10 +19,8 @@ class LoginController extends Controller
                 return redirect('/beranda-kepala-bps')->with('success', 'Login berhasil, selamat datang!');
             }elseif(Auth::user()->user_role == 'ketuatim'){
                 return redirect()->route('team-leader-home-page')->with('success', 'Login berhasil, selamat datang!');
-            }elseif(Auth::user()->user_role == 'anggotatim'){
-                return redirect()->route('team-member-home-page')->with('success', 'Login berhasil, selamat datang!');
             }else{
-                return redirect('/login')->with('error', 'Role akun tidak dikenali, silakan hubungi administrator');
+                return redirect()->route('team-member-home-page')->with('success', 'Login berhasil, selamat datang!');
             }
         } else {
             return redirect('/login')->with('error', 'Email atau Password yang dimasukkan tidak sesuai, silakan coba lagi');

@@ -23,9 +23,7 @@ use App\Http\Controllers\EvaluationController;
 Route::middleware(['guest'])->group(function(){
 
     // Landing Page
-    Route::get('/', function () {
-        return redirect('/login');
-    })->name('landing-page');
+    Route::get('/', [DataflowController::class, 'landing_page'])->name('landing-page');
 
     // view ('login')
     Route::get('/login', [DataflowController::class, 'login'])->name('login-page');
@@ -48,60 +46,14 @@ Route::middleware(['auth'])->group(function(){
         Route::get('tugas/{task:task_slug}', [DataflowController::class, 'task'])->name('task-page');
 
         // attachment
-        Route::get('/file/{filename}', function ($filename) {
-            $path = "attachments/{$filename}";
-        
-            if (!Storage::disk('public')->exists($path)) {
-                abort(404);
-            } else{
-                return response()->file(storage_path("app/public/{$path}"));
-            }
-        })->where('filename', '.*')->name('open-attachment');
+        Route::get('/file/{filename}', [DataflowController::class, 'openAttachment'])->where('filename', '.*')->name('open-attachment');
 
         // view ('evaluation')
         Route::get('/penilaian/{task:task_slug}', [DataflowController::class, 'evaluation'])->name('evaluation-page');
     
         // view ('calendar')
         Route::get('/kalender', [DataflowController::class, 'calendar'])->name('calendar-page');
-        Route::get('/api/tasks/calendar', function () {
-            $user = Auth::user();
-
-            if ($user->user_role === 'anggotatim') {
-                $tasks = Task::with('activity')
-                    ->where('user_member_id', $user->id)
-                    ->get()
-                    ->map(function ($task) {
-                        return [
-                            'title' => $task->activity->activity_name ?? '-',
-                            'start' => $task->activity->activity_start ?? $task->created_at,
-                            'end'   => $task->activity->activity_end ?? $task->created_at,
-                        ];
-                    });
-                return response()->json($tasks);
-            }elseif ($user->user_role === 'ketuatim') {
-                $activities = Activity::where('user_leader_id', $user->id)->get()
-                    ->map(function ($activity) {
-                        return [
-                            'title' => $activity->activity_name,
-                            'start' => $activity->activity_start,
-                            'end'   => $activity->activity_end,
-                        ];
-                    });
-                return response()->json($activities);
-            }elseif ($user->user_role === 'kepalabps') {
-                $activities = Activity::all()
-                    ->map(function ($activity) {
-                        return [
-                            'title' => $activity->activity_name,
-                            'start' => $activity->activity_start,
-                            'end'   => $activity->activity_end,
-                        ];
-                    });
-                return response()->json($activities);
-            }else{
-                return response()->json([]);
-            }
-        })->name('calendar-api');
+        Route::get('/api/tasks/calendar', [DataflowController::class, 'calendar_api'])->name('calendar-api');
 
     # Kepala BPS dan Ketua Tim
 

@@ -28,8 +28,33 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
+        // Akun yang telah dihapus
+        #2
+        User::create([
+            'team_id' => 1,
+            'user_full_name' => 'Akun Ketua Tim yang Telah Dihapus',
+            'user_nickname' => 'akunketuatimyangtelahdihapus',
+            'user_role' => 'ketuatim',
+            'email' => 'akunketuatim@gmail.com',
+            'password' => Hash::make('password'),
+            'user_whatsapp_number' => '08887654811',
+            'remember_token' => Str::random(10) 
+        ]);
+
+        #3
+        User::create([
+            'team_id' => 1,
+            'user_full_name' => 'Akun Anggota Tim yang Telah Dihapus',
+            'user_nickname' => 'akunanggotatimyangtelahdihapus',
+            'user_role' => 'anggotatim',
+            'email' => 'akunanggotatim@gmail.com',
+            'password' => Hash::make('password'),
+            'user_whatsapp_number' => '08887654811',
+            'remember_token' => Str::random(10)
+        ]);
+
         // Ketua Tim
-        // #2
+        // #4
         User::create([
             'team_id' => 2,
             'user_full_name' => 'Ketua Tim Produksi',
@@ -41,7 +66,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #3
+        // #5
         User::create([
             'team_id' => 3,
             'User_full_name' => 'Ketua Tim Distribusi',
@@ -53,7 +78,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #4
+        // #6
         User::create([
             'team_id' => 4,
             'User_full_name' => 'Ketua Tim Sosial',
@@ -65,7 +90,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #5
+        // #7
         User::create([
             'team_id' => 5,
             'User_full_name' => 'Ketua Tim Nerwilis',
@@ -77,7 +102,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #6
+        // #8
         User::create([
             'team_id' => 6,
             'User_full_name' => 'Ketua Tim IPDS',
@@ -89,7 +114,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #7
+        // #9
         User::create([
             'team_id' => 7,
             'User_full_name' => 'Ketua Tim Sektoral',
@@ -101,7 +126,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #8
+        // #10
         User::create([
             'team_id' => 8,
             'User_full_name' => 'Ketua Tim Humas',
@@ -114,7 +139,7 @@ class UserSeeder extends Seeder
         ]);
 
         // Anggota Tim
-        // #9
+        // #11
         User::create([
             'team_id' => 2,
             'user_full_name' => 'Anggota Produksi 1',
@@ -126,7 +151,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #10
+        // #12
         User::create([
             'team_id' => 2,
             'user_full_name' => 'Anggota Produksi 2',
@@ -138,7 +163,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #11
+        // #13
         User::create([
             'team_id' => 2,
             'user_full_name' => 'Anggota Produksi 3',
@@ -150,7 +175,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #12
+        // #14
         User::create([
             'team_id' => 2,
             'user_full_name' => 'Anggota Produksi 4',
@@ -162,7 +187,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #13
+        // #15
         User::create([
             'team_id' => 2,
             'user_full_name' => 'Anggota Produksi 5',
@@ -174,7 +199,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #14
+        // #16
         User::create([
             'team_id' => 3,
             'user_full_name' => 'Anggota Distribusi 1',
@@ -186,7 +211,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #15
+        // #17
         User::create([
             'team_id' => 3,
             'user_full_name' => 'Anggota Distribusi 2',
@@ -198,7 +223,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #16
+        // #18
         User::create([
             'team_id' => 3,
             'user_full_name' => 'Anggota Distribusi 3',
@@ -210,7 +235,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #17
+        // #19
         User::create([
             'team_id' => 3,
             'user_full_name' => 'Anggota Distribusi 4',
@@ -222,7 +247,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #18
+        // #20
         User::create([
             'team_id' => 3,
             'user_full_name' => 'Anggota Distribusi 5',
@@ -234,7 +259,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #19
+        // #21
         User::create([
             'team_id' => 4,
             'user_full_name' => 'Anggota Sosial 1',
@@ -246,7 +271,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #20
+        // #22
         User::create([
             'team_id' => 4,
             'user_full_name' => 'Anggota Sosial 2',
@@ -258,7 +283,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #21
+        // #23
         User::create([
             'team_id' => 4,
             'user_full_name' => 'Anggota Sosial 3',
@@ -270,7 +295,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #22
+        // #24
         User::create([
             'team_id' => 4,
             'user_full_name' => 'Anggota Sosial 4',
@@ -282,7 +307,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #23
+        // #25
         User::create([
             'team_id' => 4,
             'user_full_name' => 'Anggota Sosial 5',
@@ -294,7 +319,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #24
+        // #26
         User::create([
             'team_id' => 5,
             'user_full_name' => 'Anggota Nerwilis 1',
@@ -306,7 +331,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #25
+        // #27
         User::create([
             'team_id' => 5,
             'user_full_name' => 'Anggota Nerwilis 2',
@@ -318,7 +343,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #26
+        // #28
         User::create([
             'team_id' => 5,
             'user_full_name' => 'Anggota Nerwilis 3',
@@ -330,7 +355,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #27
+        // #29
         User::create([
             'team_id' => 5,
             'user_full_name' => 'Anggota Nerwilis 4',
@@ -342,7 +367,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #28
+        // #30
         User::create([
             'team_id' => 5,
             'user_full_name' => 'Anggota Nerwilis 5',
@@ -354,7 +379,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #29
+        // #31
         User::create([
             'team_id' => 6,
             'user_full_name' => 'Anggota IPDS 1',
@@ -366,7 +391,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #30
+        // #32
         User::create([
             'team_id' => 6,
             'user_full_name' => 'Anggota IPDS 2',
@@ -378,7 +403,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #31
+        // #33
         User::create([
             'team_id' => 6,
             'user_full_name' => 'Anggota IPDS 3',
@@ -390,7 +415,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #32
+        // #34
         User::create([
             'team_id' => 6,
             'user_full_name' => 'Anggota IPDS 4',
@@ -402,7 +427,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #33
+        // #35
         User::create([
             'team_id' => 6,
             'user_full_name' => 'Anggota IPDS 5',
@@ -414,7 +439,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #34
+        // #36
         User::create([
             'team_id' => 7,
             'user_full_name' => 'Anggota Sektoral 1',
@@ -426,7 +451,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #35
+        // #37
         User::create([
             'team_id' => 7,
             'user_full_name' => 'Anggota Sektoral 2',
@@ -438,7 +463,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #36
+        // #38
         User::create([
             'team_id' => 7,
             'user_full_name' => 'Anggota Sektoral 3',
@@ -450,7 +475,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #37
+        // #39
         User::create([
             'team_id' => 7,
             'user_full_name' => 'Anggota Sektoral 4',
@@ -462,7 +487,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #38
+        // #40
         User::create([
             'team_id' => 7,
             'user_full_name' => 'Anggota Sektoral 5',
@@ -474,7 +499,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #39
+        // #41
         User::create([
             'team_id' => 8,
             'user_full_name' => 'Anggota Humas 1',
@@ -486,7 +511,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #40
+        // #42
         User::create([
             'team_id' => 8,
             'user_full_name' => 'Anggota Humas 2',
@@ -498,7 +523,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #41
+        // #43
         User::create([
             'team_id' => 8,
             'user_full_name' => 'Anggota Humas 3',
@@ -510,7 +535,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #42
+        // #44
         User::create([
             'team_id' => 8,
             'user_full_name' => 'Anggota Humas 4',
@@ -522,7 +547,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #43
+        // #45
         User::create([
             'team_id' => 8,
             'user_full_name' => 'Anggota Humas 5',

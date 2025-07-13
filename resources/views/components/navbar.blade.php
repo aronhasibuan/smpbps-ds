@@ -30,7 +30,7 @@
                                 x-transition:leave-start="opacity-100 scale-100"
                                 x-transition:leave-end="opacity-0 scale-95"
                                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black/5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                                <a href="/{{ Auth::user()->user_role }}/profil" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-400" role="menuitem" tabindex="-1" id="user-menu-item-0">Profil</a>
+                                <a href="/profil" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-400" role="menuitem" tabindex="-1" id="user-menu-item-0">Profil</a>
                                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                                 @csrf
                                     <button type="submit" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-400" style="background: none; border: none; cursor: pointer;">

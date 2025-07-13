@@ -12,7 +12,6 @@ use App\Models\Progress;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\NotifyService;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -125,19 +124,20 @@ class TaskController extends Controller
                             }
                         ],
             'task_description' => 'required|string',
-            'attachment.*' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120'
+            'task_attachment' => 'nullable|file|mimes:pdf,docx,xlsx,jpg,png|max:5120'
         ]);
 
         $task->task_volume = $validatedData['task_volume'];
         $task->task_description = $validatedData['task_description'];
 
-        if ($request->hasFile('attachment')) {
-            if ($task->attachment) {
-                Storage::delete($task->attachment);
+        if ($request->hasFile('task_attachment')) {
+            if ($task->task_attachment) {
+                Storage::delete($task->task_attachment);
             }
-            
-            $path = $request->file('attachment')->store('public/task_attachments');
-            $task->attachment = $path;
+
+            $file = $request->file('task_attachment');
+            $path = $file->store('attachments', 'public');
+            $task->task_attachment = $path;
         }
 
         $task->save();

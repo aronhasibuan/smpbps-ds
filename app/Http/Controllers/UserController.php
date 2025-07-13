@@ -31,7 +31,6 @@ class UserController extends Controller
             'password' => 'required|string|min:8',
             'user_whatsapp_number' => 'required|string|max:15',
         ]);
-
         $user = User::create([
             'team_id' => $validatedData['team_id'],
             'user_full_name' => $validatedData['user_full_name'],
@@ -41,7 +40,6 @@ class UserController extends Controller
             'password' => bcrypt($validatedData['password']),
             'user_whatsapp_number' => $validatedData['user_whatsapp_number'],
         ]);
-
         $pesan = "Halo {$validatedData['user_full_name']} 👋\n";
         $pesan .= "Selamat! Anda telah berhasil terdaftar dalam sistem kami. 🎉\n\n";
         $pesan .= "Berikut detail akun Anda:\n";
@@ -51,7 +49,6 @@ class UserController extends Controller
         $pesan .= "🌐 http://smpbps-ds.test/login\n\n";
         $pesan .= "Jika Anda memiliki pertanyaan, jangan ragu untuk menghubungi kami.\n";
         $pesan .= "Terima kasih! 😊";
-
         $this->notifyService->sendFonnteNotification($validatedData['user_whatsapp_number'], $pesan);
         return redirect()->route('employee-list-page')->with('success', 'Berhasil Menambahkan Pengguna.');
     }
@@ -67,14 +64,20 @@ class UserController extends Controller
             'user_whatsapp_number' => 'required|string|max:15',
         ]);
         $user->update($validatedData);
-        return redirect()->route('employeelist')->with('success', 'Pengguna berhasil diperbarui.');
+        return redirect()->route('employee-list-page')->with('success', 'Pengguna berhasil diperbarui.');
     }
 
     // delete employee
     public function delete(User $user)
     {
-        $user->delete();
-        return redirect()->route('employeelist')->with('success', 'Pengguna berhasil dihapus.');
+        $targetMemberId = 3;
+        if($user->user_role == 'ketuatim'){
+            return redirect()->route('employee-list-page')->with('error', 'Maaf, anda tidak dapat menghapus akun ketua tim.');
+        } else {
+            $user->tasks()->update(['user_member_id' => $targetMemberId]);
+            $user->delete();
+            return redirect()->route('employee-list-page')->with('success', 'Pengguna berhasil dihapus.');
+        }
     }
 
     // update password

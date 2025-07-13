@@ -29,3 +29,39 @@
         </div>
     </div>
 </div>
+
+<script>
+    const infoBtn = document.getElementById('info-button');
+    const infoPopup = document.getElementById('info-popup');
+    const closeModal = document.getElementById('close-modal');
+
+    if (infoBtn && infoPopup && closeModal) {
+        // Open modal
+        infoBtn.addEventListener('click', function() {
+            infoPopup.classList.remove('hidden');
+            infoPopup.classList.add('flex');
+        });
+
+        // Close modal
+        closeModal.addEventListener('click', function() {
+            infoPopup.classList.add('hidden');
+            infoPopup.classList.remove('flex');
+        });
+
+        // Close when clicking outside
+        infoPopup.addEventListener('click', function(e) {
+            if (e.target === infoPopup) {
+                infoPopup.classList.add('hidden');
+                infoPopup.classList.remove('flex');
+            }
+        });
+
+        // Close with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !infoPopup.classList.contains('hidden')) {
+                infoPopup.classList.add('hidden');
+                infoPopup.classList.remove('flex');
+            }
+        });
+    }
+</script>

@@ -38,7 +38,7 @@
         </div>
         
         <!-- Volume Update Form -->
-        <form action="{{ route('update-volume', $objection->id) }}" method="POST" class="mb-6">
+        <form action="{{ route('update-task-volume-from-objection', $objection->id) }}" method="POST" class="mb-6">
             @csrf
             @method('PUT')
             <div class="mb-4">
@@ -84,7 +84,7 @@
                     Tandai Tugas Selesai
                 </button>
             @else
-                <form action="{{ route('delete-task-from-verification', $objection->id) }}" method="POST">
+                <form action="{{ route('delete-task-from-objection', $objection->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button 

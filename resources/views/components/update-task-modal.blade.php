@@ -14,7 +14,7 @@
                 </button>
             </div>
 
-            <form action="{{ route('update-task', $task->id) }}" method="POST">
+            <form action="{{ route('update-task', $task->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
                 <div>
@@ -39,11 +39,11 @@
                     </div>
             
                     <div class="mb-6">
-                        <label for="attachment" class="block text-sm font-medium text-gray-900 dark:text-white">Upload Dokumen</label>
+                        <label for="task_attachment" class="block text-sm font-medium text-gray-900 dark:text-white">Upload Dokumen</label>
                         <p class="text-xs text-gray-400">Ukuran maksimal file 5mb</p>
                         <input  type="file" 
-                                name="attachment" 
-                                id="attachment" 
+                                name="task_attachment" 
+                                id="task_attachment" 
                                 class="">
                     </div>
 

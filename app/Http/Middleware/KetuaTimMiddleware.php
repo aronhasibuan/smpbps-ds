@@ -16,7 +16,7 @@ class KetuaTimMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::check() && (Auth::user()->role == 'ketuatim' || Auth::user()->role == 'kepalakantor')){
+        if(Auth::check() && (Auth::user()->role == 'ketuatim')){
             return $next($request);
         }
         abort(403);

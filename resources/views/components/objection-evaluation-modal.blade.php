@@ -15,7 +15,7 @@
             </button>
         </div>
 
-        <form id="completeTaskForm" action="{{ route('mark-done', $objection->id) }}" method="POST">
+        <form id="completeTaskForm" action="{{ route('mark-task-as-done-from-objection', $objection->id) }}" method="POST">
             @csrf
 
             <!-- Penilaian Kerapian -->

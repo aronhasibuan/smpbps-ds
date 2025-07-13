@@ -834,7 +834,7 @@ class ProgressSeeder extends Seeder
         // Survei Pertanian Antar Sensus
         Progress::create([
             'task_id' => 45,
-            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_date' => now()->subDays(5)->format('Y-m-d'),
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
@@ -843,7 +843,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 46,
-            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_date' => now()->subDays(5)->format('Y-m-d'),
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
@@ -852,7 +852,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 47,
-            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_date' => now()->subDays(5)->format('Y-m-d'),
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
@@ -861,7 +861,7 @@ class ProgressSeeder extends Seeder
 
         Progress::create([
             'task_id' => 48,
-            'progress_date' => now()->subDays(1)->format('Y-m-d'),
+            'progress_date' => now()->subDays(5)->format('Y-m-d'),
             'progress_amount' => 0,
             'progress_notes' => 'Progress dimulai',
             'progress_documentation' => null,
