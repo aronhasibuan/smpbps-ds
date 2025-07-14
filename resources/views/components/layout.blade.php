@@ -43,15 +43,18 @@
     </body>
 
     <script type="text/javascript">
-      @if(session('success'))
-          toastr.success("{{ session('success') }}");
-      @endif
-      @if(session('error'))
-          toastr.error("{{ session('error') }}");
-      @endif
-      @if(session('deleted'))
-          toastr.info("{{ session('deleted') }}");
-      @endif
+        @if(session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+        @if(session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+        @if(session('deleted'))
+            toastr.info("{{ session('deleted') }}");
+        @endif
+        @if(session('updated'))
+            toastr.success("{{ session('updated') }}");
+        @endif
     </script>
 
 </html>

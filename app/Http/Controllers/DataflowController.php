@@ -412,14 +412,11 @@ class DataflowController extends Controller
         }
 
         $activityDates = (clone $activitiesQuery)
-            ->pluck('activity_start')
-            ->filter()
+            ->pluck('activity_start')->filter()
             ->map(function($date) {
                 return \Carbon\Carbon::parse($date)->format('Y-m');
             })
-            ->unique()
-            ->sort()
-            ->values();
+            ->unique()->sort()->values();
 
         $activities = $activitiesQuery->with('tasks');
 
@@ -545,11 +542,9 @@ class DataflowController extends Controller
             $EVMService = new EVMService();  
             $activities = Activity::with('tasks')->where('user_leader_id', $user->id)->where('activity_active_status', true)->get();
             $runningactivity = $activities->count();
-            $lateActivities = Activity::with('tasks')
-                ->where('activity_active_status', true)->where('user_leader_id', $user->id)
-                ->where('activity_end', '<', $today)->get();
-            $lateActivitiesFiltered = $lateActivities->filter(function ($activity) {
-                return $activity->total_progress != 100;})->values();
+            $lateActivitiesFiltered = $activities->filter(function ($activity) use ($today) {
+                return $activity->activity_end < $today && $activity->total_progress != 100;
+            });
             $lateactivity = $lateActivitiesFiltered->count();
             $completedactivity = Activity::where('activity_active_status', false)->where('user_leader_id', $user->id)->count();
             $objection_task = Objection::with(['task.user'])
@@ -566,15 +561,11 @@ class DataflowController extends Controller
                 ->whereHas('user', function($query) use ($user) {
                     $query->where('team_id',  $user->team_id);
                 })->get();
-            $countObjection = $objection_task->count();
-            $countProgressNeedVerification = $progress_need_verification->count();
-            $countCrossTeam = $cross_team_task->count();
-            $verifiedtask = $countObjection + $countProgressNeedVerification + $countCrossTeam;
+            $verifiedtask = $objection_task->count() + $progress_need_verification->count() + $cross_team_task->count();
             foreach($activities as $activity){
                 $activity->spi_data = $EVMService->calculateActivitySPI($activity);
             }
-            $groupedTasks = $activities->groupBy(fn($activity) => $activity->spi_data['status'] ?? 'Unknown');
-            $pieData = $groupedTasks->map->count();
+            $pieData = $activities->groupBy(fn($a) => $a->spi_data['status'] ?? 'Unknown')->map->count();
             $activityStats = [
                 'running'   => $runningactivity,
                 'late'      => $lateactivity,
@@ -599,262 +590,230 @@ class DataflowController extends Controller
     public function create_task()
     {
         $auth = Auth::user();
-        $chartDataProgress = [];
-        $EVMService = new EVMService();
-
-        // Stacked Bar Chart Progress Data
-        $taskProgressQuery = Task::with(['user', 'status', 'activity'])
-            ->where('status_id', 2)
-            ->whereHas('user', function($query) use ($auth) {
-                $query->where('team_id', $auth->team_id);
-            });
-
-        $taskProgress = $taskProgressQuery->get();
-
-        foreach($taskProgress as $task) {
-            $task->spi_data = $EVMService->calculateSPI($task);
+        if($auth->user_role !== 'ketuatim') {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        } else {
+            $chartDataProgress = [];
+            $EVMService = new EVMService();
+            $taskProgressQuery = Task::with(['user', 'status', 'activity'])->where('status_id', 2)
+                ->whereHas('user', function($query) use ($auth) {
+                    $query->where('team_id', $auth->team_id);
+                });
+            $taskProgress = $taskProgressQuery->get();
+            foreach($taskProgress as $task) {$task->spi_data = $EVMService->calculateSPI($task);}
+            $groupedByUserProgress = $taskProgress->groupBy(function ($task) {
+                return $task->user->user_full_name ?? 'Tidak diketahui';});
+            $spiStatuses = $taskProgress->pluck('spi_data.status')->unique()->values();
+            foreach ($spiStatuses as $status) {$chartDataProgress[$status] = [];}
+            foreach ($groupedByUserProgress as $userName => $userTasks) {
+                foreach ($spiStatuses as $status) {
+                    $count = $userTasks->filter(function ($task) use ($status) {
+                        return $task->spi_data['status'] === $status;})->count();
+                    $chartDataProgress[$status][] = $count;
+                }}
+            $teams = Team::with(['users' => function($query) {
+                    $query->where('user_role', '!=', 'ketuatim');
+                }])
+                ->where('id', '!=', 1)->orderBy('team_name')->get();
+            $anggotatim = User::where('user_role', 'anggotatim')
+                ->withCount(['tasks' => function ($query) {$query->where('status_id', 2);}])->get();
+            $busiestUser = $anggotatim->sortByDesc('tasks_count')->first();
+            $maxTasks = $busiestUser ? $busiestUser->tasks_count : 0;
+            return view('create_task', [
+                        'anggotatim' => $anggotatim, 
+                        'busiestUser' => $busiestUser, 
+                        'maxTasks' => $maxTasks, 
+                        'teams' => $teams,
+                        'chartDataProgress' => $chartDataProgress,
+                        'spiStatuses' => $spiStatuses,
+                        'userNames' => $groupedByUserProgress->keys(),
+                    ]);
         }
-
-        $groupedByUserProgress = $taskProgress->groupBy(function ($task) {
-            return $task->user->user_full_name ?? 'Tidak diketahui';
-        });
-
-        $spiStatuses = $taskProgress->pluck('spi_data.status')->unique()->values();
-
-        foreach ($spiStatuses as $status) {
-            $chartDataProgress[$status] = [];
-        }
-
-        foreach ($groupedByUserProgress as $userName => $userTasks) {
-            foreach ($spiStatuses as $status) {
-                $count = $userTasks->filter(function ($task) use ($status) {
-                    return $task->spi_data['status'] === $status;
-                })->count();
-                $chartDataProgress[$status][] = $count;
-            }
-        }
-
-        $teams = Team::with(['users' => function($query) {
-                $query->where('user_role', '!=', 'ketuatim');
-            }])
-            ->where('id', '!=', 1)
-            ->orderBy('team_name')
-            ->get();
-
-        $anggotatim = User::where('user_role', 'anggotatim')
-            ->withCount(['tasks' => function ($query) {
-                $query->where('status_id', 2);
-            }])->get();
-
-        $busiestUser = $anggotatim->sortByDesc('tasks_count')->first();
-        $maxTasks = $busiestUser ? $busiestUser->tasks_count : 0;
-
-        return view('create_task', [
-                    'anggotatim' => $anggotatim, 
-                    'busiestUser' => $busiestUser, 
-                    'maxTasks' => $maxTasks, 
-                    'teams' => $teams,
-                    'chartDataProgress' => $chartDataProgress,
-                    'spiStatuses' => $spiStatuses,
-                    'userNames' => $groupedByUserProgress->keys(),
-                ]);
     }
 
      // data view('verification)
     public function verification()
     {
         $user = Auth::user();
-
-        $objection_task = Objection::with(['task.user'])
-            ->where('objection_status', 'tertunda')
-            ->whereHas('task.user', function($query) use ($user) {
-                $query->where('team_id', $user->team_id);
-            })
-            ->get();
-
-        $progress_need_verification = Progress::with('task.activity')
-            ->where('progress_acceptance', 0)
-            ->whereHas('task.activity', function ($query) use ($user) {
-                $query->where('user_leader_id', $user->id);
-            })->get();
-        
-        $cross_team_task = Task::where('status_id', 3)
-            ->whereHas('user', function($query) use ($user) {
-                $query->where('team_id',  $user->team_id);
-            })->get(); 
-
-        return view('verification', ['user' => $user, 'objection_task' => $objection_task, 'progress_need_verification' => $progress_need_verification, 'cross_team_task' => $cross_team_task]);
+        if($user->user_role !== 'ketuatim') {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        } else {
+            $objection_task = Objection::with(['task.user'])
+                ->where('objection_status', 'tertunda')
+                ->whereHas('task.user', function($query) use ($user) {
+                    $query->where('team_id', $user->team_id);
+                })->get();
+            $progress_need_verification = Progress::with('task.activity')
+                ->where('progress_acceptance', 0)
+                ->whereHas('task.activity', function ($query) use ($user) {
+                    $query->where('user_leader_id', $user->id);
+                })->get();
+            $cross_team_task = Task::where('status_id', 3)
+                ->whereHas('user', function($query) use ($user) {
+                    $query->where('team_id',  $user->team_id);
+                })->get(); 
+            return view('verification', ['user' => $user, 'objection_task' => $objection_task, 'progress_need_verification' => $progress_need_verification, 'cross_team_task' => $cross_team_task]);
+        }
     }
 
     // data view ('home')
     public function team_member_home_page()
     {
         $user = Auth::user();
-        $today = Carbon::today()->toDateString();
-        $tasksuggestionservice = new TaskSuggestionService(10);
-        $EVMService = new EVMService();
-
-        $suggestions = $tasksuggestionservice->getTaskSuggestion($user);
-        $todayProgress = Progress::with('task')
-            ->where('progress_date', $today)
-            ->where('progress_amount', '!=', 0)
-            ->whereHas('task', function($query) use ($user){
-                $query->where('user_member_id', $user->id);
-            })->get();
-        
-        $tasks = Task::with('activity')->where('status_id', 2)->where('user_member_id', $user->id)->get();   
-        foreach($tasks as $task){
-            $task->spi_data = $EVMService->calculateSPI($task);
+        if($user->user_role !== 'anggotatim') {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        } else {
+            $today = Carbon::today()->toDateString();
+            $tasksuggestionservice = new TaskSuggestionService(10);
+            $EVMService = new EVMService();
+            $suggestions = $tasksuggestionservice->getTaskSuggestion($user);
+            $todayProgress = Progress::with('task')
+                ->where('progress_date', $today)
+                ->where('progress_amount', '!=', 0)
+                ->whereHas('task', function($query) use ($user){
+                    $query->where('user_member_id', $user->id);
+                })->get();
+            $tasks = Task::with('activity')->where('status_id', 2)->where('user_member_id', $user->id)->get();   
+            foreach($tasks as $task){
+                $task->spi_data = $EVMService->calculateSPI($task);
+            }
+            $groupedTasks = $tasks->groupBy(fn($task) => $task->spi_data['status'] ?? 'Unknown');
+            $pieData = $groupedTasks->map->count();
+            $runningtask = Task::where('status_id', 2)->where('user_member_id', $user->id)->count();
+            $latetasks = Task::where('status_id', 2)
+                ->where('user_member_id', $user->id)
+                ->whereHas('activity', function($query) use ($today) {
+                    $query->where('activity_end', '<', $today);
+                })->count();
+            $ontimetask = $runningtask - $latetasks;
+            $completedtask = Task::where('status_id', 1)->where('user_member_id', $user->id)->count(); 
+            $taskStats = [
+                'running'   => $runningtask,
+                'late'      => $latetasks,
+                'ontime'    => $ontimetask,
+                'completed' => $completedtask,
+            ];
+            $newtasks = Task::with('activity')
+                ->whereHas('activity', function($query) use ($today) {
+                    $query->whereDate('activity_start', $today);
+                })->where('user_member_id', $user->id)->get();
+            return view('home_of_team_member', ['user' => $user, 'suggestions' => $suggestions, 'todayProgress' => $todayProgress, 'taskStats' => $taskStats, 'pieData' => $pieData, 'newtasks' => $newtasks]);
         }
-        $groupedTasks = $tasks->groupBy(fn($task) => $task->spi_data['status'] ?? 'Unknown');
-        $pieData = $groupedTasks->map->count();
-
-        $runningtask = Task::where('status_id', 2)->where('user_member_id', $user->id)->count();
-        $latetasks = Task::where('status_id', 2)
-            ->where('user_member_id', $user->id)
-            ->whereHas('activity', function($query) use ($today) {
-                $query->where('activity_end', '<', $today);
-            })->count();
-        $ontimetask = $runningtask - $latetasks;
-        $completedtask = Task::where('status_id', 1)->where('user_member_id', $user->id)->count(); 
-
-        $taskStats = [
-            'running'   => $runningtask,
-            'late'      => $latetasks,
-            'ontime'    => $ontimetask,
-            'completed' => $completedtask,
-        ];
-
-        $newtasks = Task::with('activity')
-            ->whereHas('activity', function($query) use ($today) {
-                $query->whereDate('activity_start', $today);
-            })->where('user_member_id', $user->id)->get();
-        
-        return view('home_of_team_member', ['user' => $user, 'suggestions' => $suggestions, 'todayProgress' => $todayProgress, 'taskStats' => $taskStats, 'pieData' => $pieData, 'newtasks' => $newtasks]);
     }
 
     // data view('task_list')
     public function task_list(Request $request)
     {
-        $EVMService = new EVMService();
         $user = Auth::user();
-        
-        $search = $request->input('search');
-        $perPage = $request->get('perPage', 5);
-        $sort = $request->get('sort', 'priority');
-        $filter = $request->get('filter', '');
-        
-        $tasks = Task::where('user_member_id', $user->id)->where('status_id', 2);
-
-        if ($search) {
-            $tasks->where(function ($query) use ($search) {
-                $query->where('task_description', 'like', '%' . $search . '%')
-                ->orWhereHas('activity', function ($query) use ($search) {
-                    $query->where('activity_name', 'like', '%' . $search . '%')
-                    ->orWhere('activity_unit', 'like', '%' . $search . '%');
+        if($user->user_role !== 'anggotatim') {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        } else {
+            $EVMService = new EVMService(); 
+            $search = $request->input('search');
+            $perPage = $request->get('perPage', 5);
+            $sort = $request->get('sort', 'priority');
+            $filter = $request->get('filter', '');
+            $tasks = Task::where('user_member_id', $user->id)->where('status_id', 2);
+            if ($search) {
+                $tasks->where(function ($query) use ($search) {
+                    $query->where('task_description', 'like', '%' . $search . '%')
+                    ->orWhereHas('activity', function ($query) use ($search) {
+                        $query->where('activity_name', 'like', '%' . $search . '%')
+                        ->orWhere('activity_unit', 'like', '%' . $search . '%');
+                    });
                 });
-            });
-        }
-
-        $tasks = $tasks->get();
-
-        foreach ($tasks as $task){
-            $task->spi_data = $EVMService->calculateSPI($task);
-        }
-
-        if($filter){
-            $tasks = $tasks->filter(function ($task) use ($filter){
-                return isset($task->spi_data['status']) && $task->spi_data['status'] === $filter;
-            })->values();
-        }
-
-        if ($sort == 'priority') {
-            $statusOrder = [
-                'Terlambat'        => 1,
-                'Progress Lambat'  => 2,
-                'Progress On Time' => 3,
-                'Progress Cepat'   => 4,
-            ];
-            $tasks = $tasks->sort(function($a, $b) use ($statusOrder) {
-                $statusA = $statusOrder[$a->spi_data['status']] ?? 99;
-                $statusB = $statusOrder[$b->spi_data['status']] ?? 99;
-            if ($statusA !== $statusB) {
-                return $statusA <=> $statusB;
             }
-            return $a->spi_data['spi'] <=> $b->spi_data['spi'];
-            })->values();
-        } elseif ($sort == 'tenggat') {
-            $tasks = $tasks->sortBy(function($task) {
-                return $task->activity->activity_end;
-            })->values();
-        } elseif ($sort == 'id') {
-            $tasks = $tasks->sortBy(function($task) {
-                return $task->id;
-            })->values();
+            $tasks = $tasks->get();
+            foreach ($tasks as $task){
+                $task->spi_data = $EVMService->calculateSPI($task);
+            }
+            if($filter){
+                $tasks = $tasks->filter(function ($task) use ($filter){
+                    return isset($task->spi_data['status']) && $task->spi_data['status'] === $filter;
+                })->values();
+            }
+            if ($sort == 'priority') {
+                $statusOrder = [
+                    'Terlambat'        => 1,
+                    'Progress Lambat'  => 2,
+                    'Progress On Time' => 3,
+                    'Progress Cepat'   => 4,
+                ];
+                $tasks = $tasks->sort(function($a, $b) use ($statusOrder) {
+                    $statusA = $statusOrder[$a->spi_data['status']] ?? 99;
+                    $statusB = $statusOrder[$b->spi_data['status']] ?? 99;
+                if ($statusA !== $statusB) {
+                    return $statusA <=> $statusB;
+                }
+                return $a->spi_data['spi'] <=> $b->spi_data['spi'];
+                })->values();
+            } elseif ($sort == 'tenggat') {
+                $tasks = $tasks->sortBy(function($task) {
+                    return $task->activity->activity_end;
+                })->values();
+            } elseif ($sort == 'id') {
+                $tasks = $tasks->sortBy(function($task) {
+                    return $task->id;
+                })->values();
+            }
+            $currentPage = $request->get('page', 1);
+            $pagedTasks = $tasks->slice(($currentPage - 1) * $perPage, $perPage)->all();
+            $tasks = new LengthAwarePaginator(
+                $pagedTasks,
+                $tasks->count(),
+                $perPage,
+                $currentPage,
+                ['path' => $request->url(), 'query' => $request->query()]
+            );
+            return view('task_list', ['tasks' => $tasks]);
         }
-
-        $currentPage = $request->get('page', 1);
-        $pagedTasks = $tasks->slice(($currentPage - 1) * $perPage, $perPage)->all();
-
-        $tasks = new LengthAwarePaginator(
-            $pagedTasks,
-            $tasks->count(),
-            $perPage,
-            $currentPage,
-            ['path' => $request->url(), 'query' => $request->query()]
-        );
-
-        return view('task_list', ['tasks' => $tasks]);
     }
 
     // data view('task_archive')
     public function task_archive(Request $request)
     {
-        \Carbon\Carbon::setLocale('id');
         $user = Auth::user();
-        
-        $search = $request->input('search');
-        $perPage = $request->get('perPage', 5);
-        $monthYear = $request->get('month_year');
-
-        $activityDates = Task::where('user_member_id', $user->id)
-            ->where('status_id', 1)
-            ->with('activity')
-            ->get()
-            ->pluck('activity.activity_start')
-            ->filter()
-            ->map(function($date) {
-                return \Carbon\Carbon::parse($date)->format('Y-m');
-            })
-            ->unique()
-            ->sort()
-            ->values();
-
-        $tasks = Task::where('user_member_id', $user->id)
-            ->where('status_id', 1)
-            ->with('activity');
-
-        if ($monthYear) {
-            $tasks->whereHas('activity', function($query) use ($monthYear) {
-                $query->whereRaw("DATE_FORMAT(activity_start, '%Y-%m') = ?", [$monthYear]);
-            });
+        if($user->user_role !== 'anggotatim') {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        } else {
+            \Carbon\Carbon::setLocale('id');
+            $search = $request->input('search');
+            $perPage = $request->get('perPage', 5);
+            $monthYear = $request->get('month_year');
+            $activityDates = Task::where('user_member_id', $user->id)
+                ->where('status_id', 1)
+                ->with('activity')
+                ->get()
+                ->pluck('activity.activity_start')
+                ->filter()
+                ->map(function($date) {
+                    return \Carbon\Carbon::parse($date)->format('Y-m');
+                })
+                ->unique()
+                ->sort()
+                ->values();
+            $tasks = Task::where('user_member_id', $user->id)
+                ->where('status_id', 1)
+                ->with('activity');
+            if ($monthYear) {
+                $tasks->whereHas('activity', function($query) use ($monthYear) {
+                    $query->whereRaw("DATE_FORMAT(activity_start, '%Y-%m') = ?", [$monthYear]);
+                });
+            }
+            if ($search) {
+                $tasks->where(function ($query) use ($search) {
+                    $query->where('task_description', 'like', '%' . $search . '%')
+                        ->orWhereHas('activity', function ($query) use ($search) {
+                            $query->where('activity_name', 'like', '%' . $search . '%')
+                                ->orWhere('activity_unit', 'like', '%' . $search . '%');
+                        });
+                });
+            }
+            $tasks = $tasks->paginate($perPage)->withQueryString();
+            return view('task_archive', [
+                'tasks' => $tasks,
+                'activityDates' => $activityDates,
+            ]);
         }
-
-        if ($search) {
-            $tasks->where(function ($query) use ($search) {
-                $query->where('task_description', 'like', '%' . $search . '%')
-                    ->orWhereHas('activity', function ($query) use ($search) {
-                        $query->where('activity_name', 'like', '%' . $search . '%')
-                            ->orWhere('activity_unit', 'like', '%' . $search . '%');
-                    });
-            });
-        }
-
-        $tasks = $tasks->paginate($perPage)->withQueryString();
-
-        return view('task_archive', [
-            'tasks' => $tasks,
-            'activityDates' => $activityDates,
-        ]);
     }
 }

@@ -177,14 +177,6 @@
             disableMobile: true
         });
 
-        // Toast notifications
-        @if(session('updated'))
-            toastr.success("{{ session('updated') }}");
-        @endif
-        @if(session('error'))
-            toastr.error("{{ session('error') }}");
-        @endif
-
         function openModal() {
             document.getElementById('confirmationModal').classList.remove('hidden');
             document.getElementById('confirmationModal').classList.add('flex');

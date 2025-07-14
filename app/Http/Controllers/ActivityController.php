@@ -10,14 +10,18 @@ class ActivityController extends Controller
     public function update(Request $request, $id){
         $validatedData = $request->validate([
             'activity_name' => 'required|string',
+            'activity_unit' => 'required|string',
             'activity_end' => 'required|date',
         ]);
-
         $activity = Activity::findOrFail($id);
+        if ($validatedData['activity_end'] < $activity->activity_start) {
+            session()->flash('error', 'Tenggat kegiatan tidak boleh kurang dari tanggal mulai kegiatan');
+            return redirect()->back();
+        }
         $activity->activity_name = $validatedData['activity_name'];
+        $activity->activity_unit = $validatedData['activity_unit'];
         $activity->activity_end = $validatedData['activity_end'];
-        $activity->save();
-                    
+        $activity->save();         
         session()->flash('updated', 'Kegiatan berhasil diperbarui');
         return redirect()->back();   
     }
@@ -26,19 +30,8 @@ class ActivityController extends Controller
     public function mark_activity_as_done($id)
     {
         $activity = Activity::findOrFail($id);
-
-        if (!$activity->activity_active_status) {
-            return redirect()->back()->with('error', 'Kegiatan ini sudah ditandai selesai sebelumnya.');
-        }
-
-        $unfinishedTasks = $activity->tasks()->where('status_id', 2)->count();
-        if ($unfinishedTasks > 0) {
-            return redirect()->back()->with('error', 'Tidak dapat menandai kegiatan selesai karena masih ada tugas yang belum selesai.');
-        }
-
         $activity->activity_active_status = false;
         $activity->save();
-
         return redirect()->route('activities-monitoring-page')->with('success', 'Kegiatan berhasil ditandai selesai!');
     }
 }

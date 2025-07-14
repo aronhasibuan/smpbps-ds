@@ -98,9 +98,9 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/beranda-ketua-tim', [DataflowController::class, 'team_leader_home_page'])->name('team-leader-home-page');
 
         // view activity
-        Route::put('kegiatan/{id}', [ActivityController::class, 'update'])->name('update-activity');
-        Route::post('kegiatan/tandai-kegiatan-selesai/{id}', [ActivityController::class, 'mark_activity_as_done'])->name('mark-activity-as-done');
-        Route::post('kegiatan/{id}', [TaskController::class, 'add_assignee'])->name('add-assignee');
+        Route::put('/kegiatan/{id}', [ActivityController::class, 'update'])->name('update-activity');
+        Route::post('/kegiatan/tandai-kegiatan-selesai/{id}', [ActivityController::class, 'mark_activity_as_done'])->name('mark-activity-as-done');
+        Route::post('/kegiatan/{id}', [TaskController::class, 'add_assignee'])->name('add-assignee');
 
         // view task
         Route::put('tugas/{task}', [TaskController::class, 'update'])->name('update-task');
@@ -128,7 +128,7 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/beranda-anggota-tim', [DataflowController::class, 'team_member_home_page'])->name('team-member-home-page');
 
         // view tasklist
-        Route::get('/daftartugas', [DataflowController::class, 'task_list'])->name('task-list-page');
+        Route::get('/daftar-tugas', [DataflowController::class, 'task_list'])->name('task-list-page');
 
         // view task
         Route::post('tugas/{task:task_slug}/{id}', [TaskController::class, 'update_progress'])->name('update-progress');

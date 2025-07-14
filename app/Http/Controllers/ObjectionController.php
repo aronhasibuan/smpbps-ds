@@ -12,13 +12,11 @@ class ObjectionController extends Controller
         $request->validate([
             'objection_reason' => 'required|string|max:1000',
         ]);
-
         Objection::create([
             'task_id' => $id,
             'objection_reason' => $request->objection_reason,
             'objection_status' => 'Tertunda'
         ]);
-
         return redirect()->back()->with('updated', 'Keberatan berhasil diajukan!');
     }
 
@@ -27,7 +25,6 @@ class ObjectionController extends Controller
         $objection = Objection::findOrFail($id);
         $objection->objection_status = 'ditolak';
         $objection->save();
-
         return redirect()->back()->with('updated', 'Sanggahan berhasil ditolak!');
     }
 }
