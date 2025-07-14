@@ -1,12 +1,6 @@
 <?php
 
-use App\Models\Task;
-use App\Models\Team;
-use App\Models\User;
-use App\Models\Activity;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -61,7 +55,7 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/monitoring-kegiatan', [DataflowController::class, 'activities_monitoring'])->name('activities-monitoring-page');
     
         // view ('activity')
-        Route::get('kegiatan/{activity:activity_slug}', [DataflowController::class, 'activity'])->name('activity-page');
+        Route::get('/kegiatan/{activity:activity_slug}', [DataflowController::class, 'activity'])->name('activity-page');
 
         // view ('employeemonitoring)
         Route::get('/monitoring-pegawai', [DataflowController::class, 'employee_monitoring'])->name('employee-monitoring-page');
@@ -131,8 +125,8 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/daftar-tugas', [DataflowController::class, 'task_list'])->name('task-list-page');
 
         // view task
-        Route::post('tugas/{task:task_slug}/{id}', [TaskController::class, 'update_progress'])->name('update-progress');
-        Route::post('tugas/{id}', [ObjectionController::class, 'create'])->name('create-objection');
+        Route::post('/tugas/{task:task_slug}/{id}', [TaskController::class, 'update_progress'])->name('update-progress');
+        Route::post('/tugas/{id}', [ObjectionController::class, 'create'])->name('create-objection');
         
         // view taskarchive
         Route::get('/arsip-tugas', [DataflowController::class, 'task_archive'])->name('task-archive-page');

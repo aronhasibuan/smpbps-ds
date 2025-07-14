@@ -9,11 +9,8 @@ use App\Models\User;
 use App\Models\Activity;
 use App\Models\Progress;
 use App\Models\Objection;
-use App\Models\Evaluation;
-use Illuminate\Support\Str;
 use App\Services\EVMService;
 use Illuminate\Http\Request;
-use App\Services\NotifyService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Evaluation_EVMService;
@@ -100,16 +97,13 @@ class DataflowController extends Controller
         $lastProgress = null;
         $totalPoint = 0;
         $count = 0;
-
         $task = Task::with('evaluation')->findOrFail($task->id);
         $start = Carbon::parse($task->activity->activity_start);
         $end = Carbon::parse($task->activity->activity_end);
-        
         $progresses = Progress::where('task_id', $task->id)->get();
         foreach ($progresses as $progress){
             $progressbydate[$progress->progress_date] = $progress;
         }
-
         for($date = $start->copy(); $date->lte($end); $date->addDay() ){
             $dateStr = $date->format('Y-m-d');
             $progress = $progressbydate[$dateStr] ?? $lastProgress;
@@ -123,12 +117,10 @@ class DataflowController extends Controller
             $taskClone->spi_data = $evaluation_evmservice->calculateSPI($task, $date, $progress->progress_amount);
             $taskbydate[] = $taskClone;
         }
-
         foreach($taskbydate as $task){
             $totalPoint += $task->spi_data['poin'];
             $count++;
         }
-
         $task->average_progress_point = $totalPoint / $count;
         $task->comprehensiveness_point = Evaluation_EVMService::comprehensivenessPoint($task->evaluation->evaluation_comprehensiveness);
         $task->tidiness_point = Evaluation_EVMService::tidinessPoint($task->evaluation->evaluation_tidiness);
@@ -483,6 +475,7 @@ class DataflowController extends Controller
         }
     }
 
+    // data view ('create_team')
     public function create_team()
     {
         $user = Auth::user();
