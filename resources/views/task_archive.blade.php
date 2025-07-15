@@ -77,7 +77,7 @@
                             <th scope="col" class="px-4 py-3">Nama Kegiatan</th>
                             <th scope="col" class="px-4 py-3">Volume/Satuan</th>
                             <th scope="col" class="px-4 py-3">Periode Tugas</th>
-                            <th scope="col" class="px-4 py-3">Nilai</th>
+                            <th scope="col" class="px-4 py-3">Evaluasi</th>
                             <th scope="col" class="px-4 py-3">Aksi</th>
                         </tr>
                     </thead>

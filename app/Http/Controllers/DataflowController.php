@@ -567,6 +567,7 @@ class DataflowController extends Controller
             ];
             $memberProgress = Progress::with(['task.activity'])
                 ->where('progress_date', $today)
+                ->where('progress_amount', '!=', 0)
                 ->whereHas('task.activity', function($query) use ($user) {
                     $query->where('user_leader_id', $user->id);
                 })->get();

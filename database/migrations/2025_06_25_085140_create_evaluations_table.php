@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('evaluations', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->foreignId('task_id')->constrained(
                 table:'tasks',
                 indexName:'evaluation_tasks_id'
             );
             $table->string('evaluation_tidiness');
             $table->string('evaluation_comprehensiveness');
+            $table->timestamps();
         });
     }
 

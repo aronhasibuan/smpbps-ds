@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('team_name')->unique();
             $table->text('team_description')->nullable();
+            $table->timestamps();
         });
     }
 

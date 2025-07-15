@@ -230,7 +230,7 @@
                                                 {{ $task->activity->user->user_full_name ?? 'N/A' }}
                                             </h2>
                                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                Ingin memberikan tugas kepada anggota tim lain
+                                                Ingin memberikan tugas kepada anggota tim anda
                                             </p>
                                         </div>
                                     </div>

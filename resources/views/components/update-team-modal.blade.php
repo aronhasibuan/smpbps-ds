@@ -38,7 +38,7 @@
 
                 <!-- Team Description -->
                 <div>
-                    <label for="team_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deskripsi Tim</label>
+                    <label for="team_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deskripsi Tim <span class="text-red-500">*</span></label>
                     <div class="relative">
                         <textarea id="team_description" name="team_description" rows="4" class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
                     </div>
