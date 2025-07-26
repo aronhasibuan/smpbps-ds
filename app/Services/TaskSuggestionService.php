@@ -11,30 +11,23 @@ class TaskSuggestionService
     public function getTaskSuggestion($user)
     {
         $EVMService = new EVMService();
-        $maxDailyCapacity = 1.5;
-        $currentTotalPercentage = 0;
         $filteredTasks = collect();
 
-        $tasks = Task::where('user_member_id', $user->id)->where('status_id', 2)->get();
+        $tasks = Task::where('user_member_id', $user->id)
+                    ->where('status_id', 2)
+                    ->get();
 
-        foreach ($tasks as $task){
+        $tasks = $tasks->map(function($task) use ($EVMService) {
             $task->spi_data = $EVMService->calculateSPI($task);
             $task->volumesuggestion = ceil($this->getRemainingVolume($task));
-            $task->volumesuggestionpercentage = $task->volumesuggestion / $task->task_volume;
-        }
+            return $task;
+        });
 
-        $tasks = $tasks->sortBy(function($task) {
-                return $task->spi_data['spi'];
+        $filteredTasks = $tasks->filter(function($task) {
+            return $task->spi_data['spi'] < 1;
+        })->sortBy(function($task) {
+            return $task->spi_data['spi'];
         })->values();
-
-        foreach ($tasks as $task) {
-        if (($currentTotalPercentage + $task->volumesuggestionpercentage) <= $maxDailyCapacity) {
-            $currentTotalPercentage += $task->volumesuggestionpercentage;
-            $filteredTasks->push($task);
-        } else {
-            break;
-        }
-    }
 
         return $filteredTasks;
     }

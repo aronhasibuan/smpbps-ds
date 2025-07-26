@@ -28,33 +28,8 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // Akun yang telah dihapus
-        #2
-        User::create([
-            'team_id' => 1,
-            'user_full_name' => 'Akun Ketua Tim yang Telah Dihapus',
-            'user_nickname' => 'akunketuatimyangtelahdihapus',
-            'user_role' => 'ketuatim',
-            'email' => 'akunketuatim@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10) 
-        ]);
-
-        #3
-        User::create([
-            'team_id' => 1,
-            'user_full_name' => 'Akun Anggota Tim yang Telah Dihapus',
-            'user_nickname' => 'akunanggotatimyangtelahdihapus',
-            'user_role' => 'anggotatim',
-            'email' => 'akunanggotatim@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
         // Ketua Tim
-        // #4
+        // #2
         User::create([
             'team_id' => 2,
             'user_full_name' => 'Ketua Tim Produksi',
@@ -66,7 +41,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #5
+        // #3
         User::create([
             'team_id' => 3,
             'User_full_name' => 'Ketua Tim Distribusi',
@@ -78,7 +53,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #6
+        // #4
         User::create([
             'team_id' => 4,
             'User_full_name' => 'Ketua Tim Sosial',
@@ -90,56 +65,8 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #7
-        User::create([
-            'team_id' => 5,
-            'User_full_name' => 'Ketua Tim Nerwilis',
-            'user_nickname' => 'ketuatimnerwilis',
-            'user_role' => 'ketuatim',
-            'email' => 'KetuaTimNerwilis@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number'=> '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #8
-        User::create([
-            'team_id' => 6,
-            'User_full_name' => 'Ketua Tim IPDS',
-            'user_nickname' => 'ketuatimipds',
-            'user_role' => 'ketuatim',
-            'email' => 'KetuaTimIPDS@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number'=> '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #9
-        User::create([
-            'team_id' => 7,
-            'User_full_name' => 'Ketua Tim Sektoral',
-            'user_nickname' => 'ketuatimsektoral',
-            'user_role' => 'ketuatim',
-            'email' => 'KetuaTimSektoral@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number'=> '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #10
-        User::create([
-            'team_id' => 8,
-            'User_full_name' => 'Ketua Tim Humas',
-            'user_nickname' => 'ketuatimhumas',
-            'user_role' => 'ketuatim',
-            'email' => 'KetuaTimHumas@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number'=> '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
         // Anggota Tim
-        // #11
+        // #5
         User::create([
             'team_id' => 2,
             'user_full_name' => 'Anggota Produksi 1',
@@ -151,7 +78,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #12
+        // #6
         User::create([
             'team_id' => 2,
             'user_full_name' => 'Anggota Produksi 2',
@@ -163,7 +90,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #13
+        // #7
         User::create([
             'team_id' => 2,
             'user_full_name' => 'Anggota Produksi 3',
@@ -175,7 +102,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #14
+        // #8
         User::create([
             'team_id' => 2,
             'user_full_name' => 'Anggota Produksi 4',
@@ -187,7 +114,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #15
+        // #9
         User::create([
             'team_id' => 2,
             'user_full_name' => 'Anggota Produksi 5',
@@ -199,7 +126,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #16
+        // #10
         User::create([
             'team_id' => 3,
             'user_full_name' => 'Anggota Distribusi 1',
@@ -211,7 +138,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #17
+        // #11
         User::create([
             'team_id' => 3,
             'user_full_name' => 'Anggota Distribusi 2',
@@ -223,7 +150,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #18
+        // #12
         User::create([
             'team_id' => 3,
             'user_full_name' => 'Anggota Distribusi 3',
@@ -235,7 +162,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #19
+        // #13
         User::create([
             'team_id' => 3,
             'user_full_name' => 'Anggota Distribusi 4',
@@ -247,7 +174,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #20
+        // #14
         User::create([
             'team_id' => 3,
             'user_full_name' => 'Anggota Distribusi 5',
@@ -259,7 +186,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #21
+        // #15
         User::create([
             'team_id' => 4,
             'user_full_name' => 'Anggota Sosial 1',
@@ -271,7 +198,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #22
+        // #16
         User::create([
             'team_id' => 4,
             'user_full_name' => 'Anggota Sosial 2',
@@ -283,7 +210,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #23
+        // #17
         User::create([
             'team_id' => 4,
             'user_full_name' => 'Anggota Sosial 3',
@@ -295,7 +222,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #24
+        // #18
         User::create([
             'team_id' => 4,
             'user_full_name' => 'Anggota Sosial 4',
@@ -307,253 +234,13 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        // #25
+        // #19
         User::create([
             'team_id' => 4,
             'user_full_name' => 'Anggota Sosial 5',
             'user_nickname' => 'anggotasosial5',
             'user_role' => 'anggotatim',
             'email' => 'AnggotaSosial5@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #26
-        User::create([
-            'team_id' => 5,
-            'user_full_name' => 'Anggota Nerwilis 1',
-            'user_nickname' => 'anggotanerwilis1',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaNerwilis1@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #27
-        User::create([
-            'team_id' => 5,
-            'user_full_name' => 'Anggota Nerwilis 2',
-            'user_nickname' => 'anggotanerwilis2',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaNerwilis2@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #28
-        User::create([
-            'team_id' => 5,
-            'user_full_name' => 'Anggota Nerwilis 3',
-            'user_nickname' => 'anggotanerwilis3',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaNerwilis3@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #29
-        User::create([
-            'team_id' => 5,
-            'user_full_name' => 'Anggota Nerwilis 4',
-            'user_nickname' => 'anggotanerwilis4',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaNerwilis4@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #30
-        User::create([
-            'team_id' => 5,
-            'user_full_name' => 'Anggota Nerwilis 5',
-            'user_nickname' => 'anggotanerwilis5',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaNerwilis5@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #31
-        User::create([
-            'team_id' => 6,
-            'user_full_name' => 'Anggota IPDS 1',
-            'user_nickname' => 'anggotaipds1',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaIPDS1@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #32
-        User::create([
-            'team_id' => 6,
-            'user_full_name' => 'Anggota IPDS 2',
-            'user_nickname' => 'anggotaipds2',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaIPDS2@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #33
-        User::create([
-            'team_id' => 6,
-            'user_full_name' => 'Anggota IPDS 3',
-            'user_nickname' => 'anggotaipds3',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaIPDS3@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #34
-        User::create([
-            'team_id' => 6,
-            'user_full_name' => 'Anggota IPDS 4',
-            'user_nickname' => 'anggotaipds4',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaIPDS4@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #35
-        User::create([
-            'team_id' => 6,
-            'user_full_name' => 'Anggota IPDS 5',
-            'user_nickname' => 'anggotaipds5',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaIPDS5@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #36
-        User::create([
-            'team_id' => 7,
-            'user_full_name' => 'Anggota Sektoral 1',
-            'user_nickname' => 'anggotasektoral1',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaSektoral1@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #37
-        User::create([
-            'team_id' => 7,
-            'user_full_name' => 'Anggota Sektoral 2',
-            'user_nickname' => 'anggotasektoral2',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaSektoral2@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #38
-        User::create([
-            'team_id' => 7,
-            'user_full_name' => 'Anggota Sektoral 3',
-            'user_nickname' => 'anggotasektoral3',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaSektoral3@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #39
-        User::create([
-            'team_id' => 7,
-            'user_full_name' => 'Anggota Sektoral 4',
-            'user_nickname' => 'anggotasektoral4',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaSektoral4@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #40
-        User::create([
-            'team_id' => 7,
-            'user_full_name' => 'Anggota Sektoral 5',
-            'user_nickname' => 'anggotasektoral5',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaSektoral5@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #41
-        User::create([
-            'team_id' => 8,
-            'user_full_name' => 'Anggota Humas 1',
-            'user_nickname' => 'anggotahumas1',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaHumas1@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #42
-        User::create([
-            'team_id' => 8,
-            'user_full_name' => 'Anggota Humas 2',
-            'user_nickname' => 'anggotahumas2',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaHumas2@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #43
-        User::create([
-            'team_id' => 8,
-            'user_full_name' => 'Anggota Humas 3',
-            'user_nickname' => 'anggotahumas3',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaHumas3@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #44
-        User::create([
-            'team_id' => 8,
-            'user_full_name' => 'Anggota Humas 4',
-            'user_nickname' => 'anggotahumas4',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaHumas4@gmail.com',
-            'password' => Hash::make('password'),
-            'user_whatsapp_number' => '08887654811',
-            'remember_token' => Str::random(10)
-        ]);
-
-        // #45
-        User::create([
-            'team_id' => 8,
-            'user_full_name' => 'Anggota Humas 5',
-            'user_nickname' => 'anggotahumas5',
-            'user_role' => 'anggotatim',
-            'email' => 'AnggotaHumas5@gmail.com',
             'password' => Hash::make('password'),
             'user_whatsapp_number' => '08887654811',
             'remember_token' => Str::random(10)

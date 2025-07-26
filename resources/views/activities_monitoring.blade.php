@@ -172,6 +172,9 @@
                                                 <p class="mt-2 text-lg font-medium text-gray-600 dark:text-gray-300">
                                                     Tidak ada kegiatan ditemukan
                                                 </p>
+                                                <a href="{{ route('activities-monitoring-page') }}" class="mt-2 text-sm text-blue-600 hover:underline">
+                                                    Tampilkan semua kegiatan
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>

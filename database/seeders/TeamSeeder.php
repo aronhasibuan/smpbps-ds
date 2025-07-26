@@ -39,33 +39,5 @@ class TeamSeeder extends Seeder
             'team_name' => 'Statistik Sosial',
             'team_description' => 'Tim ini memiliki tugas untuk melaksanakan kegiatan di Statistik Sosial. Kegiatan Statistik Sosial meliputi Statistik Kependudukan; Statistik kesejahteraan Rakyat; dan Statistik Ketahanan Sosial.'
         ]);
-
-        // Tim Neraca Wilayah dan Analisis Statistik
-        #5
-        Team::create([
-            'team_name' => 'Neraca Wilayah dan Analisis Statistik',
-            'team_description' => 'Tim ini memiliki tugas untuk melaksanakan kegiatan di Neraca Wilayah dan Analisis Statistik. Kegiatan pada fungsi ini meliputi penyusunan Neraca Produksi; Neraca Konsumsi; dan Analisis Statistik Lintas Sektor.'
-        ]);
-
-        // Tim Integrasi Pengolahan & Diseminasi Statistik
-        #6
-        Team::create([
-            'team_name' => 'Integrasi Pengolahan & Diseminasi Statistik',
-            'team_description' => 'Tim ini memiliki tugas untuk melakukan pengintegrasian pengolahan data, pengelolaan jaringan dan rujukan statistik, serta diseminasi dan layanan statistik.'
-        ]);
-
-        // Tim Statistik Sektoral
-        #7
-        Team::create([
-            'team_name' => 'Statistik Sektoral',
-            'team_description' => 'Tim ini memiliki tugas untuk melakukan pembinaan statistik sektoral.'
-        ]);
-
-        // Tim Hubungan Masyarakat
-        #8
-        Team::create([
-            'team_name' => 'Hubungan Masyarakat',
-            'team_description' => 'Tim ini memiliki tugas untuk menyampaikan segala informasi penting mengenai organisasi kepada publik.'
-        ]);
     }
 }

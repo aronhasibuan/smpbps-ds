@@ -108,6 +108,9 @@
                                         <p class="mt-2 text-lg font-medium text-gray-600 dark:text-gray-300">
                                             Tidak ada Tugas ditemukan
                                         </p>
+                                        <a href="{{ route('task-archive-page') }}" class="mt-2 text-sm text-blue-600 hover:underline">
+                                            Tampilkan semua tugas
+                                        </a>
                                     </div>
                                 </td>
                             </tr>

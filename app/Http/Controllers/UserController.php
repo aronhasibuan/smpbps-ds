@@ -74,7 +74,12 @@ class UserController extends Controller
         if($user->user_role == 'ketuatim'){
             return redirect()->route('employee-list-page')->with('error', 'Maaf, anda tidak dapat menghapus akun ketua tim.');
         } else {
-            $user->tasks()->update(['user_member_id' => $targetMemberId]);
+            $user->tasks()->each(function ($task) {
+                $task->progress()->delete();
+                $task->evaluation()->delete();
+                $task->objection()->delete();
+                $task->delete();
+            });
             $user->delete();
             return redirect()->route('employee-list-page')->with('success', 'Pengguna berhasil dihapus.');
         }

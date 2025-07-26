@@ -24,15 +24,29 @@
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <!-- Search Box -->
                     <div class="w-full md:w-1/2">
-                        <form action="{{ route('team-list-page') }}" method="GET">
-                            <div class="relative">
+                        <form action="{{ route('team-list-page') }}" method="GET" class="flex items-center gap-2">
+                            <div class="relative flex-grow">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input type="text" name="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Cari Tim..." autocomplete="off" value="{{ request('search') }}">
+                                <input 
+                                    type="text" 
+                                    name="search" 
+                                    class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 shadow-sm hover:border-gray-300 dark:hover:border-gray-500" 
+                                    placeholder="Cari tim..." 
+                                    autocomplete="off" 
+                                    value="{{ request('search') }}"
+                                >
                             </div>
+                            <button 
+                                type="submit" 
+                                class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                                aria-label="Submit pencarian"
+                            >
+                                Cari
+                            </button>
                         </form>
                     </div>
 
@@ -118,13 +132,18 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                                    @if(request()->has('search'))
-                                        Tidak ada tim yang cocok dengan pencarian Anda. 
-                                        <a href="{{ route('team-list-page') }}" class="text-blue-600 hover:underline dark:text-blue-400">Reset pencarian</a>
-                                    @else
-                                        Belum ada tim yang terdaftar
-                                    @endif
+                                <td colspan="5" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                                    <div class="flex flex-col items-center justify-center py-8">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <p class="mt-2 text-lg font-medium text-gray-600 dark:text-gray-300">
+                                            Tidak ada tim ditemukan
+                                        </p>
+                                        <a href="{{ route('team-list-page') }}" class="mt-2 text-sm text-blue-600 hover:underline">
+                                            Tampilkan semua Tim
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse
