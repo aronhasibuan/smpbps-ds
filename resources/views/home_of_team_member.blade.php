@@ -10,61 +10,65 @@
         <!-- Stats Cards -->
         <section aria-labelledby="stats-heading" class="mb-12">
             <h2 id="stats-heading" class="sr-only">Statistik Tugas</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 <!-- Tugas Aktif -->
                 <a href="{{ route('task-list-page') }}" 
-                   class="border p-6 rounded-lg flex flex-col items-center bg-blue-500 shadow-md transition-all hover:shadow-lg hover:bg-blue-600 hover:transform hover:-translate-y-1"
-                   aria-label="{{ $taskStats['running'] }} Tugas Aktif">
+                class="border p-4 sm:p-6 rounded-lg flex flex-col items-center bg-blue-500 shadow-md transition-all hover:shadow-lg hover:bg-blue-600 hover:transform hover:-translate-y-1"
+                aria-label="{{ $taskStats['running'] }} Tugas Aktif">
                     <div class="flex items-center justify-between w-full">
                         <img src="{{ asset('img/alarm-clock-plus.svg') }}" 
-                             alt="" 
-                             class="w-10 h-10"
-                             aria-hidden="true">
-                        <span class="text-4xl font-bold text-white">{{ $taskStats['running'] }}</span>
+                            alt="" 
+                            class="w-8 h-8 sm:w-10 sm:h-10"
+                            aria-hidden="true"
+                            loading="lazy">
+                        <span class="text-2xl sm:text-4xl font-bold text-white">{{ $taskStats['running'] }}</span>
                     </div>
-                    <p class="mt-4 text-center text-white text-lg font-semibold">Tugas Aktif</p>
+                    <p class="mt-2 sm:mt-4 text-center text-white text-sm sm:text-lg font-semibold">Tugas Aktif</p>
                 </a>
                 
                 <!-- Dalam Progress -->
                 <a href="{{ route('task-list-page') }}" 
-                   class="border p-6 rounded-lg flex flex-col items-center bg-yellow-500 shadow-md transition-all hover:shadow-lg hover:bg-yellow-600 hover:transform hover:-translate-y-1"
-                   aria-label="{{ $taskStats['ontime'] }} Tugas Dalam Progress">
+                class="border p-4 sm:p-6 rounded-lg flex flex-col items-center bg-yellow-500 shadow-md transition-all hover:shadow-lg hover:bg-yellow-600 hover:transform hover:-translate-y-1"
+                aria-label="{{ $taskStats['ontime'] }} Tugas Dalam Progress">
                     <div class="flex items-center justify-between w-full">
                         <img src="{{ asset('img/alarm-clock.svg') }}" 
-                             alt="" 
-                             class="w-10 h-10"
-                             aria-hidden="true">
-                        <span class="text-4xl font-bold text-white">{{ $taskStats['ontime'] }}</span>
+                            alt="" 
+                            class="w-8 h-8 sm:w-10 sm:h-10"
+                            aria-hidden="true"
+                            loading="lazy">
+                        <span class="text-2xl sm:text-4xl font-bold text-white">{{ $taskStats['ontime'] }}</span>
                     </div>
-                    <p class="mt-4 text-center text-white text-lg font-semibold">Dalam Progress</p>
+                    <p class="mt-2 sm:mt-4 text-center text-white text-sm sm:text-lg font-semibold">Dalam Progress</p>
                 </a>
                 
                 <!-- Tugas Terlambat -->
                 <a href="{{ route('task-list-page', ['filter' => 'Terlambat', 'page' => 1]) }}"
-                   class="border p-6 rounded-lg flex flex-col items-center bg-red-500 shadow-md transition-all hover:shadow-lg hover:bg-red-600 hover:transform hover:-translate-y-1"
-                   aria-label="{{ $taskStats['late'] }} Tugas Terlambat">
+                class="border p-4 sm:p-6 rounded-lg flex flex-col items-center bg-red-500 shadow-md transition-all hover:shadow-lg hover:bg-red-600 hover:transform hover:-translate-y-1"
+                aria-label="{{ $taskStats['late'] }} Tugas Terlambat">
                     <div class="flex items-center justify-between w-full">
                         <img src="{{ asset('img/alarm-clock-minus.svg') }}" 
-                             alt="" 
-                             class="w-10 h-10"
-                             aria-hidden="true">
-                        <span class="text-4xl font-bold text-white">{{ $taskStats['late'] }}</span>
+                            alt="" 
+                            class="w-8 h-8 sm:w-10 sm:h-10"
+                            aria-hidden="true"
+                            loading="lazy">
+                        <span class="text-2xl sm:text-4xl font-bold text-white">{{ $taskStats['late'] }}</span>
                     </div>
-                    <p class="mt-4 text-center text-white text-lg font-semibold">Tugas Terlambat</p>
+                    <p class="mt-2 sm:mt-4 text-center text-white text-sm sm:text-lg font-semibold">Tugas Terlambat</p>
                 </a>
                 
                 <!-- Tugas Selesai -->
                 <a href="{{ route('task-archive-page') }}" 
-                   class="border p-6 rounded-lg flex flex-col items-center bg-green-500 shadow-md transition-all hover:shadow-lg hover:bg-green-600 hover:transform hover:-translate-y-1"
-                   aria-label="{{ $taskStats['completed'] }} Tugas Selesai">
+                class="border p-4 sm:p-6 rounded-lg flex flex-col items-center bg-green-500 shadow-md transition-all hover:shadow-lg hover:bg-green-600 hover:transform hover:-translate-y-1"
+                aria-label="{{ $taskStats['completed'] }} Tugas Selesai">
                     <div class="flex items-center justify-between w-full">
                         <img src="{{ asset('img/alarm-clock-check.svg') }}" 
-                             alt="" 
-                             class="w-10 h-10"
-                             aria-hidden="true">
-                        <span class="text-4xl font-bold text-white">{{ $taskStats['completed'] }}</span>
+                            alt="" 
+                            class="w-8 h-8 sm:w-10 sm:h-10"
+                            aria-hidden="true"
+                            loading="lazy">
+                        <span class="text-2xl sm:text-4xl font-bold text-white">{{ $taskStats['completed'] }}</span>
                     </div>
-                    <p class="mt-4 text-center text-white text-lg font-semibold">Tugas Selesai</p>
+                    <p class="mt-2 sm:mt-4 text-center text-white text-sm sm:text-lg font-semibold">Tugas Selesai</p>
                 </a>
             </div>
         </section>

@@ -2,8 +2,11 @@
     <div class="bg-white dark:bg-gray-900">
         <div class="py-4 px-4 mx-auto">
 
-            <div class="flex justify-between items-center mb-4">
-                <a href="{{ route('activities-monitoring-page') }}" class="font-medium text-base text-blue-600 hover:underline">&laquo; Kembali</a>
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
+                <a href="{{ route('activities-monitoring-page') }}" 
+                    class="font-medium text-sm sm:text-base text-blue-600 hover:underline w-full sm:w-auto text-center sm:text-left">
+                    &laquo; Kembali
+                </a>
 
                 <x-active-task-modal :chartDataProgress="$chartDataProgress" :spiStatuses="$spiStatuses" :userNames="$userNames"/>
             </div>

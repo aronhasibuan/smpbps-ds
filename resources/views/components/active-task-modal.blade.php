@@ -1,4 +1,5 @@
-<button class="font-medium text-base text-blue-600 hover:underline cursor-pointer transition-colors duration-200" onclick="toggleActiveTaskModal()">
+<button class="font-medium text-sm sm:text-base text-blue-600 hover:underline cursor-pointer transition-colors duration-200 w-full sm:w-auto text-center sm:text-right"
+    onclick="toggleActiveTaskModal()">
     Tampilkan Tugas Aktif Pegawai Saat Ini &raquo;
 </button>
 

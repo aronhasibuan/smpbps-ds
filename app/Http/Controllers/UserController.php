@@ -46,7 +46,7 @@ class UserController extends Controller
         $pesan .= "📧 Email: {$validatedData['email']}\n";
         $pesan .= "🔑 Silakan login menggunakan email dan password yang telah Anda daftarkan.\n\n";
         $pesan .= "Untuk mulai menggunakan sistem, silakan kunjungi:\n";
-        $pesan .= "🌐 http://smpbps-ds.test/login\n\n";
+        $pesan .= "🌐 https://smraja1212.frontoffice1212.online/login\n\n";
         $pesan .= "Jika Anda memiliki pertanyaan, jangan ragu untuk menghubungi kami.\n";
         $pesan .= "Terima kasih! 😊";
         $this->notifyService->sendFonnteNotification($validatedData['user_whatsapp_number'], $pesan);

@@ -1,15 +1,13 @@
 <x-layout>
-    <div class="container mx-auto px-4 py-6">
-        {{-- Page Header --}}
+    <div class="overflow-x-hidden max-w-full px-4 sm:px-6 lg:px-8">
         <header class="mb-6">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Monitoring Kegiatan</h1>
             <p class="text-sm text-gray-600 dark:text-gray-400">Kelola dan pantau kegiatan tim Anda</p>
         </header>
-        
-        <div class="border shadow-lg sm:rounded-t-lg mt-3">
+        <div class="border shadow-lg sm:rounded-t-lg mt-3 w-full overflow-hidden">
             <!-- Search and Filter Section -->
-            <section aria-labelledby="filter-heading" class="">
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+            <section aria-labelledby="filter-heading">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 w-full">
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <!-- Search Form -->
                         <div class="w-full md:w-1/2">
@@ -98,91 +96,72 @@
             </section>
 
             <!-- Activities Table -->
-            <section aria-labelledby="activities-heading">
+            <section aria-labelledby="activities-heading" class="w-full">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
                     <!-- Responsive Table Container -->
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">Status</th>
-                                    <th scope="col" class="px-6 py-3">Nama Kegiatan</th>
-                                    <th scope="col" class="px-6 py-3">Tenggat</th>
-                                    <th scope="col" class="px-6 py-3">Progress</th>
-                                    <th scope="col" class="px-6 py-3 text-center">Aksi</th>
+                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-24">Status</th>
+                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[150px]">Nama Kegiatan</th>
+                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-28">Tenggat</th>
+                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-32">Progress</th>
+                                    <th scope="col" class="px-3 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-16 text-center">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @forelse ($activities as $activity)
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                                        <!-- Status Column -->
-                                        @php
-                                            $color = $activity->spi_data['color'];
-                                            $backgroundColor = in_array($color, ['red', 'yellow', 'green', 'blue']) ? "bg-{$color}-500" : 'bg-black'; 
-                                        @endphp
-                                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <p class=" {{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $activity->spi_data['status'] }}</p>
-                                        </th>
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                @foreach ($activities as $activity)
+                                <tr>
+                                    @php
+                                        $color = $activity->spi_data['color'];
+                                        $backgroundColor = in_array($color, ['red', 'yellow', 'green', 'blue']) ? "bg-{$color}-500" : 'bg-black'; 
+                                    @endphp
 
-                                        <!-- Activity Name -->
-                                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                    <!-- Kolom Status -->
+                                    <td class="px-3 py-4 whitespace-nowrap">
+                                        <span class="{{ $backgroundColor }} text-white text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap truncate block mx-auto text-center">
+                                            {{ $activity->spi_data['status'] }}
+                                        </span>
+                                    </td>
+        
+                                    <!-- Kolom Nama Kegiatan -->
+                                    <td class="px-3 py-4">
+                                        <div class="text-sm font-medium text-gray-900 dark:text-white truncate">
                                             {{ $activity->activity_name }}
-                                        </td>
-
-                                        <!-- Deadline -->
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        </div>
+                                    </td>
+        
+                                    <!-- Kolom Tenggat -->
+                                    <td class="px-3 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">
                                             {{ $activity->id_format_deadline }}
-                                        </td>
-
-                                        <!-- Progress -->
-                                        <td class="px-6 py-4">
-                                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                                                <div class="bg-blue-600 h-2.5 rounded-full" 
-                                                    style="width: {{ $activity->total_progress }}%"
-                                                    aria-valuenow="{{ $activity->total_progress }}" 
-                                                    aria-valuemin="0" 
-                                                    aria-valuemax="100">
-                                                    <span class="sr-only">{{ $activity->total_progress }}% complete</span>
-                                                </div>
+                                        </div>
+                                    </td>
+        
+                                    <!-- Kolom Progress -->
+                                    <td class="px-3 py-4">
+                                        <div class="flex items-center">
+                                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mr-2">
+                                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $activity->total_progress }}%"></div>
                                             </div>
-                                            <span class="text-xs text-gray-500 dark:text-gray-400 mt-1 block">
-                                                {{ $activity->total_progress }}% selesai
-                                            </span>
-                                        </td>
-
-                                        <!-- Actions -->
-                                        <td class="px-6 py-4 text-center">
-                                            <a href="{{ route('activity-page', $activity->activity_slug) }}" 
-                                            class="inline-flex items-center p-1.5 rounded-lg text-blue-600 hover:text-blue-800 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors"
-                                            aria-label="Detail kegiatan {{ $activity->activity_name }}"
-                                            title="Lihat detail">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                                </svg>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-                                            <div class="flex flex-col items-center justify-center py-8">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                                </svg>
-                                                <p class="mt-2 text-lg font-medium text-gray-600 dark:text-gray-300">
-                                                    Tidak ada kegiatan ditemukan
-                                                </p>
-                                                <a href="{{ route('activities-monitoring-page') }}" class="mt-2 text-sm text-blue-600 hover:underline">
-                                                    Tampilkan semua kegiatan
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforelse
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">{{ $activity->total_progress }}%</span>
+                                        </div>
+                                    </td>
+                                    
+                                    <!-- Kolom Aksi -->
+                                    <td class="px-3 py-4 whitespace-nowrap text-center">
+                                        <a href="{{ route('activity-page', $activity->activity_slug) }}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
+                                            <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
-
                     <!-- Pagination and Items Per Page -->
                     <div class="bg-white p-4 dark:bg-gray-800 bottom-0 border-t">
                         {{ $activities->links() }}
@@ -199,8 +178,7 @@
                 </div>
             </section>
         </div>
-
-         <script>
+        <script>
             document.getElementById('sort').addEventListener('change', function() {
                 const urlParams = new URLSearchParams(window.location.search);
                 urlParams.set('sort', this.value);
@@ -221,4 +199,5 @@
                 window.location.href = window.location.pathname + '?' + urlParams.toString();
             });
         </script>
+    </div>
 </x-layout> 

@@ -89,6 +89,8 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            document.body.style.overflow = 'hidden';
+            
             // Toggle password visibility
             const togglePassword = document.getElementById("togglePassword");
             const passwordInput = document.getElementById("password");

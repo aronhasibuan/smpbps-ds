@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Middleware\RedirectIfLoggedIn;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\DataflowController;
 use App\Http\Controllers\ProgressController;
@@ -14,13 +15,12 @@ use App\Http\Controllers\EvaluationController;
 
 // GET, POST, PUT, PATCH, DELETE
 
-Route::middleware(['guest'])->group(function(){
-
+Route::middleware([RedirectIfLoggedIn::class])->group(function(){
     // Landing Page
     Route::get('/', [DataflowController::class, 'landing_page'])->name('landing-page');
 
     // view ('login')
-    Route::get('/login', [DataflowController::class, 'login'])->name('login-page');
+    Route::get('/login', [DataflowController::class, 'login'])->name('login');
     Route::post('/login', [LoginController::class, 'authenticate'])->name('authenticate');
 
 });
@@ -44,10 +44,6 @@ Route::middleware(['auth'])->group(function(){
 
         // view ('evaluation')
         Route::get('/penilaian/{task:task_slug}', [DataflowController::class, 'evaluation'])->name('evaluation-page');
-    
-        // view ('calendar')
-        Route::get('/kalender', [DataflowController::class, 'calendar'])->name('calendar-page');
-        Route::get('/api/tasks/calendar', [DataflowController::class, 'calendar_api'])->name('calendar-api');
 
     # Kepala BPS dan Ketua Tim
 

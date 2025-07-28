@@ -70,22 +70,18 @@
             <tbody>
                 @forelse ($tasks as $task)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    
+                    @php
+                        $color = $task->spi_data['color'];
+                        $backgroundColor = in_array($color, ['red', 'yellow', 'green', 'blue']) ? "bg-{$color}-500" : 'bg-black'; 
+                    @endphp
+                    
                     <td class="px-6 py-4">
-                        @php
-                            $statusColors = [
-                                'red' => 'bg-red-500',
-                                'yellow' => 'bg-yellow-500',
-                                'green' => 'bg-green-500',
-                                'blue' => 'bg-blue-500',
-                                'default' => 'bg-black'
-                            ];
-                            $color = $task->spi_data['color'] ?? 'default';
-                            $bgColor = $statusColors[$color] ?? $statusColors['default'];
-                        @endphp
-                        <span class="{{ $bgColor }} text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
+                        <p class="{{ $backgroundColor }} text-white text-xs font-medium px-2.5 py-0.5 rounded-full w-36 text-center">
                             {{ $task->spi_data['status'] ?? 'Belum Dimulai' }}
-                        </span>
+                        </p>
                     </td>
+
                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         <div class="flex items-center">
                             <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
@@ -146,10 +142,8 @@
             </button>
 
             <x-add-assignee-modal :activity="$activity" :teams="$teams" :anggotatim="$anggotatim" />
-            <button type="button" 
-                    id="openAddTaskModal" 
-                    data-modal-target="addTaskModal" 
-                    data-modal-toggle="addTaskModal"
+            <button type="button"
+                    onclick="openaddassigneemodal()" 
                     class="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200">
                 <img class="w-5 h-5 mr-2" src="{{ asset('img/add-person.svg') }}" alt="Tambah Tugas">
                 Tambah Penerima Tugas Baru

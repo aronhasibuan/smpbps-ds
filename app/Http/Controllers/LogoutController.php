@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LogoutController extends Controller
@@ -12,6 +11,6 @@ class LogoutController extends Controller
      */
     public function __invoke(){
         Auth::logout();
-        return to_route('login-page');
+        return to_route('login');
     }
 }

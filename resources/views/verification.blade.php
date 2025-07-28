@@ -4,14 +4,14 @@
         <div class="space-y-12">
             <!-- Objection Verification Section -->
             <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
-                <div class="flex items-center justify-between mb-6">
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
-                        <svg class="w-6 h-6 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                         </svg>
                         Verifikasi Pengajuan Keberatan Tugas
                     </h1>
-                    <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                    <span class="bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300 self-start sm:self-auto">
                         {{ $objection_task->count() }} perlu verifikasi
                     </span>
                 </div>
@@ -83,14 +83,14 @@
 
             <!-- Progress Verification Section -->
             <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
-                <div class="flex items-center justify-between mb-6">
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white flex items-center">
                         <svg class="w-6 h-6 mr-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         Verifikasi Progress Tugas Anggota Tim
                     </h1>
-                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300 self-start sm:self-auto">
                         {{ $progress_need_verification->count() }} perlu verifikasi
                     </span>
                 </div>
@@ -150,20 +150,20 @@
                                 
                                 <div class="flex flex-col sm:flex-row gap-3">
                                     @if ($progress->progress_amount == $progress->task->task_volume)
-                                        <x-evaluation-modal :progress="$progress" />
+                                        <x-evaluation-modal :progress="$progress" class="w-full sm:w-auto"/>
                                         <button type="button"
                                             onclick="openEvaluationModal()"
-                                            class="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
+                                            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                             </svg>
                                             Setuju
                                         </button>
                                     @else    
-                                        <form action="{{ route('approve-progress', $progress->id) }}" method="POST" class="inline">
+                                        <form action="{{ route('approve-progress', $progress->id) }}" method="POST" class="w-full">
                                             @csrf
                                             <button type="submit"
-                                                class="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
+                                                class="w-full inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                                 </svg>
@@ -171,12 +171,12 @@
                                             </button>
                                         </form>
                                     @endif
-                                    <form action="{{ route('reject-progress', $progress->id) }}" method="POST" class="inline">
+                                    <form action="{{ route('reject-progress', $progress->id) }}" method="POST" class="w-full">
                                         @csrf
                                         @method('DELETE') 
                                         <button
                                             type="submit"
-                                            class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
+                                            class="w-full inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                             </svg>
@@ -193,14 +193,14 @@
 
             <!-- Cross Team Task Verification Section -->
             <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
-                <div class="flex items-center justify-between mb-6">
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white flex items-center">
                         <svg class="w-6 h-6 mr-3 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
                         Verifikasi Penugasan Antar Tim
                     </h1>
-                    <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300">
+                    <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300 self-start sm:self-auto">
                         {{ $cross_team_task->count() }} perlu verifikasi
                     </span>
                 </div>
@@ -257,24 +257,24 @@
                                     </div>
                                 </div>
                                 
-                                <div class="flex flex-col sm:flex-row gap-3">
-                                    <form action="{{ route('cross-team-approve', $task->id) }}" method="POST">
+                                <div class="flex flex-col sm:flex-row gap-3 w-full">
+                                    <form action="{{ route('cross-team-approve', $task->id) }}" method="POST" class="w-full">
                                     @csrf
                                         <button 
                                             type="submit"
-                                            class="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
+                                            class="w-full inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                             </svg>
                                             Setuju
                                         </button>
                                     </form>
-                                    <form action="{{ route('cross-team-reject', $task->id) }}" method="POST">
+                                    <form action="{{ route('cross-team-reject', $task->id) }}" method="POST" class="w-full">
                                         @csrf
                                         @method('DELETE')
                                         <button 
                                             type="submit"
-                                            class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
+                                            class="w-full inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                             </svg>

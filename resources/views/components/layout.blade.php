@@ -8,7 +8,7 @@
 
         <title>SM Raja (Sistem Manajemen Rancangan Pekerjaan BPS Kabupaten Deli Serdang)</title>
         
-        @vite(['resources/css/app.css','resources/js/app.js'])
+        @vite(['resources/css/app.css'])
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -19,12 +19,14 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-        @viteReactRefresh
-        @vite('resources/js/app.jsx')
-
         <link rel="icon" href="{{ asset('img/Logo SM Raja.png') }}" type="image/png">
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        {{-- <style type="text/css">
+            * {
+                    outline: 1px solid red;
+              }
+        </style>  --}}
     </head>
     <body class="h-full bg-white dark:bg-gray-900">
    
@@ -34,7 +36,7 @@
             @endif
 
             <main>
-                <div class="mx-auto max-w-7xl px-2 py-6 sm:px-3">
+                <div class="mx-auto max-w-full px-2 py-6 sm:px-3">
                     {{ $slot }}        
                 </div>
             </main>

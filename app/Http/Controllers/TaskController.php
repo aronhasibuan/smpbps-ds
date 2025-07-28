@@ -92,7 +92,7 @@ class TaskController extends Controller
             $massage .= "📆 *Tenggat Waktu*: {$validatedData['activity_end']}\n";
             $massage .= "📦 *Jumlah Pekerjaan*: {$validatedData['task_volume'][$index]} {$validatedData['activity_unit']}\n\n";
             $massage .= "Silakan cek detail tugas dan mulai pengerjaan melalui sistem:\n";
-            $massage .= "🌐 http://smpbps-ds.test/login\n\n";
+            $massage .= "🌐 https://smraja1212.frontoffice1212.online/login\n\n";
             $massage .= "Jika ada pertanyaan, silakan hubungi pemberi tugas.\n";
             $massage .= "Semangat menjalankan tugas! 💪";
             $this->notifyService->sendFonnteNotification($member->user_whatsapp_number, $massage);
@@ -268,7 +268,7 @@ class TaskController extends Controller
         $massage .= "📆 *Tenggat Waktu*: {$activity->activity_end}\n";
         $massage .= "📦 *Jumlah Pekerjaan*: {$validatedData['task_volume']} {$activity->activity_unit}\n\n";
         $massage .= "Silakan cek detail tugas dan mulai pengerjaan melalui sistem:\n";
-        $massage .= "🌐 http://smpbps-ds.test/login\n\n";
+        $massage .= "🌐 https://smraja1212.frontoffice1212.online/login\n\n";
         $massage .= "Jika ada pertanyaan, silakan hubungi pemberi tugas.\n";
         $massage .= "Semangat menjalankan tugas! 💪";
         $this->notifyService->sendFonnteNotification($member->user_whatsapp_number, $massage);

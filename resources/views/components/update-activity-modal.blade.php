@@ -1,5 +1,6 @@
-<div id="updatemodal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full backdrop-blur-sm bg-black/30 transition-opacity duration-300">    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-        <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+<div id="updatemodal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full items-center justify-center p-4 backdrop-blur-sm bg-black/30 transition-opacity duration-300">    
+    <div class="relative w-full max-w-2xl max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-800 p-4 sm:p-5">
             <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                     Perbarui Kegiatan
@@ -43,12 +44,12 @@
     function openactivityModal() {
         const modal = document.getElementById("updatemodal");
         modal.classList.remove("hidden");
-        modal.classList.add("flex");
+        document.body.classList.add("overflow-hidden");
     }
 
     function closeactivityModal() {
         const modal = document.getElementById("updatemodal");
-        modal.classList.remove("flex");
         modal.classList.add("hidden");
+        document.body.classList.remove("overflow-hidden");
     }
 </script>

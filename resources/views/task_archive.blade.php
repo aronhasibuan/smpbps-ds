@@ -92,7 +92,7 @@
                                     <img class="w-6 h-6" src="{{ asset('img/star.svg') }}" alt="Nilai">
                                 </a>
                             </td>
-                            <td class="px-4 py-3 flex items-center justify-center hover:cursor-pointer">
+                            <td class="px-4 py-3 items-center justify-center hover:cursor-pointer">
                                 <a href="{{ route('task-page', $task->task_slug) }}" class="inline-flex items-center p-0.5 rounded-lg focus:outline-none" aria-label="Detail tugas {{ $task->activity->activity_name }}">
                                     <img class="w-5 h-5" src="{{ asset('img/info-square-fill.svg') }}" alt="Detail">
                                 </a>

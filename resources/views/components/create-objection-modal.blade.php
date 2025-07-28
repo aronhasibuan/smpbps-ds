@@ -1,4 +1,4 @@
-<div id="objectionModal" class="fixed inset-0 items-center justify-center bg-opacity-50 hidden">
+<div id="objectionModal" class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl border">
         <h2 class="text-lg font-semibold mb-4 text-black dark:text-white">Ajukan Keberatan</h2>
         <form action="{{ route('create-objection', [$task->id]) }}" method="POST" enctype="multipart/form-data">

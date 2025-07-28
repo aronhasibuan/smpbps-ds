@@ -134,56 +134,6 @@ class DataflowController extends Controller
                 ]);
     }
 
-    // data view('calendar')
-    public function calendar()
-    {
-        return view('calendar');
-    }
-
-    // calendar API
-    public function calendar_api()
-    {
-        $user = Auth::user();
-
-        if ($user->user_role === 'anggotatim') {
-            $tasks = Task::with('activity')
-                ->where('user_member_id', $user->id)
-                ->get()
-                ->map(function ($task) {
-                    return [
-                        'title' => $task->activity->activity_name ?? '-',
-                        'start' => $task->activity->activity_start ?? $task->created_at,
-                        'end'   => $task->activity->activity_end ?? $task->created_at,
-                    ];
-                });
-
-            return response()->json($tasks);
-        } elseif ($user->user_role === 'ketuatim') {
-            $activities = Activity::where('user_leader_id', $user->id)
-                ->get()
-                ->map(function ($activity) {
-                    return [
-                        'title' => $activity->activity_name,
-                        'start' => $activity->activity_start,
-                        'end'   => $activity->activity_end,
-                    ];
-                });
-
-            return response()->json($activities);
-        } else {
-            $activities = Activity::all()
-                ->map(function ($activity) {
-                    return [
-                        'title' => $activity->activity_name,
-                        'start' => $activity->activity_start,
-                        'end'   => $activity->activity_end,
-                    ];
-                });
-
-            return response()->json($activities);
-        } 
-    }
-
     // data view('activities_monitoring')
     public function activities_monitoring(Request $request)
     {
