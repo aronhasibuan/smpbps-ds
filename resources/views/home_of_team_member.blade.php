@@ -133,6 +133,16 @@
                         <p class="mt-2 text-gray-600">Memuat data...</p>
                     </div>
                     <canvas id="taskPieChart" class="w-full h-auto" style="display: none;"></canvas>
+                    @php
+                        $statusColors = [
+                            'Selesai' => '#3b82f6',
+                            'Terlambat' => '#000000',
+                            'Progress Lambat' => '#ef4444',
+                            'Progress On Time' => '#fbbf24',
+                            'Progress Cepat' => '#34d399',
+                        ];
+                        $pieColors = $pieData->keys()->map(fn($status) => $statusColors[$status]);
+                    @endphp
                 </div>
             </section>
         </div>
@@ -207,12 +217,7 @@
                         labels: @json($pieData->keys()),
                         datasets: [{
                             data: @json($pieData->values()),
-                            backgroundColor: [
-                                '#34d399', // green
-                                '#fbbf24', // amber
-                                '#6366f1', // indigo
-                                '#ef4444', // red
-                            ],
+                            backgroundColor: @json($pieColors->values()),
                             borderWidth: 1,
                         }]
                     };

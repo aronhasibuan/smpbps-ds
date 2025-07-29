@@ -120,9 +120,7 @@
 
                                     <!-- Kolom Status -->
                                     <td class="px-3 py-4 whitespace-nowrap">
-                                        <span class="{{ $backgroundColor }} text-white text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap truncate block mx-auto text-center">
-                                            {{ $activity->spi_data['status'] }}
-                                        </span>
+                                        <p class="{{ $backgroundColor }} text-white rounded-md w-36 text-center text-sm">{{ $activity->spi_data['status'] }}</p>
                                     </td>
         
                                     <!-- Kolom Nama Kegiatan -->

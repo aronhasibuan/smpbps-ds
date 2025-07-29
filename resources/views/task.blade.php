@@ -205,31 +205,22 @@
                 </div>
             @endif
         
-            @if (Auth::check() && Auth::user()->user_role == 'ketuatim' && $task->status_id == 2)
+            @if (Auth::check() && Auth::user()->user_role == 'ketuatim' && $task->status_id == 2) 
                 <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
                     <x-update-task-modal :task="$task" />
-                    <button class="flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md" id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button">
+                    <button class="flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md" onclick="openupdatetaskModal()" type="button">
                         <img class="w-5 h-5" src="{{ asset('img/edit-document.svg') }}" alt="">
                         <span>Perbarui Tugas</span>
                     </button>
-
+            
                     <x-delete-task-modal :task="$task" />
-                    <button id="deleteButton" data-modal-target="deleteModal" data-modal-toggle="deleteModal" class="flex items-center justify-center gap-2 bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition duration-200 shadow-md">
+                    <button class="flex items-center justify-center gap-2 bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition duration-200 shadow-md" onclick="opendeletetaskModal()" type="button">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                         <span>Hapus Tugas</span>
                     </button>
                 </div>
             @endif
         </div>
-
-        <!-- Scripts -->
-        @if (Auth::check() && Auth::user()->user_role == 'ketuatim')
-            <script>
-                document.addEventListener("DOMContentLoaded", function(event) {
-                    document.getElementById('defaultModalButton').click();
-                });
-            </script>
-        @endif
 
         @if (Auth::check() && Auth::user()->user_role == 'anggotatim' && $task->status_id == 2)
             <script>

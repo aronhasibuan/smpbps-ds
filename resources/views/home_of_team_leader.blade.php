@@ -151,15 +151,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @php
-    $statusColors = [
-        'Selesai' => '#3b82f6',
-        'Terlambat' => '#000000',
-        'Progress Lambat' => '#ef4444',
-        'Progress On Time' => '#fbbf24',
-        'Progress Cepat' => '#34d399',
-    ];
-    $pieColors = $pieData->keys()->map(fn($status) => $statusColors[$status]);
-@endphp
+        $statusColors = [
+            'Selesai' => '#3b82f6',
+            'Terlambat' => '#000000',
+            'Progress Lambat' => '#ef4444',
+            'Progress On Time' => '#fbbf24',
+            'Progress Cepat' => '#34d399',
+        ];
+        $pieColors = $pieData->keys()->map(fn($status) => $statusColors[$status]);
+    @endphp
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const ctx = document.getElementById('taskPieChart').getContext('2d');
