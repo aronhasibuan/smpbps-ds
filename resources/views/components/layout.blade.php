@@ -36,7 +36,7 @@
             @endif
 
             <main>
-                <div class="mx-auto max-w-full px-2 py-6 sm:px-3">
+                <div class="mx-auto max-w-7xl px-2 py-6 sm:px-3">
                     {{ $slot }}        
                 </div>
             </main>

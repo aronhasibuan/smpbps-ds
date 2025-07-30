@@ -15,6 +15,7 @@
     
             <form id="createTaskForm" action="{{ route('create-task') }}" method="POST" enctype="multipart/form-data">
             @csrf
+
                 @if($errors->any())
                     <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
                         <ul class="list-disc pl-5">
@@ -31,15 +32,15 @@
                     <input type="text" name="activity_name" id="activity_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                 </div>
 
-                <div class="md:mb-4 mb-10">
+                <div class="md:mb-4 mb-10 hidden">
                     <label for="activity_start" class="block text-sm font-medium text-gray-900 dark:text-white">Mulai Pekerjaan</label>
-                    <p class="  text-xs text-gray-400">Contoh: 19/09/2025</p>
+                    <p class="text-xs text-gray-400">Contoh: 19/09/2025</p>
                     <input type="date" name="activity_start" id="activity_start" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                 </div>
 
                 <div class="md:mb-4 mb-10">
                     <label for="activity_end" class="block text-sm font-medium text-gray-900 dark:text-white">Tenggat Pekerjaan</label>
-                    <p class="  text-xs text-gray-400">Contoh: 19/10/2025</p>
+                    <p class="text-xs text-gray-400">Contoh: 19/10/2025</p>
                     <input type="date" name="activity_end" id="activity_end" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" autocomplete="off">
                 </div>
 
@@ -125,16 +126,6 @@
                     </div>
                 </div>
             </div>
-            
-            <div id = "teamConfirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 justify-center items-center z-50">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md text-center">
-                    <p class="mb-4 text-gray-800 dark:text-gray-100">Terdapat penerima tugas yang berasal dari tim yang lain. Apakah Anda ingin melanjutkan?</p>
-                    <div class="flex justify-center gap-4">
-                        <button id="teamConfirmSubmit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Lanjut</button>
-                        <button id="teamCancelSubmit" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </div>
@@ -144,32 +135,29 @@
             const startDate = document.getElementById('activity_start');
             const endDate = document.getElementById('activity_end');
             
-            startDate.addEventListener('change', function() {
-                endDate.min = this.value;
-            });
-            
-            endDate.addEventListener('change', function() {
-                if (startDate.value && this.value < startDate.value) {
-                    alert('Tanggal akhir tidak boleh sebelum tanggal mulai');
-                    this.value = '';
-                }
-            });
-        });
-    </script>
+            function getTodayLocal() {
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
 
-    <script>
+            const todayLocal = getTodayLocal();
+            startDate.value = todayLocal;
+            endDate.min = todayLocal;
+        });
+    
         document.querySelectorAll('input[type="file"]').forEach(input => {
             input.addEventListener('change', function() {
-                const fileSize = this.files[0]?.size / 1024 / 1024; // in MB
+                const fileSize = this.files[0]?.size / 1024 / 1024;
                 if (fileSize > 5) {
                     alert('Ukuran file melebihi 5MB');
                     this.value = '';
                 }
             });
         });
-    </script>
-    
-    <script>        
+          
         document.getElementById("addTask").addEventListener("click", function () {
             let taskContainer = document.getElementById("taskContainer");
             let firstTask = taskContainer.querySelector(".task-item");
@@ -233,27 +221,6 @@
 
         document.getElementById('cancelSubmit').addEventListener('click', function () {
             document.getElementById('confirmationModal').classList.add('hidden');
-        });
-    </script>
-
-    <script>
-        // Validasi lintas tim
-        document.getElementById('createTaskForm').addEventListener('submit', function(e) {
-            const crossTeamUsers = Array.from(document.querySelectorAll('.user_member_id option:checked[data-lintas-tim="1"]'));
-            
-            if (crossTeamUsers.length > 0) {
-                e.preventDefault();
-                document.getElementById('teamConfirmationModal').classList.remove('hidden');
-            }
-        });
-
-        // Handler untuk modal lintas tim
-        document.getElementById('teamConfirmSubmit').addEventListener('click', function() {
-            document.getElementById('createTaskForm').submit();
-        });
-
-        document.getElementById('teamCancelSubmit').addEventListener('click', function() {
-            document.getElementById('teamConfirmationModal').classList.add('hidden');
         });
     </script>
 

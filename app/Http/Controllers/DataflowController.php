@@ -297,8 +297,11 @@ class DataflowController extends Controller
 
         $tasks = $tasksQuery->get();
         $statusDescriptions = $tasks->pluck('status.status_description')->unique()->values();
-        foreach ($tasks->groupBy('user.id') as $userId => $userTasks) {
-            $user = $userTasks->first()->user;
+        $usersInTeam = User::where('team_id', $teamId)
+        ->where('user_role', '!=', 'ketuatim')
+        ->get();
+        foreach ($usersInTeam as $user) {
+            $userTasks = $tasks->where('user.id', $user->id);
             $userName = $user->user_full_name ?? 'Tidak diketahui';
             $userNames[] = $userName;
 
@@ -307,14 +310,16 @@ class DataflowController extends Controller
             }
         }
 
+
         $taskProgress = $taskProgressQuery->get();
         foreach($taskProgress as $task) {
             $task->spi_data = $EVMService->calculateSPI($task);
         }
         $spiStatuses = $taskProgress->pluck('spi_data.status')->unique()->values();
-        foreach ($taskProgress->groupBy('user.id') as $userId => $userTasks) {
-            $user = $userTasks->first()->user;
+        foreach ($usersInTeam as $user) {
+            $userTasks = $taskProgress->where('user.id', $user->id);
             $userName = $user->user_full_name ?? 'Tidak diketahui';
+
             foreach ($spiStatuses as $status) {
                 $chartDataProgress[$status][] = $userTasks->filter(function ($task) use ($status) {
                     return $task->spi_data['status'] === $status;
@@ -758,6 +763,21 @@ class DataflowController extends Controller
                 'tasks' => $tasks,
                 'activityDates' => $activityDates,
             ]);
+        }
+    }
+
+    // data view('objection-list')
+    public function objection_list()
+    {
+        $user = Auth::user();
+        if ($user->user_role !== 'anggotatim') {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini!');
+        } else {
+            $objections = Objection::whereHas('task', function ($query) use ($user) {
+                $query->where('user_member_id', $user->id);
+            })->paginate(5)->withQueryString();
+
+            return view('objection-list', ['objections' => $objections]);
         }
     }
 }

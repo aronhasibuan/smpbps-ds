@@ -257,24 +257,24 @@
                                     </div>
                                 </div>
                                 
-                                <div class="flex flex-col sm:flex-row gap-3 w-full">
-                                    <form action="{{ route('cross-team-approve', $task->id) }}" method="POST" class="w-full">
-                                    @csrf
+                                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                                    <form action="{{ route('cross-team-approve', $task->id) }}" method="POST" class="w-full md:w-auto">
+                                        @csrf
                                         <button 
                                             type="submit"
-                                            class="w-full inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
+                                            class="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                             </svg>
                                             Setuju
                                         </button>
                                     </form>
-                                    <form action="{{ route('cross-team-reject', $task->id) }}" method="POST" class="w-full">
+                                    <form action="{{ route('cross-team-reject', $task->id) }}" method="POST" class="w-full md:w-auto">
                                         @csrf
                                         @method('DELETE')
                                         <button 
                                             type="submit"
-                                            class="w-full inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
+                                            class="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors shadow-sm">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                             </svg>

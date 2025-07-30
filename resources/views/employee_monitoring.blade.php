@@ -80,9 +80,9 @@
 
                 // Generate consistent colors
                 const statusColors = {
-                    'Tugas Selesai': '#3B82F6', // biru
-                    'Tugas Aktif': '#10B981', // hijau
-                    'Tugas Menunggu Persetujuan Dari Ketua Tim Lain': '#FBBF24', // kuning
+                    'Tugas Selesai': '#3B82F6', 
+                    'Tugas Aktif': '#10B981', 
+                    'Tugas Menunggu Persetujuan Dari Ketua Tim Lain': '#FBBF24',
                 };
 
                 // Prepare datasets with consistent colors

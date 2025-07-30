@@ -126,4 +126,7 @@ Route::middleware(['auth'])->group(function(){
         
         // view taskarchive
         Route::get('/arsip-tugas', [DataflowController::class, 'task_archive'])->name('task-archive-page');
+
+        // view objection-list
+        Route::get('/daftar-sanggahan', [DataflowController::class, 'objection_list'])->name('objection-list-page');
 });

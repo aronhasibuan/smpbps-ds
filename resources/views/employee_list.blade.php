@@ -8,7 +8,7 @@
             </div>
             
             @if (Auth::check() && Auth::user()->user_role == 'kepalabps')
-                <a href="{{ route('create-employee-page') }}" class="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs sm:text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
+                <a href="{{ route('create-employee-page') }}" class="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs sm:text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
                     <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
@@ -17,7 +17,7 @@
             @endif
         </div>
 
-        <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border">
             <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
                     <div class="w-full md:w-1/2">
@@ -50,7 +50,7 @@
                     <div class="flex items-center space-x-3">
                         <div class="flex items-center">
                             <span class="text-sm text-gray-500 mr-2">Per halaman:</span>
-                            <select id="perPage" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <select id="perPage" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 <option value="5" {{ request('perPage') == 5 ? 'selected' : '' }}>5</option>
                                 <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
                                 <option value="15" {{ request('perPage') == 15 ? 'selected' : '' }}>15</option>
@@ -90,8 +90,8 @@
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                                            <span class="text-indigo-600 font-medium">{{ substr($user->user_full_name, 0, 1) }}</span>
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                            <span class="text-blue-600 font-medium">{{ substr($user->user_full_name, 0, 1) }}</span>
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $user->user_full_name }}</div>
@@ -100,7 +100,7 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-200 dark:text-indigo-900">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-900">
                                         {{ $user->team->team_name }}
                                     </span>
                                 </td>
@@ -113,7 +113,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     @if ($user->user_role !== 'kepalabps')
                                     <div class="flex justify-end space-x-2">
-                                        <button onclick="openUpdateUserModal('{{ route('update-user', $user->id) }}', '{{ $user->user_full_name }}', '{{ $user->team_id }}', '{{ $user->email }}', '{{ $user->user_role }}', '{{ $user->user_whatsapp_number }}')" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                        <button onclick="openUpdateUserModal('{{ route('update-user', $user->id) }}', '{{ $user->user_full_name }}', '{{ $user->team_id }}', '{{ $user->email }}', '{{ $user->user_role }}', '{{ $user->user_whatsapp_number }}')" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                             </svg>

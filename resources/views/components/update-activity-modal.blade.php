@@ -1,4 +1,4 @@
-<div id="updatemodal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full items-center justify-center p-4 backdrop-blur-sm bg-black/30 transition-opacity duration-300">    
+<div id="updatemodal" tabindex="-1" class="hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-full max-h-full items-center justify-center p-4 backdrop-blur-sm bg-black/30 transition-opacity duration-300">    
     <div class="relative w-full max-w-2xl max-h-full">
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-800 p-4 sm:p-5">
             <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
@@ -33,7 +33,7 @@
                     <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
                     </svg>
-                    Perbarui Kegiatan
+                    Simpan
                 </button>
             </form>
         </div>
@@ -44,12 +44,25 @@
     function openactivityModal() {
         const modal = document.getElementById("updatemodal");
         modal.classList.remove("hidden");
-        document.body.classList.add("overflow-hidden");
+        modal.classList.add("flex");
     }
 
     function closeactivityModal() {
         const modal = document.getElementById("updatemodal");
         modal.classList.add("hidden");
-        document.body.classList.remove("overflow-hidden");
+        modal.classList.remove("flex");
     }
+
+    const endDate = document.getElementById('activity_end');
+
+    function getTodayLocal() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    const todayLocal = getTodayLocal();
+    endDate.min = todayLocal;
 </script>
