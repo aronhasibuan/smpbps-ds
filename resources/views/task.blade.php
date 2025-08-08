@@ -265,15 +265,5 @@
                 });
             </script>
         @endif
-
-        <!-- Toastr Notifications -->
-        <script>
-            @if(session('updated'))
-                toastr.success("{{ session('updated') }}");
-            @endif
-            @if(session('error'))
-                toastr.error("{{ session('error') }}");
-            @endif
-        </script>
     </main>
 </x-layout>

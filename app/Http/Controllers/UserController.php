@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\NotifyService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -93,13 +92,12 @@ class UserController extends Controller
             'newpassword'           => 'required|string|min:8',
             'confirmnewpassword'    => 'required|same:newpassword',
         ]);
-
         if (!Hash::check($request->currentpassword, $user->password)) {
-            return redirect()->route('profile-page')->with('error', 'Password saat ini salah.');
+            return redirect()->route('profile-page')->with('error', 'Kata sandi saat ini salah.');
         } else{
             $user->password = Hash::make($request->newpassword);
             $user->save();  
-            return redirect()->route('profile-page')->with('success', 'Password berhasil diperbarui.');
+            return redirect()->route('profile-page')->with('success', 'Kata sandi berhasil diperbarui.');
         }
     }
 }

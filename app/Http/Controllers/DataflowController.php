@@ -79,11 +79,9 @@ class DataflowController extends Controller
     public function openAttachment($filename)
     {
         $path = "attachments/{$filename}";
-
         if (!Storage::disk('public')->exists($path)) {
             abort(404);
         }
-
         return response()->file(storage_path("app/public/{$path}"));
     }
 
@@ -128,10 +126,10 @@ class DataflowController extends Controller
         $task->final_point = ($task->average_progress_point * 0.6) + ($task->average_quality_point * 0.4);
  
         return view('evaluation', [
-                    'task' => $task, 
-                    'tasksbydate' => $taskbydate,
-                    'user' => $user,
-                ]);
+            'task' => $task, 
+            'tasksbydate' => $taskbydate,
+            'user' => $user
+        ]);
     }
 
     // data view('activities_monitoring')
@@ -146,7 +144,6 @@ class DataflowController extends Controller
         $currentPage = $request->get('page', 1);
         $sort = $request->get('sort', 'priority');
 
-        // Base Query
         if ($user->user_role === 'kepalabps') {
             $activities = Activity::where('activity_active_status', true)
                 ->with(['tasks' => function ($query) {
@@ -162,7 +159,6 @@ class DataflowController extends Controller
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
         
-        // Filter Search
         if ($search) {
             $activities->where(function ($query) use ($search) {
                 $query->where('activity_name', 'like', '%' . $search . '%')
@@ -170,23 +166,18 @@ class DataflowController extends Controller
             });
         }
         
-        // Ambil data
         $activities = $activities->get();
 
-        // Hitung SPI tiap activity
         foreach ($activities as $activity) {
             $activity->spi_data = $EVMService->calculateActivitySPI($activity);
         }
 
-        // Filter berdasarkan status SPI
         if ($filter) {
             $activities = $activities->filter(function ($activity) use ($filter) {
                 return isset($activity->spi_data['status']) && $activity->spi_data['status'] === $filter;
             })->values();
         }
 
-        // Sorting
-        
         if ($sort == 'priority') {
             $statusOrder = [
                 'Terlambat'        => 1,
@@ -214,7 +205,6 @@ class DataflowController extends Controller
             })->values();
         }
 
-        // Pagination Manual
         $pagedActivities = $activities->slice(($currentPage - 1) * $perPage, $perPage)->all();
 
         $activities = new LengthAwarePaginator(
@@ -231,21 +221,26 @@ class DataflowController extends Controller
     // data view('activity')
     public function activity(Activity $activity)
     {
-        $teams = Team::with(['users' => function($query) {
-                $query->where('user_role', '!=', 'ketuatim');
-            }])->where('id', '!=', 1)->orderBy('team_name')->get();
+        $user = Auth::user();
+        if ($user->user_role == 'anggotatim') {
+            abort(403, 'Anda tidak memiliki akses ke halaman ini!');
+        } else {
+            $teams = Team::with(['users' => function($query) {
+                    $query->where('user_role', '!=', 'ketuatim');
+                }])->where('id', '!=', 1)->orderBy('team_name')->get();
 
-        $anggotatim = User::where('user_role', 'anggotatim')
-            ->withCount(['tasks' => function ($query) {
-                $query->where('status_id', 2);
-            }])->get();
+            $anggotatim = User::where('user_role', 'anggotatim')
+                ->withCount(['tasks' => function ($query) {
+                    $query->where('status_id', 2);
+                }])->get();
 
-        $EVMService = new EVMService;
-        $tasks = Task::where('activity_id', $activity->id)->paginate(5);
-        foreach ($tasks as $task){
-            $task->spi_data = $EVMService->calculateSPI($task);
+            $EVMService = new EVMService;
+            $tasks = Task::where('activity_id', $activity->id)->paginate(5);
+            foreach ($tasks as $task){
+                $task->spi_data = $EVMService->calculateSPI($task);
+            }
+            return view('activity', ['tasks' => $tasks, 'activity' => $activity, 'anggotatim' => $anggotatim, 'teams' => $teams]);
         }
-        return view('activity', ['tasks' => $tasks, 'activity' => $activity, 'anggotatim' => $anggotatim, 'teams' => $teams]);
     }
 
     // data view('employee_monitoring')
